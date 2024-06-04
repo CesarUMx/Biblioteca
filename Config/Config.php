@@ -1,6 +1,6 @@
 <?php
-const base_url = "http://localhost/Sistema-de-biblioteca-basico-php-8-y-mysql/";
-const host = "172.18.0.17";
+const base_url = "https://test.mondragonmexico.edu.mx/";
+const host = "localhost";
 const user = "root";
 const pass = "password";
 const db = "biblioteca";
