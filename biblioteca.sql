@@ -63,7 +63,7 @@ CREATE TABLE `configuracion` (
 --
 
 INSERT INTO `configuracion` (`id`, `nombre`, `telefono`, `direccion`, `correo`, `foto`) VALUES
-(1, 'Vida Informático', '925491523', 'Lima - Perú', 'angelsifuentes@gmail.com', 'logo.png');
+(1, 'UMx', '4426403922', 'Querétaro', 'sistemas@mondragonmexico.edu.mx', 'logo.png');
 
 -- --------------------------------------------------------
 
@@ -86,7 +86,16 @@ INSERT INTO `detalle_permisos` (`id`, `id_usuario`, `id_permiso`) VALUES
 (6, 2, 2),
 (7, 2, 3),
 (8, 2, 5),
-(9, 2, 8);
+(9, 2, 8),
+(10, 3, 1),
+(11, 3, 2),
+(12, 3, 3),
+(13, 3, 4),
+(14, 3, 5),
+(15, 3, 6),
+(16, 3, 7),
+(17, 3, 8),
+(18, 3, 9);
 
 -- --------------------------------------------------------
 
@@ -130,8 +139,8 @@ CREATE TABLE `estudiante` (
 --
 
 INSERT INTO `estudiante` (`id`, `codigo`, `dni`, `nombre`, `carrera`, `direccion`, `telefono`, `estado`) VALUES
-(1, '12345', '74589745', 'Angel sifuentes', 'Ingenieria de sistemas', 'Lima peru', '925491523', 1),
-(2, '465', '9779879', 'Prueba', 'Ingenieria', 'Lima', '987978456', 1);
+(1, '12345', '74589745', 'Alex Santiago', 'Ingenieria de sistemas', 'Queretaro', '925491523', 1),
+(2, '465', '9779879', 'Prueba', 'Ingenieria', 'Mexico', '987978456', 1);
 
 -- --------------------------------------------------------
 
@@ -257,7 +266,8 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `usuario`, `nombre`, `clave`, `estado`) VALUES
 (1, 'admin', 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 1),
-(2, 'cesar', 'Cesar P', '519ba91a5a5b4afb9dc66f8805ce8c442b6576316c19c6896af2fa9bda6aff71', 1);
+(2, 'cesar', 'Cesar P', '519ba91a5a5b4afb9dc66f8805ce8c442b6576316c19c6896af2fa9bda6aff71', 0),
+(3, 'Arlett', 'Arlett',	'2acfce81bc6c90453fb163971290fd7c7eea78083ea237d05082e19b93ea3897',	1);
 
 --
 -- Índices para tablas volcadas
