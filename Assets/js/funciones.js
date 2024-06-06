@@ -62,6 +62,7 @@ document.addEventListener("DOMContentLoaded", function(){
             {'data' : 'id'},
             {'data': 'usuario'},
             {'data': 'nombre'},
+            {'data': 'puesto'},
             {'data': 'estado'},
             {'data': 'acciones'}
         ],
@@ -408,6 +409,14 @@ function registrarUser(e) {
     const nombre = document.getElementById("nombre");
     const clave = document.getElementById("clave");
     const confirmar = document.getElementById("confirmar");
+
+    //validar que el campo usuario sea un correo
+    const expresion = /\w+@\w+\.+[a-z]/;
+    if (!expresion.test(usuario.value)) {
+        alertas('El usuario no es valido', 'warning');
+        return;
+    }
+
     if (usuario.value == "" || nombre.value == "" || puesto.value == "" || clave.value == "" || confirmar.value == "") {
         alertas('Todo los campos son requeridos', 'warning');
     } else {
