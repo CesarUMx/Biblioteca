@@ -14834,7 +14834,7 @@ be a descendant of the grid when it is being dragged.
     margin-left: 0;
   }
   .app.sidenav-toggled .app-sidebar {
-    left: -230px;
+    left: -250px;
   }
   .app.sidenav-toggled .app-sidebar__overlay {
     visibility: hidden;
@@ -14846,7 +14846,7 @@ be a descendant of the grid when it is being dragged.
     overflow-x: hidden;
   }
   .app .app-sidebar {
-    left: -230px;
+    left: -250px;
   }
   .app .app-sidebar__overlay {
     visibility: hidden;
@@ -14874,7 +14874,7 @@ be a descendant of the grid when it is being dragged.
 
 @media (min-width: 768px) {
   .app-content {
-    margin-left: 230px;
+    margin-left: 250px;
   }
 }
 
@@ -14958,7 +14958,7 @@ be a descendant of the grid when it is being dragged.
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
     display: block;
-    width: 230px;
+    width: 250px;
     background-color: #FF5F1A;
   }
 }
@@ -15157,7 +15157,7 @@ be a descendant of the grid when it is being dragged.
   bottom: 0;
   left: 0;
   padding-top: 70px;
-  width: 230px;
+  width: 250px;
   overflow: auto;
   z-index: 10;
   background-color: #222d32;

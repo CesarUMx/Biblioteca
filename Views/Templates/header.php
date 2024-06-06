@@ -60,7 +60,7 @@
         <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="<?php echo base_url; ?>Assets/img/logo.png" alt="User Image" width="50">
             <div>
                 <p class="app-sidebar__user-name"><?php echo $_SESSION['nombre'] ?></p>
-                <p class="app-sidebar__user-designation"><?php echo $_SESSION['usuario']; ?></p>
+                <p class="app-sidebar__user-designation"><?php echo $_SESSION['puesto']; ?></p>
             </div>
         </div>
         <ul class="app-menu">

@@ -60,6 +60,7 @@ class Usuarios extends Controller{
             if ($data) {
                 $_SESSION['id_usuario'] = $data['id'];
                 $_SESSION['usuario'] = $data['usuario'];
+                $_SESSION['puesto'] = $data['puesto'];
                 $_SESSION['nombre'] = $data['nombre'];
                 $_SESSION['activo'] = true;
                 $msg = array('msg' => 'Procesando', 'icono' => 'success');

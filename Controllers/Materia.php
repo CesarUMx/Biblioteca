@@ -9,7 +9,7 @@ class Materia extends Controller
         }
         parent::__construct();
         $id_user = $_SESSION['id_usuario'];
-        $perm = $this->model->verificarPermisos($id_user, "Materia");
+        $perm = $this->model->verificarPermisos($id_user, "Materias");
         if (!$perm && $id_user != 1) {
             $this->views->getView($this, "permisos");
             exit;
