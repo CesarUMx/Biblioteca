@@ -14,21 +14,21 @@
 
 <body>
     <section class="material-half-bg">
-        <div class="cover"></div>
+        <div class="cover"> <img class="app-sidebar__user-avatar" src="<?php echo base_url; ?>Assets/img/logo_blanco.png" alt="Universidad Mondragon Mexico" width="250"> </div>
     </section>
     <section class="login-content">
         <div class="logo">
-            <h1>Bienvenido</h1>
+            <img src="<?php echo base_url; ?>/Assets/img/image.png" alt="Biblioteca UXx" width="400" >
         </div>
         <div class="login-box">
             <form class="login-form" id="frmLogin" onsubmit="frmLogin(event);">
-                <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i>Iniciar Sesión</h3>
+                <h3 class="login-head"><img src="<?php echo base_url; ?>Assets/img/iconos/HEAD.ico" alt="Dragoberto" width="75">Iniciar Sesión</h3>
                 <div class="form-group">
-                    <label class="control-label">USUARIO</label>
+                    <label class="control-label">Usuario</label>
                     <input class="form-control" type="text" placeholder="Usuario" id="usuario" name="usuario" autofocus required>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">CONTRASEÑA</label>
+                    <label class="control-label">Contraseña</label>
                     <input class="form-control" type="password" placeholder="Contraseña" id="clave" name="clave" required>
                 </div>
                 <div class="alert alert-danger d-none" role="alert" id="alerta">

@@ -73,20 +73,21 @@ class Usuarios extends Controller{
     public function registrar()
     {
         $usuario = strClean($_POST['usuario']);
+        $puesto = strClean($_POST['puesto']);
         $nombre = strClean($_POST['nombre']);
         $clave = strClean($_POST['clave']);
         $confirmar = strClean($_POST['confirmar']);
         $id = strClean($_POST['id']);
         $hash = hash("SHA256", $clave);
-        if (empty($usuario) || empty($nombre)) {
+        if (empty($usuario) || empty($nombre) || empty($puesto) ){
             $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
         }else{
             if ($id == "") {
                 if (!empty($clave) && !empty($confirmar)) {
                     if ($clave != $confirmar) {
-                        $msg = array('msg' => 'La contraseña es requerido', 'icono' => 'warning');
+                        $msg = array('msg' => 'La contraseña es requerida', 'icono' => 'warning');
                     } else {
-                        $data = $this->model->registrarUsuario($usuario, $nombre, $hash);
+                        $data = $this->model->registrarUsuario($usuario, $puesto, $nombre, $hash);
                         if ($data == "ok") {
                             $msg = array('msg' => 'Usuario registrado', 'icono' => 'success');
                         } else if ($data == "existe") {
@@ -97,7 +98,7 @@ class Usuarios extends Controller{
                     }
                 }
             }else{
-                $data = $this->model->modificarUsuario($usuario, $nombre, $id);
+                $data = $this->model->modificarUsuario($usuario, $puesto, $nombre, $id);
                 if ($data == "modificado") {
                     $msg = array('msg' => 'Usuario modificado', 'icono' => 'success');
                 }else {

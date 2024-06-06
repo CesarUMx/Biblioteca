@@ -2625,8 +2625,8 @@ fieldset:disabled a.btn {
 
 .btn-primary:hover {
   color: #FFF;
-  background-color: #007065;
-  border-color: #00635a;
+  background-color: #FF5F1A;
+  border-color: #FF5F1A;
 }
 
 .btn-primary:focus, .btn-primary.focus {
@@ -14945,7 +14945,7 @@ be a descendant of the grid when it is being dragged.
           flex: 1 0 auto;
   color: #fff;
   text-align: center;
-  font-family: 'fangsong';
+  font-family: 'universe-regular', rift-soft;
   padding: 0 15px;
   font-size: 26px;
   font-weight: 400;

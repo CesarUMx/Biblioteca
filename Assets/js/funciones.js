@@ -404,10 +404,11 @@ function frmUsuario() {
 function registrarUser(e) {
     e.preventDefault();
     const usuario = document.getElementById("usuario");
+    const puesto = document.getElementById("puesto");
     const nombre = document.getElementById("nombre");
     const clave = document.getElementById("clave");
     const confirmar = document.getElementById("confirmar");
-    if (usuario.value == "" || nombre.value == "") {
+    if (usuario.value == "" || nombre.value == "" || puesto.value == "" || clave.value == "" || confirmar.value == "") {
         alertas('Todo los campos son requeridos', 'warning');
     } else {
         const url = base_url + "Usuarios/registrar";
@@ -438,6 +439,7 @@ function btnEditarUser(id) {
             const res = JSON.parse(this.responseText);
             document.getElementById("id").value = res.id;
             document.getElementById("usuario").value = res.usuario;
+            document.getElementById("puesto").value = res.puesto;
             document.getElementById("nombre").value = res.nombre;
             document.getElementById("claves").classList.add("d-none");
             $("#nuevo_usuario").modal("show");

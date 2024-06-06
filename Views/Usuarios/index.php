@@ -40,12 +40,16 @@
                             <div class="modal-body">
                                 <form method="post" id="frmUsuario">
                                     <div class="form-group">
-                                        <label for="usuario">Usuario</label>
+                                        <label for="usuario">Correo: </label>
                                         <input type="hidden" id="id" name="id">
-                                        <input id="usuario" class="form-control" type="text" name="usuario" placeholder="Usuario">
+                                        <input id="usuario" class="form-control" type="text" name="usuario" placeholder="Correo Institucional">
                                     </div>
                                     <div class="form-group">
-                                        <label for="nombre">Nombre</label>
+                                        <label for="puesto">Puesto: </label>
+                                        <input id="puesto" class="form-control" type="text" name="puesto" placeholder="Puesto del usuario">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nombre">Nombre: </label>
                                         <input id="nombre" class="form-control" type="text" name="nombre" placeholder="Nombre del usuario">
                                     </div>
                                     <div class="row" id="claves">
