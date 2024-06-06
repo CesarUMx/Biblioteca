@@ -85,11 +85,15 @@ document.addEventListener("DOMContentLoaded", function(){
             dataSrc: ''
         },
         columns: [{'data': 'id'},
-            {'data': 'codigo'},
-            {'data': 'dni'},
+            {'data': 'matricula'},
+            {
+                'data': 'matricula',
+                'render': function (data, type, row) {
+                    return data + '@mondragonmexico.edu.mx';
+                }
+            },
             {'data': 'nombre'},
             {'data':'carrera'},
-            {'data': 'direccion'},
             {'data': 'telefono'},
             {'data': 'estado'},
             {'data': 'acciones'}
@@ -509,8 +513,10 @@ function btnReingresarUser(id) {
     })
 }
 //Fin Usuarios
+
+//Inicio Estudiante
 function frmEstudiante() {
-    document.getElementById("title").textContent = "Nuevo Estuadiante";
+    document.getElementById("title").textContent = "Nuevo Estudiante";
     document.getElementById("btnAccion").textContent = "Registrar";
     document.getElementById("frmEstudiante").reset();
     document.getElementById("id").value = "";
@@ -519,18 +525,17 @@ function frmEstudiante() {
 
 function registrarEstudiante(e) {
     e.preventDefault();
-    const codigo = document.getElementById("codigo");
-    const dni = document.getElementById("dni");
+    const matricula = document.getElementById("matricula");
     const nombre = document.getElementById("nombre");
     const carrera = document.getElementById("carrera");
     const telefono = document.getElementById("telefono");
-    const direccion = document.getElementById("direccion");
-    if (codigo.value == "" || dni.value == "" || nombre.value == ""
-    || telefono.value == "" || direccion.value == "" || carrera.value == "") {
+    if (matricula.value == "" || nombre.value == ""
+    || telefono.value == "" || carrera.value == "") {
         alertas('Todo los campos son requeridos', 'warning');
     } else {
         const url = base_url + "Estudiantes/registrar";
         const frm = document.getElementById("frmEstudiante");
+        console.log(frm);
         const http = new XMLHttpRequest();
         http.open("POST", url, true);
         http.send(new FormData(frm));
@@ -557,12 +562,10 @@ function btnEditarEst(id) {
         if (this.readyState == 4 && this.status == 200) {
             const res = JSON.parse(this.responseText);
             document.getElementById("id").value = res.id;
-            document.getElementById("codigo").value = res.codigo;
-            document.getElementById("dni").value = res.dni;
+            document.getElementById("matricula").value = res.matricula;
             document.getElementById("nombre").value = res.nombre;
             document.getElementById("carrera").value = res.carrera;
             document.getElementById("telefono").value = res.telefono;
-            document.getElementById("direccion").value = res.direccion;
             $("#nuevoEstudiante").modal("show");
         }
     }

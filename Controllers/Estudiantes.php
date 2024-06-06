@@ -24,13 +24,13 @@ class Estudiantes extends Controller
         $data = $this->model->getEstudiantes();
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['estado'] == 1) {
-                $data[$i]['estado'] = '<span class="badge badge-success">Activo</span>';
+                $data[$i]['estado'] = '<span class="badge badge-success">Inscrito</span>';
                 $data[$i]['acciones'] = '<div>
                 <button class="btn btn-primary" type="button" onclick="btnEditarEst(' . $data[$i]['id'] . ');"><i class="fa fa-pencil-square-o"></i></button>
                 <button class="btn btn-danger" type="button" onclick="btnEliminarEst(' . $data[$i]['id'] . ');"><i class="fa fa-trash-o"></i></button>
                 <div/>';
             } else {
-                $data[$i]['estado'] = '<span class="badge badge-danger">Inactivo</span>';
+                $data[$i]['estado'] = '<span class="badge badge-danger">Baja</span>';
                 $data[$i]['acciones'] = '<div>
                 <button class="btn btn-success" type="button" onclick="btnReingresarEst(' . $data[$i]['id'] . ');"><i class="fa fa-reply-all"></i></button>
                 <div/>';
@@ -41,18 +41,16 @@ class Estudiantes extends Controller
     }
     public function registrar()
     {
-        $codigo = strClean($_POST['codigo']);
-        $dni = strClean($_POST['dni']);
+        $matricula = strClean($_POST['matricula']);
         $nombre = strClean($_POST['nombre']);
         $carrera = strClean($_POST['carrera']);
-        $direccion = strClean($_POST['direccion']);
         $telefono = strClean($_POST['telefono']);
         $id = strClean($_POST['id']);
-        if (empty($codigo) || empty($dni) || empty($nombre) || empty($carrera)) {
+        if (empty($matricula) || empty($nombre) || empty($carrera)) {
             $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
         } else {
             if ($id == "") {
-                    $data = $this->model->insertarEstudiante($codigo, $dni, $nombre, $carrera, $direccion, $telefono);
+                    $data = $this->model->insertarEstudiante($matricula, $nombre, $carrera, $telefono);
                     if ($data == "ok") {
                         $msg = array('msg' => 'Estudiante registrado', 'icono' => 'success');
                     } else if ($data == "existe") {
@@ -61,7 +59,7 @@ class Estudiantes extends Controller
                         $msg = array('msg' => 'Error al registrar', 'icono' => 'error');
                     }
             } else {
-                $data = $this->model->actualizarEstudiante($codigo, $dni, $nombre, $carrera, $direccion, $telefono, $id);
+                $data = $this->model->actualizarEstudiante($matricula, $nombre, $carrera, $telefono, $id);
                 if ($data == "modificado") {
                     $msg = array('msg' => 'Estudiante modificado', 'icono' => 'success');
                 } else {

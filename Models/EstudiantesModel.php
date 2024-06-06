@@ -10,13 +10,14 @@ class EstudiantesModel extends Query{
         $res = $this->selectAll($sql);
         return $res;
     }
-    public function insertarEstudiante($codigo, $dni, $nombre, $carrera, $direccion, $telefono)
+    public function insertarEstudiante($matricula, $nombre, $carrera, $telefono)
     {
-        $verificar = "SELECT * FROM estudiante WHERE codigo = '$codigo'";
+        
+        $verificar = "SELECT * FROM estudiante WHERE matricula = '$matricula'";
         $existe = $this->select($verificar);
         if (empty($existe)) {
-            $query = "INSERT INTO estudiante(codigo,dni,nombre,carrera,direccion,telefono) VALUES (?,?,?,?,?,?)";
-            $datos = array($codigo, $dni, $nombre, $carrera, $direccion, $telefono);
+            $query = "INSERT INTO estudiante(matricula,nombre,carrera,telefono) VALUES (?,?,?,?)";
+            $datos = array($matricula, $nombre, $carrera, $telefono);
             $data = $this->save($query, $datos);
             if ($data == 1) {
                 $res = "ok";
@@ -34,10 +35,10 @@ class EstudiantesModel extends Query{
         $res = $this->select($sql);
         return $res;
     }
-    public function actualizarEstudiante($codigo, $dni, $nombre, $carrera, $direccion, $telefono, $id)
+    public function actualizarEstudiante($matricula, $nombre, $carrera, $telefono, $id)
     {
-        $query = "UPDATE estudiante SET codigo = ?, dni = ?, nombre = ?, carrera = ?, direccion = ?, telefono = ?  WHERE id = ?";
-        $datos = array($codigo, $dni, $nombre, $carrera, $direccion, $telefono, $id);
+        $query = "UPDATE estudiante SET matricula = ?, nombre = ?, carrera = ?, telefono = ?  WHERE id = ?";
+        $datos = array($matricula, $nombre, $carrera, $telefono, $id);
         $data = $this->save($query, $datos);
         if ($data == 1) {
             $res = "modificado";
@@ -55,7 +56,7 @@ class EstudiantesModel extends Query{
     }
     public function buscarEstudiante($valor)
     {
-        $sql = "SELECT id, codigo, nombre AS text FROM estudiante WHERE codigo LIKE '%" . $valor . "%' AND estado = 1 OR nombre LIKE '%" . $valor . "%'  AND estado = 1 LIMIT 10";
+        $sql = "SELECT id, matricula, nombre AS text FROM estudiante WHERE matricula LIKE '%" . $valor . "%' AND estado = 1 OR nombre LIKE '%" . $valor . "%'  AND estado = 1 LIMIT 10";
         $data = $this->selectAll($sql);
         return $data;
     }

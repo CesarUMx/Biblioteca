@@ -4,7 +4,7 @@
         <h1><i class="fa fa-dashboard"></i> Estudiantes</h1>
     </div>
 </div>
-<button class="btn btn-primary mb-2" type="button" onclick="frmEstudiante()"><i class="fa fa-plus"></i></button>
+<button class="btn btn-primary mb-2" type="button" onclick="frmEstudiante()"><i class="fa fa-plus"></i> Estudiante </button>
 <div class="row">
     <div class="col-lg-12">
         <div class="tile">
@@ -14,11 +14,10 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>Id</th>
-                                <th>Código</th>
-                                <th>Dni</th>
+                                <th>Matricula</th>
+                                <th>Correo</th>
                                 <th>Nombre</th>
-                                <th>Carrera</th>
-                                <th>Dirección</th>
+                                <th>Licenciatura</th>
                                 <th>Teléfono</th>
                                 <th>Estado</th>
                                 <th></th>
@@ -46,15 +45,9 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="codigo">Código</label>
+                                <label for="matricula">Matrícula</label>
                                 <input type="hidden" id="id" name="id">
-                                <input id="codigo" class="form-control" type="text" name="codigo" required placeholder="Codigo del estudiante">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="dni">Dni</label>
-                                <input id="dni" class="form-control" type="text" name="dni" required placeholder="Dni">
+                                <input id="matricula" class="form-control" type="text" name="matricula" required placeholder="Matrícula del estudiante">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -65,20 +58,14 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="carrera">Carrera</label>
-                                <input id="carrera" class="form-control" type="text" name="carrera" required placeholder="Carrera">
+                                <label for="carrera">Licenciatura</label>
+                                <input id="carrera" class="form-control" type="text" name="carrera" required placeholder="Licenciatura">
                             </div>
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="telefono">Télefono</label>
+                                <label for="telefono">Teléfono</label>
                                 <input id="telefono" class="form-control" type="text" name="telefono" required placeholder="Teléfono">
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="direccion">Dirección</label>
-                                <input id="direccion" class="form-control" type="text" name="direccion" required placeholder="Dirección">
                             </div>
                         </div>
                         <div class="col-md-12">
