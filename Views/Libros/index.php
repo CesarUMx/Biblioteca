@@ -4,7 +4,7 @@
         <h1><i class="fa fa-dashboard"></i> Libros</h1>
     </div>
 </div>
-<button class="btn btn-primary mb-2" onclick="frmLibros()"><i class="fa fa-plus"></i></button>
+<button class="btn btn-primary mb-2" onclick="frmLibros()"><i class="fa fa-plus"></i> Libro </button>
 <div class="row">
     <div class="col-lg-12">
         <div class="tile">
@@ -13,13 +13,17 @@
                     <table class="table table-light mt-4" id="tblLibros">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Id</th>
+                                <th hidden>Id</th>
+                                <th>Clave</th>
+                                <th>Clasificación</th>
+                                <th>ISBN</th>
                                 <th>Titulo</th>
-                                <th>Cant</th>
-                                <th>Autor</th>
+                                <th>Autor/es</th>
                                 <th>Editorial</th>
+                                <th>Año</th>
+                                <th>Edición</th>
+                                <th>Paginas</th>
                                 <th>Materia</th>
-                                <th>Foto</th>
                                 <th>Descripción</th>
                                 <th>Estado</th>
                                 <th></th>
@@ -45,10 +49,22 @@
             </div>
             <div class="modal-body">
                 <form id="frmLibro" class="row" onsubmit="registrarLibro(event)">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="clasificacion">Clasificación</label>
+                            <input type="hidden" id="id" name="id">
+                            <input id="clasificacion" class="form-control" type="text" name="clasificacion" placeholder="Clasificación del libro" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="isbn">ISBN</label>
+                            <input id="isbn" class="form-control" type="text" name="isbn" placeholder="ISBN" required>
+                        </div>
+                    </div>
                     <div class="col-md-8">
                         <div class="form-group">
                             <label for="titulo">Título</label>
-                            <input type="hidden" id="id" name="id">
                             <input id="titulo" class="form-control" type="text" name="titulo" placeholder="Título del libro" required>
                         </div>
                     </div>
@@ -68,7 +84,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="materia">Materia</label><br>
                             <select id="materia" class="form-control materia" name="materia" required style="width: 100%;">

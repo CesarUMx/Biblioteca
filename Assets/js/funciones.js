@@ -189,7 +189,8 @@ document.addEventListener("DOMContentLoaded", function(){
             dataSrc: ''
         },
         columns: [{
-                'data': 'id'
+                'data': 'id',
+                'visible': false
             },
             {
                 'data': 'titulo'
