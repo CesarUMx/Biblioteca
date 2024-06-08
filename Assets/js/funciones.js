@@ -948,20 +948,20 @@ function frmLibros() {
     document.getElementById("frmLibro").reset();
     document.getElementById("id").value = "";
     $("#nuevoLibro").modal("show");
-    deleteImg();
 }
 
 function registrarLibro(e) {
     e.preventDefault();
+    const clasificacion = document.getElementById("clasificacion");
+    const isbn = document.getElementById("isbn");
     const titulo = document.getElementById("titulo");
     const autor = document.getElementById("autor");
     const editorial = document.getElementById("editorial");
     const materia = document.getElementById("materia");
     const cantidad = document.getElementById("cantidad");
-    const num_pagina = document.getElementById("num_pagina");
 
-    if (titulo.value == '' || autor.value == '' || editorial.value == ''
-    || materia.value == '' || cantidad.value == '' || num_pagina.value == '') {
+    if (titulo.value == '' || clasificacion.value == '' || isbn.value == ''
+         || autor.value == '' || editorial.value == '' || materia.value == '') {
         alertas('Todo los campos son requeridos', 'warning');
     } else {
         const url = base_url + "Libros/registrar";
@@ -992,21 +992,20 @@ function btnEditarLibro(id) {
         if (this.readyState == 4 && this.status == 200) {
             const res = JSON.parse(this.responseText);
               document.getElementById("id").value = res.id;
+              document.getElementById("clasificacion").value = res.clasificacion;
+              document.getElementById("isbn").value = res.isbn;
               document.getElementById("titulo").value = res.titulo;
               document.getElementById("autor").value = res.id_autor;
+              document.getElementById("o_autores").value = res.otros_autores;
               document.getElementById("editorial").value = res.id_editorial;
               document.getElementById("materia").value = res.id_materia;
-              document.getElementById("cantidad").value = res.cantidad;
               document.getElementById("num_pagina").value = res.num_pagina;
               document.getElementById("anio_edicion").value = res.anio_edicion;
               document.getElementById("descripcion").value = res.descripcion;
-            document.getElementById("img-preview").src = base_url + 'Assets/img/libros/'+ res.imagen;
-            document.getElementById("icon-cerrar").innerHTML = `
-            <button class="btn btn-danger" onclick="deleteImg()">
-            <i class="fa fa-times-circle"></i></button>`;
+            document.getElementById("cantidad").classList.add("d-none");
             document.getElementById("icon-image").classList.add("d-none");
-            document.getElementById("foto_actual").value = res.imagen;
             $("#nuevoLibro").modal("show");
+            // ocultar campo de cantidad
         }
     }
 }

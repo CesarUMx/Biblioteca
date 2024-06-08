@@ -11,19 +11,24 @@ class LibrosModel extends Query
         $res = $this->selectAll($sql);
         return $res;
     }
-    public function insertarLibros($titulo,$id_autor,$id_editorial,$id_materia,$cantidad,$num_pagina,$anio_edicion,$descripcion,$imgNombre)
+    public function insertarLibros($clasificacion, $isbn, $titulo, $autor, $o_autores, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave)
     {
-        $verificar = "SELECT * FROM libro WHERE titulo = '$titulo'";
+        $verificar = "SELECT * FROM libro WHERE clave = '$clave'";
         $existe = $this->select($verificar);
         if (empty($existe)) {
-            $query = "INSERT INTO libro(titulo, id_autor, id_editorial, id_materia, cantidad, num_pagina, anio_edicion, descripcion, imagen) VALUES (?,?,?,?,?,?,?,?,?)";
-            $datos = array($titulo, $id_autor, $id_editorial, $id_materia, $cantidad, $num_pagina, $anio_edicion, $descripcion, $imgNombre);
-            $data = $this->save($query, $datos);
-            if ($data == 1) {
-                $res = "ok";
-            } else {
-                $res = "error";
-            }
+            // $query = "INSERT INTO libro(titulo, id_autor, id_editorial, id_materia, cantidad, num_pagina, anio_edicion, descripcion, imagen) VALUES (?,?,?,?,?,?,?,?,?)";
+            // $datos = array($titulo, $id_autor, $id_editorial, $id_materia, $cantidad, $num_pagina, $anio_edicion, $descripcion, $imgNombre);
+            // $data = $this->save($query, $datos);
+            // if ($data == 1) {
+            //     $res = "ok";
+            // } else {
+            //     $res = "error";
+            // }
+            //ver como hacer la insercion de los datos
+            echo "    insertar     ";
+            
+            echo $clave;
+
         } else {
             $res = "existe";
         }
@@ -69,5 +74,13 @@ class LibrosModel extends Query
             $tiene = true;
         }
         return $tiene;
+    }
+    // funcion para obtener el ultimo id de la tabla libro
+    public function lastId()
+    {
+        $sql = "SELECT MAX(id) AS id FROM libro";
+        $res = $this->select($sql);
+        echo json_encode($res, JSON_UNESCAPED_UNICODE);
+        return $res;
     }
 }

@@ -42,8 +42,11 @@ class Libros extends Controller
     }
     public function registrar()
     {
+        $clasificacion = strClean($_POST['clasificacion']);
+        $isbn = strClean($_POST['isbn']);
         $titulo = strClean($_POST['titulo']);
         $autor = strClean($_POST['autor']);
+        $o_autores = strClean($_POST['o_autores']);
         $editorial = strClean($_POST['editorial']);
         $materia = strClean($_POST['materia']);
         $cantidad = strClean($_POST['cantidad']);
@@ -51,47 +54,34 @@ class Libros extends Controller
         $anio_edicion = strClean($_POST['anio_edicion']);
         $descripcion = strClean($_POST['descripcion']);
         $id = strClean($_POST['id']);
-        $img = $_FILES['imagen'];
-        $name = $img['name'];
-        $fecha = date("YmdHis");
-        $tmpName = $img['tmp_name'];
-        if (empty($titulo) || empty($autor) || empty($editorial) || empty($materia) || empty($cantidad)) {
+        if (empty($titulo) || empty($autor) || empty($editorial) || empty($materia) || empty($clasificacion) || empty($isbn) || empty($descripcion)) {
             $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
         } else {
-            if (!empty($name)) {
-                $extension = pathinfo($name, PATHINFO_EXTENSION);
-                $formatos_permitidos =  array('png', 'jpeg', 'jpg');
-                $extension = pathinfo($name, PATHINFO_EXTENSION);
-                if (!in_array($extension, $formatos_permitidos)) {
-                    $msg = array('msg' => 'Archivo no permitido', 'icono' => 'warning');
-                } else {
-                    $imgNombre = $fecha . ".jpg";
-                    $destino = "Assets/img/libros/" . $imgNombre;
-                }
-            } else if (!empty($_POST['foto_actual']) && empty($name)) {
-                $imgNombre = $_POST['foto_actual'];
-            } else {
-                $imgNombre = "logo.png";
-            }
             if ($id == "") {
-                $data = $this->model->insertarLibros($titulo, $autor, $editorial, $materia, $cantidad, $num_pagina, $anio_edicion, $descripcion, $imgNombre);
-                if ($data == "ok") {
-                    if (!empty($name)) {
-                        move_uploaded_file($tmpName, $destino);
-                    }
-                    $msg = array('msg' => 'Libro registrado', 'icono' => 'success');
-                } else if ($data == "existe") {
-                    $msg = array('msg' => 'El libro ya existe', 'icono' => 'warning');
-                } else {
-                    $msg = array('msg' => 'Error al registrar', 'icono' => 'error');
+                echo "entro";
+                // generar la variable $clave preguntando el ultimo id de la tabla libro (usar la funcion del modelo lastId) y sumarle 1 y al fiNAL colocar 01 y esete valor se incrementara con el campo cantidad
+                $clave = $this->model->lastId();
+                $clave = $clave['id'] + 1;
+                echo $clave;
+                $nuevosDigitos = '01';
+                $clave = $clave . $nuevosDigitos;
+                echo $clave;
+
+
+
+                // realisar la insercion las veses que el campo cantidad lo permita e incrementando la variable $clave
+                for ($i = 0; $i < $cantidad; $i++) {
+                    $data = $this->model->insertarLibros($clasificacion, $isbn, $titulo, $autor, $o_autores, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave);
+                    $clave++;
+                    // if ($data == "ok") {
+                    //     $msg = array('msg' => 'Libro registrado', 'icono' => 'success');
+                    // } else if ($data == "existe") {
+                    //     $msg = array('msg' => 'El libro ya existe', 'icono' => 'warning');
+                    // } else {
+                    //     $msg = array('msg' => 'Error al registrar', 'icono' => 'error');
+                    // }
                 }
             } else {
-                $imgDelete = $this->model->editLibros($id);
-                if ($imgDelete['imagen'] != 'logo.png') {
-                    if (file_exists("Assets/img/libros/" . $imgDelete['imagen'])) {
-                        unlink("Assets/img/libros/" . $imgDelete['imagen']);
-                    }
-                }
                 $data = $this->model->actualizarLibros($titulo, $autor, $editorial, $materia, $cantidad, $num_pagina, $anio_edicion, $descripcion, $imgNombre, $id);
                 if ($data == "modificado") {
                     if (!empty($name)) {
