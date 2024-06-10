@@ -21,7 +21,6 @@
                                 <th>Autor/es</th>
                                 <th>Editorial</th>
                                 <th>Año</th>
-                                <th>Edición</th>
                                 <th>Paginas</th>
                                 <th>Materia</th>
                                 <th>Descripción</th>

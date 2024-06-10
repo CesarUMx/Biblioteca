@@ -16,18 +16,14 @@ class LibrosModel extends Query
         $verificar = "SELECT * FROM libro WHERE clave = '$clave'";
         $existe = $this->select($verificar);
         if (empty($existe)) {
-            // $query = "INSERT INTO libro(titulo, id_autor, id_editorial, id_materia, cantidad, num_pagina, anio_edicion, descripcion, imagen) VALUES (?,?,?,?,?,?,?,?,?)";
-            // $datos = array($titulo, $id_autor, $id_editorial, $id_materia, $cantidad, $num_pagina, $anio_edicion, $descripcion, $imgNombre);
-            // $data = $this->save($query, $datos);
-            // if ($data == 1) {
-            //     $res = "ok";
-            // } else {
-            //     $res = "error";
-            // }
-            //ver como hacer la insercion de los datos
-            echo "    insertar     ";
-            
-            echo $clave;
+             $query = "INSERT INTO libro(titulo, id_autor, id_editorial, id_materia, anio_edicion, num_pagina, descripcion, clasificacion, clave, otros_autores, isbn) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+             $datos = array($titulo, $autor, $editorial, $materia, $anio_edicion, $num_pagina, $descripcion, $clasificacion, $clave, $o_autores, $isbn);
+             $data = $this->save($query, $datos);
+             if ($data == 1) {
+                $res = "ok";
+            } else {
+                $res = "error";
+            }
 
         } else {
             $res = "existe";
@@ -40,10 +36,10 @@ class LibrosModel extends Query
         $res = $this->select($sql);
         return $res;
     }
-    public function actualizarLibros($titulo, $id_autor, $id_editorial, $id_materia, $cantidad, $num_pagina, $anio_edicion, $descripcion, $imgNombre, $id)
+    public function actualizarLibros($clasificacion, $isbn, $titulo, $autor, $o_autores, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave, $id)
     {
-        $query = "UPDATE libro SET titulo = ?, id_autor=?, id_editorial=?, id_materia=?, cantidad=?, num_pagina=?, anio_edicion=?, descripcion=?, imagen=? WHERE id = ?";
-        $datos = array($titulo, $id_autor, $id_editorial, $id_materia, $cantidad, $num_pagina, $anio_edicion, $descripcion, $imgNombre, $id);
+        $query = "UPDATE libro SET titulo = ?, id_autor=?, id_editorial=?, id_materia=?, anio_edicion=?, num_pagina=?, descripcion=?, clasificacion=?, clave=?, otros_autores=?, isbn=? WHERE id = ?";
+        $datos = array($titulo, $autor, $editorial, $materia, $anio_edicion, $num_pagina, $descripcion, $clasificacion, $clave, $o_autores, $isbn, $id);
         $data = $this->save($query, $datos);
         if ($data == 1) {
             $res = "modificado";
@@ -80,7 +76,6 @@ class LibrosModel extends Query
     {
         $sql = "SELECT MAX(id) AS id FROM libro";
         $res = $this->select($sql);
-        echo json_encode($res, JSON_UNESCAPED_UNICODE);
         return $res;
     }
 }

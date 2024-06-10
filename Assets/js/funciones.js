@@ -193,22 +193,32 @@ document.addEventListener("DOMContentLoaded", function(){
                 'visible': false
             },
             {
-                'data': 'titulo'
+                'data': 'clave'
             },
             {
-                'data': 'cantidad'
-            },            
+                'data': 'clasificacion'
+            },
+            {
+                'data': 'isbn'
+            },
+            {
+                'data': 'titulo'
+            },          
             {
                 'data': 'autor'
             },            
             {
                 'data': 'editorial'
             },
-	    {
-                'data': 'materia'
+            {
+                'data' : 'anio_edicion'
             },
             {
-                'data': 'foto'
+                
+                'data': 'num_pagina' 
+            },
+	        {
+                'data': 'materia'
             },
             {
                 'data': 'descripcion'
@@ -947,6 +957,7 @@ function frmLibros() {
     document.getElementById("btnAccion").textContent = "Registrar";
     document.getElementById("frmLibro").reset();
     document.getElementById("id").value = "";
+    document.getElementById("cantidad").classList.remove("d-none");
     $("#nuevoLibro").modal("show");
 }
 
@@ -958,7 +969,8 @@ function registrarLibro(e) {
     const autor = document.getElementById("autor");
     const editorial = document.getElementById("editorial");
     const materia = document.getElementById("materia");
-    const cantidad = document.getElementById("cantidad");
+    //quitar clase d-none al campo cantidad
+
 
     if (titulo.value == '' || clasificacion.value == '' || isbn.value == ''
          || autor.value == '' || editorial.value == '' || materia.value == '') {
@@ -1003,7 +1015,6 @@ function btnEditarLibro(id) {
               document.getElementById("anio_edicion").value = res.anio_edicion;
               document.getElementById("descripcion").value = res.descripcion;
             document.getElementById("cantidad").classList.add("d-none");
-            document.getElementById("icon-image").classList.add("d-none");
             $("#nuevoLibro").modal("show");
             // ocultar campo de cantidad
         }

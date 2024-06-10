@@ -23,7 +23,6 @@ class Libros extends Controller
     {
         $data = $this->model->getLibros();
         for ($i = 0; $i < count($data); $i++) {
-            $data[$i]['foto'] = '<img class="img-thumbnail" src="' . base_url . "Assets/img/libros/" . $data[$i]['imagen'] . '" width="100">';
             if ($data[$i]['estado'] == 1) {
                 $data[$i]['estado'] = '<span class="badge badge-success">Activo</span>';
                 $data[$i]['acciones'] = '<div class="d-flex">
@@ -58,35 +57,26 @@ class Libros extends Controller
             $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
         } else {
             if ($id == "") {
-                echo "entro";
                 // generar la variable $clave preguntando el ultimo id de la tabla libro (usar la funcion del modelo lastId) y sumarle 1 y al fiNAL colocar 01 y esete valor se incrementara con el campo cantidad
                 $clave = $this->model->lastId();
                 $clave = $clave['id'] + 1;
-                echo $clave;
                 $nuevosDigitos = '01';
                 $clave = $clave . $nuevosDigitos;
-                echo $clave;
 
-
-
-                // realisar la insercion las veses que el campo cantidad lo permita e incrementando la variable $clave
                 for ($i = 0; $i < $cantidad; $i++) {
                     $data = $this->model->insertarLibros($clasificacion, $isbn, $titulo, $autor, $o_autores, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave);
                     $clave++;
-                    // if ($data == "ok") {
-                    //     $msg = array('msg' => 'Libro registrado', 'icono' => 'success');
-                    // } else if ($data == "existe") {
-                    //     $msg = array('msg' => 'El libro ya existe', 'icono' => 'warning');
-                    // } else {
-                    //     $msg = array('msg' => 'Error al registrar', 'icono' => 'error');
-                    // }
+                    if ($data == "ok") {
+                        $msg = array('msg' => 'Libro registrado', 'icono' => 'success');
+                    } else if ($data == "existe") {
+                        $msg = array('msg' => 'El libro ya existe', 'icono' => 'warning');
+                    } else {
+                        $msg = array('msg' => 'Error al registrar', 'icono' => 'error');
+                    }
                 }
             } else {
-                $data = $this->model->actualizarLibros($titulo, $autor, $editorial, $materia, $cantidad, $num_pagina, $anio_edicion, $descripcion, $imgNombre, $id);
+                $data = $this->model->actualizarLibros($clasificacion, $isbn, $titulo, $autor, $o_autores, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave, $id);
                 if ($data == "modificado") {
-                    if (!empty($name)) {
-                        move_uploaded_file($tmpName, $destino);
-                    }
                     $msg = array('msg' => 'Libro modificado', 'icono' => 'success');
                 } else {
                     $msg = array('msg' => 'Error al modificar', 'icono' => 'error');
