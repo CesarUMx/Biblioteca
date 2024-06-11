@@ -53,7 +53,7 @@ class Usuarios extends Controller{
         $usuario = strClean($_POST['usuario']);
         $clave = strClean($_POST['clave']);
         if (empty($usuario) || empty($clave)) {
-            $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
+            $msg = array('msg' => 'Todo los campos son ju requeridos', 'icono' => 'warning');
         }else{
             $hash = hash("SHA256", $clave);
             $data = $this->model->getUsuario($usuario, $hash);
