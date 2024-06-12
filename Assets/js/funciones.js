@@ -1,4 +1,4 @@
-let tblUsuarios, tblEst, tblMateria, tblAutor, tblEditorial, tblLibros, tblPrestar;
+let tblUsuarios, tblEst, tblMateria, tblLibros, tblPrestar;
 document.addEventListener("DOMContentLoaded", function(){
     document.querySelector("#modalPass").addEventListener("click", function () {
         document.querySelector('#frmCambiarPass').reset();
@@ -130,59 +130,6 @@ document.addEventListener("DOMContentLoaded", function(){
         buttons
     });
     //Fin de la tabla Materias
-    tblAutor = $('#tblAutor').DataTable({
-        ajax: {
-            url: base_url + "Autor/listar",
-            dataSrc: ''
-        },
-        columns: [{
-                'data': 'id'
-            },
-            {
-                'data': 'imagen'
-            },
-            {
-                'data': 'autor'
-            },
-            {
-                'data': 'estado'
-            },
-            {
-                'data': 'acciones'
-            }
-        ],
-        language,
-        dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-            buttons
-    });
-    //Fin de la tabla Autor
-    tblEditorial= $('#tblEditorial').DataTable({
-        ajax: {
-            url: base_url + "Editorial/listar",
-            dataSrc: ''
-        },
-        columns: [{
-                'data': 'id'
-            },
-            {
-                'data': 'editorial'
-            },
-            {
-                'data': 'estado'
-            },
-            {
-                'data': 'acciones'
-            }
-        ],
-        language,
-        dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
-            "<'row'<'col-sm-12'tr>>" +
-            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-            buttons
-    });
-    //Fin de la tabla editorial
     tblLibros = $('#tblLibros').DataTable({
         ajax: {
             url: base_url + "Libros/listar",
@@ -205,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 'data': 'titulo'
             },          
             {
-                'data': 'autor'
+                'data': 'autores'
             },            
             {
                 'data': 'editorial'
@@ -322,46 +269,6 @@ document.addEventListener("DOMContentLoaded", function(){
                 },
                 cache: true
             }
-    });
-    $('.autor').select2({
-        placeholder: 'Buscar Autor',
-        minimumInputLength: 2,
-        ajax: {
-            url: base_url + 'Autor/buscarAutor',
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    q: params.term
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        }
-    });
-    $('.editorial').select2({
-        placeholder: 'Buscar Editorial',
-        minimumInputLength: 2,
-        ajax: {
-            url: base_url + 'Editorial/buscarEditorial',
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    q: params.term
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        }
     });
     $('.materia').select2({
         placeholder: 'Buscar Materia',
@@ -740,218 +647,7 @@ function btnReingresarMat(id) {
     })
 }
 //Fin Materia
-function frmAutor() {
-    document.getElementById("title").textContent= "Nuevo Autor";
-    document.getElementById("btnAccion").textContent= "Registrar";
-    document.getElementById("frmAutor").reset();
-    document.getElementById("id").value = "";
-    deleteImg();
-    $("#nuevoAutor").modal("show");
-}
 
-function registrarAutor(e) {
-    e.preventDefault();
-    const autor = document.getElementById("autor");
-    if (autor.value == "") {
-        alertas('El nombre es requerido', 'warning');
-    } else {
-        const url = base_url + "Autor/registrar";
-        const frm = document.getElementById("frmAutor");
-        const http = new XMLHttpRequest();
-        http.open("POST", url, true);
-        http.send(new FormData(frm));
-        http.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                const res = JSON.parse(this.responseText);
-                $("#nuevoAutor").modal("hide");
-                frm.reset();
-                tblAutor.ajax.reload();
-                alertas(res.msg, res.icono);
-            }
-        }
-    }
-}
-
-function btnEditarAutor(id) {
-    document.getElementById("title").textContent = "Actualizar Autor";
-    document.getElementById("btnAccion").textContent = "Modificar";
-    const url = base_url + "Autor/editar/" + id;
-    const http = new XMLHttpRequest();
-    http.open("GET", url, true);
-    http.send();
-    http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            const res = JSON.parse(this.responseText);
-            document.getElementById("id").value = res.id;
-            document.getElementById("autor").value = res.autor;
-            document.getElementById("foto_actual").value = res.imagen;
-            document.getElementById("img-preview").src = base_url + 'Assets/img/autor/' + res.imagen;
-            document.getElementById("icon-image").classList.add("d-none");
-            document.getElementById("icon-cerrar").innerHTML = `
-            <button class="btn btn-danger" onclick="deleteImg()">
-            <i class="fa fa-times-circle"></i></button>`;
-            $("#nuevoAutor").modal("show");
-        }
-    }
-}
-
-function btnEliminarAutor(id) {
-    Swal.fire({
-        title: 'Esta seguro de eliminar?',
-        text: "El Autor no se eliminará de forma permanente, solo cambiará el estado a inactivo!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si!',
-        cancelButtonText: 'No'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const url = base_url + "Autor/eliminar/" + id;
-            const http = new XMLHttpRequest();
-            http.open("GET", url, true);
-            http.send();
-            http.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    const res = JSON.parse(this.responseText);
-                    tblAutor.ajax.reload();
-                    alertas(res.msg, res.icono);
-                }
-            }
-
-        }
-    })
-}
-
-function btnReingresarAutor(id) {
-    Swal.fire({
-        title: 'Esta seguro de reingresar?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si!',
-        cancelButtonText: 'No'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const url = base_url + "Autor/reingresar/" + id;
-            const http = new XMLHttpRequest();
-            http.open("GET", url, true);
-            http.send();
-            http.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    const res = JSON.parse(this.responseText);
-                    tblAutor.ajax.reload();
-                    alertas(res.msg, res.icono);
-                }
-            }
-
-        }
-    })
-}
-//Fin Autor
-function frmEditorial() {
-    document.getElementById("title").textContent = "Nuevo Editorial";
-    document.getElementById("btnAccion").textContent = "Registrar";
-    document.getElementById("frmEditorial").reset();
-    document.getElementById("id").value = "";
-    $("#nuevoEditorial").modal("show");
-}
-
-function registrarEditorial(e) {
-    e.preventDefault();
-    const editorial = document.getElementById("editorial");
-    if (editorial.value == "") {
-        alertas('El editorial es requerido', 'warning');
-    } else {
-        const url = base_url + "Editorial/registrar";
-        const frm = document.getElementById("frmEditorial");
-        const http = new XMLHttpRequest();
-        http.open("POST", url, true);
-        http.send(new FormData(frm));
-        http.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                const res = JSON.parse(this.responseText);
-                $("#nuevoEditorial").modal("hide");
-                tblEditorial.ajax.reload();
-                alertas(res.msg, res.icono);
-            }
-        }
-    }
-}
-
-function btnEditarEdi(id) {
-    document.getElementById("title").textContent = "Actualizar Editorial";
-    document.getElementById("btnAccion").textContent = "Modificar";
-    const url = base_url + "Editorial/editar/" + id;
-    const http = new XMLHttpRequest();
-    http.open("GET", url, true);
-    http.send();
-    http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            const res = JSON.parse(this.responseText);
-            document.getElementById("id").value = res.id;
-            document.getElementById("editorial").value = res.editorial;
-            $("#nuevoEditorial").modal("show");
-        }
-    }
-}
-
-function btnEliminarEdi(id) {
-    Swal.fire({
-        title: 'Esta seguro de eliminar?',
-        text: "El Editorial no se eliminará de forma permanente, solo cambiará el estado a inactivo!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si!',
-        cancelButtonText: 'No'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const url = base_url + "Editorial/eliminar/" + id;
-            const http = new XMLHttpRequest();
-            http.open("GET", url, true);
-            http.send();
-            http.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    const res = JSON.parse(this.responseText);
-                    tblEditorial.ajax.reload();
-                    alertas(res.msg, res.icono);
-                }
-            }
-
-        }
-    })
-}
-
-function btnReingresarEdi(id) {
-    Swal.fire({
-        title: 'Esta seguro de reingresar?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Si!',
-        cancelButtonText: 'No'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const url = base_url + "Editorial/reingresar/" + id;
-            const http = new XMLHttpRequest();
-            http.open("GET", url, true);
-            http.send();
-            http.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    const res = JSON.parse(this.responseText);
-                    tblEditorial.ajax.reload();
-                    alertas(res.msg, res.icono);
-                }
-            }
-
-        }
-    })
-}
-//Fin editorial
 function frmLibros() {
     document.getElementById("title").textContent = "Nuevo Libro";
     document.getElementById("btnAccion").textContent = "Registrar";
@@ -996,6 +692,7 @@ function registrarLibro(e) {
 function btnEditarLibro(id) {
     document.getElementById("title").textContent = "Actualizar Libro";
     document.getElementById("btnAccion").textContent = "Modificar";
+    console.log(id);
     const url = base_url + "Libros/editar/" + id;
     const http = new XMLHttpRequest();
     http.open("GET", url, true);
@@ -1007,9 +704,8 @@ function btnEditarLibro(id) {
               document.getElementById("clasificacion").value = res.clasificacion;
               document.getElementById("isbn").value = res.isbn;
               document.getElementById("titulo").value = res.titulo;
-              document.getElementById("autor").value = res.id_autor;
-              document.getElementById("o_autores").value = res.otros_autores;
-              document.getElementById("editorial").value = res.id_editorial;
+              document.getElementById("autor").value = res.autores;
+              document.getElementById("editorial").value = res.editorial;
               document.getElementById("materia").value = res.id_materia;
               document.getElementById("num_pagina").value = res.num_pagina;
               document.getElementById("anio_edicion").value = res.anio_edicion;

@@ -61,40 +61,10 @@
                             <input id="isbn" class="form-control" type="text" name="isbn" placeholder="ISBN" required>
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-9">
                         <div class="form-group">
                             <label for="titulo">Título *</label>
                             <input id="titulo" class="form-control" type="text" name="titulo" placeholder="Título del libro" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="materia">Materia *</label><br>
-                            <select id="materia" class="form-control materia" name="materia" required style="width: 100%;">
-                                
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label for="autor">Autor *</label><br>
-                            <select id="autor" class="form-control autor" name="autor" required style="width: 100%;">
-                                
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-7">
-                        <div class="form-group">
-                            <label for="o_autores">Otros autores</label>
-                            <input id="o_autores" class="form-control" type="text" name="o_autores" placeholder="Otros autores del libro">
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label for="editorial">Editorial *</label><br>
-                            <select id="editorial" class="form-control editorial" name="editorial" required style="width: 100%;">
-                                
-                            </select>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -103,14 +73,35 @@
                             <input id="anio_edicion" class="form-control" type="number" name="anio_edicion" value="<?php echo date("Y"); ?>" min="1900" max="<?php echo date("Y"); ?>" required>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="autor">Autor / Autores *</label><br>
+                            <input id="autor" class="form-control" type="text" name="autor" placeholder="Autor / er del libro" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="editorial">Editorial *</label><br>
+                            <input id="editorial" class="form-control" type="text" name="editorial" placeholder="Editorial del libro" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="materia">Materia *</label><br>
+                            <select id="materia" class="form-control materia" name="materia" required style="width: 100%;">
+                                
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="num_pagina">Páginas</label>
                             <input id="num_pagina" class="form-control" type="number" name="num_pagina" placeholder="Páginas" required>
                         </div>
                     </div>
                     
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="cantidad">Cantidad</label>
                             <input id="cantidad" class="form-control" type="number" name="cantidad" value="1" min="1" required>

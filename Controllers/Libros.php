@@ -45,7 +45,6 @@ class Libros extends Controller
         $isbn = strClean($_POST['isbn']);
         $titulo = strClean($_POST['titulo']);
         $autor = strClean($_POST['autor']);
-        $o_autores = strClean($_POST['o_autores']);
         $editorial = strClean($_POST['editorial']);
         $materia = strClean($_POST['materia']);
         $cantidad = strClean($_POST['cantidad']);
@@ -64,7 +63,7 @@ class Libros extends Controller
                 $clave = $clave . $nuevosDigitos;
 
                 for ($i = 0; $i < $cantidad; $i++) {
-                    $data = $this->model->insertarLibros($clasificacion, $isbn, $titulo, $autor, $o_autores, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave);
+                    $data = $this->model->insertarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave);
                     $clave++;
                     if ($data == "ok") {
                         $msg = array('msg' => 'Libro registrado', 'icono' => 'success');
@@ -75,7 +74,7 @@ class Libros extends Controller
                     }
                 }
             } else {
-                $data = $this->model->actualizarLibros($clasificacion, $isbn, $titulo, $autor, $o_autores, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave, $id);
+                $data = $this->model->actualizarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $id);
                 if ($data == "modificado") {
                     $msg = array('msg' => 'Libro modificado', 'icono' => 'success');
                 } else {

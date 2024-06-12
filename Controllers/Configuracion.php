@@ -64,8 +64,6 @@ class Configuracion extends Controller
         $data['libros'] = $this->model->selectDatos('libro');
         $data['materias'] = $this->model->selectDatos('materia');
         $data['estudiantes'] = $this->model->selectDatos('estudiante');
-        $data['autor'] = $this->model->selectDatos('autor');
-        $data['editorial'] = $this->model->selectDatos('editorial');
         $data['prestamos'] = $this->model->selectDatos('prestamo');
         $data['usuarios'] = $this->model->selectDatos('usuarios');
         $this->views->getView($this, "home", $data);
