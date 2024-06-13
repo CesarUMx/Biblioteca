@@ -93,7 +93,9 @@ document.addEventListener("DOMContentLoaded", function(){
                 }
             },
             {'data': 'nombre'},
+            {'data': 'modalidad'},
             {'data':'carrera'},
+            {'data': 'semestre'},
             {'data': 'telefono'},
             {'data': 'estado'},
             {'data': 'acciones'}
@@ -290,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function(){
             cache: true
         }
     });
-
+    
     if (document.getElementById('nombre_estudiante')) {
         const http = new XMLHttpRequest();
         const url = base_url + 'Configuracion/verificar';
@@ -315,6 +317,36 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     }
 })
+
+document.getElementById('modalidad').addEventListener('change', function() {
+    cargarCarreras(this.value);
+});
+
+//funcion para cargar las option de un select id = carrera
+async function cargarCarreras(modalidad) {
+    if (!modalidad) {
+        //limpiar select
+        document.getElementById('carrera').innerHTML = '';
+        return;
+    }
+    const url = base_url + 'Estudiantes/carreras?modalidad=' + modalidad;
+    try {
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const res = await response.json();
+        let html = '';
+        res.forEach(row => {
+            html += `<option value="${row.id}">${row.nombre}</option>`;
+        });
+        document.getElementById('carrera').innerHTML = html;
+    } catch (error) {
+        console.error('Fetch error:', error);
+    }
+}
 
 function frmUsuario() {
     document.getElementById("title").textContent = "Nuevo Usuario";
@@ -447,45 +479,61 @@ function registrarEstudiante(e) {
     const nombre = document.getElementById("nombre");
     const carrera = document.getElementById("carrera");
     const telefono = document.getElementById("telefono");
+    const semestre = document.getElementById("sem");
     if (matricula.value == "" || nombre.value == ""
-    || telefono.value == "" || carrera.value == "") {
+    || telefono.value == "" || carrera.value == "" || semestre.value == "") {
         alertas('Todo los campos son requeridos', 'warning');
     } else {
-        const url = base_url + "Estudiantes/registrar";
-        const frm = document.getElementById("frmEstudiante");
-        console.log(frm);
-        const http = new XMLHttpRequest();
-        http.open("POST", url, true);
-        http.send(new FormData(frm));
-        http.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                const res = JSON.parse(this.responseText);
-                $("#nuevoEstudiante").modal("hide");
-                frm.reset();
-                tblEst.ajax.reload();
-                alertas(res.msg, res.icono);
-            }
-        }
+        console.log(semestre.value);
+        console.log(carrera.value);
+        // const url = base_url + "Estudiantes/registrar";
+        // const frm = document.getElementById("frmEstudiante");
+        // console.log(frm);
+        // const http = new XMLHttpRequest();
+        // http.open("POST", url, true);
+        // http.send(new FormData(frm));
+        // http.onreadystatechange = function () {
+        //     if (this.readyState == 4 && this.status == 200) {
+        //         const res = JSON.parse(this.responseText);
+        //         $("#nuevoEstudiante").modal("hide");
+        //         frm.reset();
+        //         tblEst.ajax.reload();
+        //         alertas(res.msg, res.icono);
+        //     }
+        // }
     }
 }
 
-function btnEditarEst(id) {
+async function btnEditarEst(id) {
     document.getElementById("title").textContent = "Actualizar estudiante";
     document.getElementById("btnAccion").textContent = "Modificar";
+    
     const url = base_url + "Estudiantes/editar/" + id;
-    const http = new XMLHttpRequest();
-    http.open("GET", url, true);
-    http.send();
-    http.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            const res = JSON.parse(this.responseText);
-            document.getElementById("id").value = res.id;
-            document.getElementById("matricula").value = res.matricula;
-            document.getElementById("nombre").value = res.nombre;
-            document.getElementById("carrera").value = res.carrera;
-            document.getElementById("telefono").value = res.telefono;
-            $("#nuevoEstudiante").modal("show");
+
+    try {
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+
+        const res = await response.json();
+        
+        document.getElementById("id").value = res.id;
+        document.getElementById("matricula").value = res.matricula;
+        document.getElementById("sem").value = res.semestre;
+        document.getElementById("nombre").value = res.nombre;
+        document.getElementById("modalidad").value = res.modalidad;
+
+        await cargarCarreras(res.modalidad);
+
+        document.getElementById("carrera").value = res.id_carrera;
+        console.log(res.id_carrera);
+
+        document.getElementById("telefono").value = res.telefono;
+        $("#nuevoEstudiante").modal("show");
+    } catch (error) {
+        console.error('Fetch error:', error);
     }
 }
 

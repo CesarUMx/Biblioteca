@@ -52,7 +52,7 @@ class Libros extends Controller
         $anio_edicion = strClean($_POST['anio_edicion']);
         $descripcion = strClean($_POST['descripcion']);
         $id = strClean($_POST['id']);
-        if (empty($titulo) || empty($autor) || empty($editorial) || empty($materia) || empty($clasificacion) || empty($isbn) || empty($descripcion)) {
+        if (empty($titulo) || empty($autor) || empty($editorial) || empty($materia) || empty($clasificacion) || empty($isbn)) {
             $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
         } else {
             if ($id == "") {
@@ -62,15 +62,17 @@ class Libros extends Controller
                 $nuevosDigitos = '01';
                 $clave = $clave . $nuevosDigitos;
 
+
                 for ($i = 0; $i < $cantidad; $i++) {
                     $data = $this->model->insertarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave);
-                    $clave++;
+                    
                     if ($data == "ok") {
+                        $clave++;
                         $msg = array('msg' => 'Libro registrado', 'icono' => 'success');
                     } else if ($data == "existe") {
-                        $msg = array('msg' => 'El libro ya existe', 'icono' => 'warning');
+                        $msg = array('msg' => 'El libro ya existe', 'icono' => 'warning', 'clave' => $clave);
                     } else {
-                        $msg = array('msg' => 'Error al registrar', 'icono' => 'error');
+                        $msg = array('msg' => 'Error al registrar', 'icono' => 'error', 'clave' => $clave);
                     }
                 }
             } else {

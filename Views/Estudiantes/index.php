@@ -17,7 +17,9 @@
                                 <th>Matricula</th>
                                 <th>Correo</th>
                                 <th>Nombre</th>
-                                <th>Licenciatura</th>
+                                <th>Modalidad</th>
+                                <th>Carrera</th>
+                                <th>Semestre / Cuatrimestre</th>
                                 <th>Teléfono</th>
                                 <th>Estado</th>
                                 <th></th>
@@ -31,7 +33,7 @@
         </div>
     </div>
 </div>
-<div id="nuevoEstudiante" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+<div id="nuevoEstudiante" class="modal fade" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
@@ -41,13 +43,19 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="frmEstudiante">
-                    <div class="row">
+                <form id="frmEstudiante" class="row" onsubmit="registrarEstudiante(event)">
+                    
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="matricula">Matrícula</label>
                                 <input type="hidden" id="id" name="id">
                                 <input id="matricula" class="form-control" type="text" name="matricula" required placeholder="Matrícula del estudiante">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="sem">Semestre / Cuatri.</label>
+                                <input id="sem" class="form-control" type="text" name="sem" required placeholder="Sem. / cuat. del estudiante">
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -56,10 +64,21 @@
                                 <input id="nombre" class="form-control" type="text" name="nombre" required placeholder="Nombre completo">
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label for="carrera">Licenciatura</label>
-                                <input id="carrera" class="form-control" type="text" name="carrera" required placeholder="Licenciatura">
+                                <label for="modalidad">Modalidad</label>
+                                <select id="modalidad" class="form-control" name="modalidad" required style="width: 100%;">
+                                    <option value="">Selecciona una opción</option>
+                                    <option value="1">Licenciatura</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="carrera">Carrera</label>
+                                <select id="carrera" class="form-control" name="carrera" required style="width: 100%;">
+                                
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-12">
@@ -70,11 +89,11 @@
                         </div>
                         <div class="col-md-12">
                             <div class="form-group">
-                                <button class="btn btn-primary" type="submit" onclick="registrarEstudiante(event)" id="btnAccion">Registrar</button>
+                                <button class="btn btn-primary" type="submit" id="btnAccion">Registrar</button>
                                 <button class="btn btn-danger" type="button" data-dismiss="modal">Atras</button>
                             </div>
                         </div>
-                    </div>
+                    
                 </form>
             </div>
         </div>

@@ -23,8 +23,22 @@ class Estudiantes extends Controller
     {
         $data = $this->model->getEstudiantes();
         for ($i = 0; $i < count($data); $i++) {
+            // modalidades
+            $modalidades = [
+                1 => 'Licenciatura',
+                2 => 'Maestría',
+                3 => 'Doctorado'
+            ];
+            if (array_key_exists($data[$i]['modalidad'], $modalidades)) {
+                $data[$i]['modalidad'] = $modalidades[$data[$i]['modalidad']];
+            } 
+
             if ($data[$i]['estado'] == 1) {
-                $data[$i]['estado'] = '<span class="badge badge-success">Inscrito</span>';
+                if  ($data[$i]['n_ingreso'] == 1) {
+                    $data[$i]['estado'] = '<span class="badge badge-success">Nuevo Ingreso</span>';
+                } else {
+                    $data[$i]['estado'] = '<span class="badge badge-success">Reinscrito</span>';
+                }
                 $data[$i]['acciones'] = '<div>
                 <button class="btn btn-primary" type="button" onclick="btnEditarEst(' . $data[$i]['id'] . ');"><i class="fa fa-pencil-square-o"></i></button>
                 <button class="btn btn-danger" type="button" onclick="btnEliminarEst(' . $data[$i]['id'] . ');"><i class="fa fa-trash-o"></i></button>
@@ -106,5 +120,22 @@ class Estudiantes extends Controller
             echo json_encode($data, JSON_UNESCAPED_UNICODE);
             die();
         }
+    }
+    public function buscarCarrera()
+    {
+
+        if (isset($_GET['q'])) {
+            $valor = $_GET['q'];
+            $data = $this->model->buscarCarrera($valor);
+            echo json_encode($data, JSON_UNESCAPED_UNICODE);
+            die();
+        }
+    }
+    public function carreras()
+    {
+        $modalidad = isset($_GET['modalidad']) ? $_GET['modalidad'] : '';
+        $data = $this->model->getCarreras($modalidad);
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        die();
     }
 }

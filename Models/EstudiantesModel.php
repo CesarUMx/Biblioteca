@@ -6,7 +6,7 @@ class EstudiantesModel extends Query{
     }
     public function getEstudiantes()
     {
-        $sql = "SELECT * FROM estudiante";
+        $sql = "SELECT e.*, c.nombre as carrera FROM estudiante e INNER JOIN carreras c ON e.id_carrera = c.id";
         $res = $this->selectAll($sql);
         return $res;
     }
@@ -60,6 +60,13 @@ class EstudiantesModel extends Query{
         $data = $this->selectAll($sql);
         return $data;
     }
+    public function buscarCarrera($valor)
+    {
+        $sql = "SELECT id, nombre AS text FROM carreras WHERE nombre LIKE '%" . $valor . "%' LIMIT 10";
+        $data = $this->selectAll($sql);
+        return $data;
+        
+    }
     public function verificarPermisos($id_user, $permiso)
     {
         $tiene = false;
@@ -69,5 +76,11 @@ class EstudiantesModel extends Query{
             $tiene = true;
         }
         return $tiene;
+    }
+    public function getCarreras($modalidad)
+    {
+        $sql = "SELECT * FROM carreras WHERE id_modalidad = $modalidad";
+        $res = $this->selectAll($sql);
+        return $res;    
     }
 }
