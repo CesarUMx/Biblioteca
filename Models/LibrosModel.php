@@ -66,7 +66,7 @@ class LibrosModel extends Query
     }
     public function buscarLibro($valor)
     {
-        $sql = "SELECT id, titulo AS text FROM libro WHERE titulo LIKE '%" . $valor . "%' AND estado = 1 LIMIT 10";
+        $sql = "SELECT id, clave AS text FROM libro WHERE clave LIKE '%" . $valor . "%' AND estado = 1 LIMIT 10";
         $data = $this->selectAll($sql);
         return $data;
     }

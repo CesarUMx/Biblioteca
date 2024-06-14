@@ -120,7 +120,7 @@ class Libros extends Controller
         if (is_numeric($id_libro)) {
             $data = $this->model->editLibros($id_libro);
             if (!empty($data)) {
-                $msg = array('cantidad' => $data['cantidad'], 'icono' => 'success');
+                $msg = array('titulo' => $data['titulo'], 'icono' => 'success');
             }
         }else{
             $msg = array('msg' => 'Error Fatal', 'icono' => 'error');

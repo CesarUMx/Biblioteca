@@ -31,7 +31,7 @@ class EstudiantesModel extends Query{
     }
     public function editEstudiante($id)
     {
-        $sql = "SELECT * FROM estudiante WHERE id = $id";
+        $sql = "SELECT e.*, c.nombre as carrera FROM estudiante e INNER JOIN carreras c ON e.id_carrera = c.id WHERE e.id = $id";
         $res = $this->select($sql);
         return $res;
     }
@@ -56,7 +56,7 @@ class EstudiantesModel extends Query{
     }
     public function buscarEstudiante($valor)
     {
-        $sql = "SELECT id, matricula, nombre AS text FROM estudiante WHERE matricula LIKE '%" . $valor . "%' AND estado = 1 OR nombre LIKE '%" . $valor . "%'  AND estado = 1 LIMIT 10";
+        $sql = "SELECT id, matricula AS text FROM estudiante WHERE matricula LIKE '%" . $valor . "%' AND estado = 1 LIMIT 10";
         $data = $this->selectAll($sql);
         return $data;
     }

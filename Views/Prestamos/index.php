@@ -4,7 +4,7 @@
         <h1><i class="fa fa-dashboard"></i> Prestamos</h1>
     </div>
 </div>
-<button class="btn btn-primary mb-2" onclick="frmPrestar()"><i class="fa fa-plus"></i></button>
+<button class="btn btn-primary mb-2" onclick="frmPrestar()"><i class="fa fa-plus"></i> Prestamo </button>
 <div class="tile">
     <div class="tile-body">
         <div class="table-responsive">
@@ -12,11 +12,12 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>Id</th>
-                        <th>Libro</th>
+                        <th>Clave</th>
+                        <th>Titulo</th>
+                        <th>Matricula</th>
                         <th>Estudiante</th>
                         <th>Fecha Prestamo</th>
                         <th>Fecha Devolución</th>
-                        <th>Cant</th>
                         <th>Observación</th>
                         <th>Estado</th>
                         <th></th>
@@ -39,26 +40,39 @@
             </div>
             <div class="modal-body">
                 <form id="frmPrestar" onsubmit="registroPrestamos(event)">
-                    <div class="form-group">
-                        <label for="libro">Libro</label><br>
-                        <select id="libro" class="form-control libro" name="libro" onchange="verificarLibro()" required style="width: 100%;">
-
-                        </select>
-                    </div>
                     <div class="row">
-                        <div class="col-md-9">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label for="estudiante">Estudiante</label><br>
-                                <select name="estudiante" id="estudiante" class="form-control estudiante" required style="width: 100%;">
+                                <label for="libro">Clave del libro</label><br>
+                                <select id="libro" class="form-control libro" name="libro" onchange="verificarLibro()" required style="width: 100%;">
 
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-8">
                             <div class="form-group">
-                                <label for="cantidad">Cant</label>
-                                <input id="cantidad" class="form-control" min="1" type="number" name="cantidad" min="1" required onkeyup="verificarLibro()">
-                                <strong id="msg_error"></strong>
+                            <label>Titulo</label><br>
+                            <input id="libroT" class="form-control" type="text" value="" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="estudiante">Matricula</label><br>
+                                <select name="estudiante" id="estudiante" class="form-control estudiante" onchange="verificarEstudiante()" required style="width: 100%;">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label">Nombre</label><br>
+                                <input id="estudianteN" class="form-control" type="text" value="" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Carrera</label><br>
+                                <input id="estudianteC" class="form-control" type="text" value="" disabled>
                             </div>
                         </div>
                         <div class="col-md-6">

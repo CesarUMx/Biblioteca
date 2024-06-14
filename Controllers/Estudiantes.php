@@ -138,4 +138,17 @@ class Estudiantes extends Controller
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
+    public function verificar($id_estu)
+    {
+        if (is_numeric($id_estu)) {
+            $data = $this->model->editEstudiante($id_estu);
+            if (!empty($data)) {
+                $msg = array('nombre' => $data['nombre'], 'carrera' => $data['carrera'], 'icono' => 'success');
+            }
+        }else{
+            $msg = array('msg' => 'Error Fatal', 'icono' => 'error');
+        }
+        echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+        die();
+    }
 }

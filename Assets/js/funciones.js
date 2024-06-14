@@ -195,7 +195,13 @@ document.addEventListener("DOMContentLoaded", function(){
                 'data': 'id'
             },
             {
+                'data': 'clave'
+            },
+            {
                 'data': 'titulo'
+            },
+            {
+                'data': 'matricula'
             },
             {
                 'data': 'nombre'
@@ -206,9 +212,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
             {
                 'data': 'fecha_devolucion'
-            },
-            {
-                'data': 'cantidad'
             },
             {
                 'data': 'observacion'
@@ -317,10 +320,13 @@ document.addEventListener("DOMContentLoaded", function(){
         }
     }
 })
+//validar si existe el elemnto con el id modalidad
+if (document.getElementById('modalidad')) {
+    document.getElementById('modalidad').addEventListener('change', function() {
+        cargarCarreras(this.value);
+    });
+}
 
-document.getElementById('modalidad').addEventListener('change', function() {
-    cargarCarreras(this.value);
-});
 
 //funcion para cargar las option de un select id = carrera
 async function cargarCarreras(modalidad) {
@@ -901,10 +907,9 @@ function registroPrestamos(e){
     e.preventDefault();
     const libro = document.getElementById("libro").value;
     const estudiante = document.getElementById("estudiante").value;
-    const cantidad = document.getElementById("cantidad").value;
     const fecha_prestamo = document.getElementById("fecha_prestamo").value;
     const fecha_devolucion = document.getElementById("fecha_devolucion").value;
-    if (libro == '' || estudiante == '' || cantidad == '' || fecha_prestamo == '' || fecha_devolucion == '') {
+    if (libro == '' || estudiante == '' || fecha_prestamo == '' || fecha_devolucion == '') {
         alertas('Todo los campos son requeridos', 'warning');
     } else {
         const frm = document.getElementById("frmPrestar");
@@ -1029,7 +1034,6 @@ function alertas(msg, icono) {
 }
 function verificarLibro(e) {
     const libro = document.getElementById('libro').value;
-    const cant = document.getElementById('cantidad').value;
     const http = new XMLHttpRequest();
     const url = base_url + 'Libros/verificar/' + libro;
     http.open("GET", url);
@@ -1038,11 +1042,32 @@ function verificarLibro(e) {
         if (this.readyState == 4 && this.status == 200) {
             const res = JSON.parse(this.responseText);
             if (res.icono == 'success') {
-                document.getElementById('msg_error').innerHTML = `<span class="badge badge-primary">Disponible: ${res.cantidad}</span>`;
+                document.getElementById('libroT').value = res.titulo;
+            }else{
+                alertas(res.msg, res.icono);
+                return false;
+            }
+        }
+    }      
+}
+
+function verificarEstudiante(e) {
+    const estudiante = document.getElementById('estudiante').value;
+    console.log(estudiante);
+    const http = new XMLHttpRequest();
+    const url = base_url + 'Estudiantes/verificar/' + estudiante;
+    http.open("GET", url);
+    http.send();
+    http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            const res = JSON.parse(this.responseText);
+            if (res.icono == 'success') {
+                document.getElementById('estudianteN').value = res.nombre;
+                document.getElementById('estudianteC').value = res.carrera;
             }else{
                 alertas(res.msg, res.icono);
                 return false;
             }
         }
     }
-}
+}     

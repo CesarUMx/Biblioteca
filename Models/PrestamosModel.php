@@ -7,13 +7,13 @@ class PrestamosModel extends Query
     }
     public function getPrestamos()
     {
-        $sql = "SELECT e.id, e.nombre, l.id, l.titulo, p.id, p.id_estudiante, p.id_libro, p.fecha_prestamo, p.fecha_devolucion, p.cantidad, p.observacion, p.estado FROM estudiante e INNER JOIN libro l INNER JOIN prestamo p ON p.id_estudiante = e.id WHERE p.id_libro = l.id";
+        $sql = "SELECT e.matricula, e.nombre, l.clave, l.titulo, p.id, p.fecha_prestamo, p.fecha_devolucion, p.observacion, p.estado FROM estudiante e INNER JOIN libro l INNER JOIN prestamo p ON p.id_estudiante = e.id WHERE p.id_libro = l.id";
         $res = $this->selectAll($sql);
         return $res;
     }
     public function insertarPrestamo($estudiante,$libro, $cantidad, string $fecha_prestamo, string $fecha_devolucion, string $observacion)
     {
-        $verificar = "SELECT * FROM prestamo WHERE id_libro = '$libro' AND id_estudiante = $estudiante AND estado = 1";
+        $verificar = "SELECT * FROM prestamo WHERE id_libro = '$libro' AND estado = 1";
         $existe = $this->select($verificar);
         if (empty($existe)) {
             $query = "INSERT INTO prestamo(id_estudiante, id_libro, fecha_prestamo, fecha_devolucion, cantidad, observacion) VALUES (?,?,?,?,?,?)";
@@ -86,7 +86,7 @@ class PrestamosModel extends Query
     }
     public function getPrestamoLibro($id_prestamo)
     {
-        $sql = "SELECT e.id, e.codigo, e.nombre, e.carrera, l.id, l.titulo, p.id, p.id_estudiante, p.id_libro, p.fecha_prestamo, p.fecha_devolucion, p.cantidad, p.observacion, p.estado FROM estudiante e INNER JOIN libro l INNER JOIN prestamo p ON p.id_estudiante = e.id WHERE p.id_libro = l.id AND p.id = $id_prestamo";
+        $sql = "SELECT e.id, e.matricula, e.nombre, c.nombre as carrera, l.clave, l.titulo, p.id, p.id_estudiante, p.id_libro, p.fecha_prestamo, p.fecha_devolucion, p.cantidad, p.observacion, p.estado FROM estudiante e INNER JOIN libro l INNER JOIN carreras c INNER JOIN prestamo p ON p.id_estudiante = e.id WHERE p.id_libro = l.id AND e.id_carrera = c.id AND p.id = $id_prestamo";
         $res = $this->select($sql);
         return $res;
     }
