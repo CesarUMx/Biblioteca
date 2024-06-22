@@ -874,6 +874,11 @@ function frmConfig(e) {
 }
 function frmPrestar() {
     document.getElementById("frmPrestar").reset();
+    document.getElementById("btnAccion").textContent = "Prestar";
+    document.getElementById("title").textContent = "Prestar Libro";
+    document.getElementById("libro").disabled = false;
+    document.getElementById("estudiante").disabled = false;
+    document.getElementById("fecha_prestamo").disabled = false;
     $("#prestar").modal("show");
 }
 function btnEntregar(id) {
@@ -1062,10 +1067,39 @@ function verificarEstudiante() {
             if (res.icono == 'success') {
                 document.getElementById('estudianteN').value = res.nombre;
                 document.getElementById('estudianteC').value = res.carrera;
+                document.getElementById('estudianteM').value = res.modalidad;
             }else{
                 alertas(res.msg, res.icono);
                 return false;
             }
         }
     }
-}     
+}
+
+function btnRenovar(id) {
+    // editar l afecha de devolucion
+    document.getElementById("title").textContent = "Renovar Libro";
+    document.getElementById("libro").disabled = true;
+    document.getElementById("estudiante").disabled = true;
+    document.getElementById("fecha_prestamo").disabled = true;
+    document.getElementById("btnAccion").textContent = "Renovar";
+    //llamar los datos del prestamo
+    const http = new XMLHttpRequest();
+    const url = base_url + "Prestamos/getPrestamo/" + id;
+    http.open("GET", url);
+    http.send();
+    http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            const res = JSON.parse(this.responseText);
+            document.getElementById("id").value = res.id;
+            document.getElementById("libro").value = res.clave;
+            document.getElementById("estudiante").value = res.matricula;
+            document.getElementById("fecha_prestamo").value = res.fecha_prestamo;
+            document.getElementById("fecha_devolucion").value = res.fecha_devolucion;
+            verificarEstudiante();
+            verificarLibro();
+            $("#prestar").modal("show");
+        }
+    }
+
+}

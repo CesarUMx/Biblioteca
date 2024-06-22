@@ -54,21 +54,31 @@ class Prestamos extends Controller
         $fecha_prestamo = strClean($_POST['fecha_prestamo']);
         $fecha_devolucion = strClean($_POST['fecha_devolucion']);
         $observacion = strClean($_POST['observacion']);
-        if (empty($libro) || empty($estudiante) || empty($cantidad) || empty($fecha_prestamo) || empty($fecha_devolucion)) {
-            $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
-        } else {
-            $verificar_cant = $this->model->getCantLibro($libro);
-            if ($verificar_cant['cantidad'] >= $cantidad) {
-                $data = $this->model->insertarPrestamo($estudiante,$libro, $cantidad, $fecha_prestamo, $fecha_devolucion, $observacion);
-                if ($data > 0) {
-                    $msg = array('msg' => 'Libro Prestado', 'icono' => 'success', 'id' => $data);
-                } else if ($data == "existe") {
+        $id = strClean($_POST['id']);        
+        if ($id == "") {
+            if (empty($libro) || empty($estudiante) || empty($cantidad) || empty($fecha_prestamo) || empty($fecha_devolucion)) {
+                $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
+            } else {
+                $verificar_cant = $this->model->getCantLibro($libro);
+                if ($verificar_cant['cantidad'] >= $cantidad) {
+                    $data = $this->model->insertarPrestamo($estudiante,$libro, $cantidad, $fecha_prestamo, $fecha_devolucion, $observacion);
+                    if ($data > 0) {
+                        $msg = array('msg' => 'Libro Prestado', 'icono' => 'success', 'id' => $data);
+                    } else if ($data == "existe") {
+                        $msg = array('msg' => 'El libro ya esta prestado', 'icono' => 'warning');
+                    } else {
+                        $msg = array('msg' => 'Error al prestar', 'icono' => 'error');
+                    }
+                }else{
                     $msg = array('msg' => 'El libro ya esta prestado', 'icono' => 'warning');
-                } else {
-                    $msg = array('msg' => 'Error al prestar', 'icono' => 'error');
                 }
-            }else{
-                $msg = array('msg' => 'El libro ya esta prestado', 'icono' => 'warning');
+            }
+        } else {
+            $data = $this->model->renovarPrestamo($id, $fecha_devolucion,  $observacion);
+            if ($data == "ok") {
+                $msg = array('msg' => 'Fecha renovada', 'icono' => 'success', 'id' => $id);
+            } else {
+                $msg = array('msg' => 'Error al recibir el libro', 'icono' => 'error');
             }
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
@@ -86,6 +96,16 @@ class Prestamos extends Controller
         die();
 
     }
+
+    //GET PRESTAMO ID
+    public function getPrestamo($id)
+    {
+        $data = $this->model->getPrestamoLibro($id);
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+
     public function pdf()
     {
         $datos = $this->model->selectDatos();
@@ -209,9 +229,9 @@ class Prestamos extends Controller
 
     // Fecha de Prestamo
     $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(0, 10, 'Fecha Prestamo', 0, 1, 'C');
+    $pdf->Cell(0, 10, utf8_decode('Fecha Devolución'), 0, 1, 'C');
     $pdf->SetFont('Arial', '', 12);
-    $pdf->Cell(0, 10, $prestamo['fecha_prestamo'], 0, 1, 'C');
+    $pdf->Cell(0, 10, $prestamo['fecha_devolucion'], 0, 1, 'C');
 
     // Salida del PDF
     $pdf->Output("prestamos.pdf", "I");

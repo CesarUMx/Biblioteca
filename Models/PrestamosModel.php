@@ -70,7 +70,7 @@ class PrestamosModel extends Query
     }
     public function getCantLibro($libro)
     {
-        $sql = "SELECT * FROM libro WHERE id = $libro";
+        $sql = "SELECT * FROM libro WHERE clave = $libro";
         $res = $this->select($sql);
         return $res;
     }
@@ -94,6 +94,20 @@ class PrestamosModel extends Query
     {
         $sql = "SELECT e.id, e.matricula, e.nombre, c.nombre as carrera, l.clave, l.titulo, p.id, p.id_estudiante, p.id_libro, p.fecha_prestamo, p.fecha_devolucion, p.cantidad, p.observacion, p.estado FROM estudiante e INNER JOIN libro l INNER JOIN carreras c INNER JOIN prestamo p ON p.id_estudiante = e.id WHERE p.id_libro = l.id AND e.id_carrera = c.id AND p.id = $id_prestamo";
         $res = $this->select($sql);
+        return $res;
+    }
+
+    //renovar fecha de devolucion y observacion
+    public function renovarPrestamo($id, string $fecha_devolucion, string $observacion)
+    {
+        $sql = "UPDATE prestamo SET fecha_devolucion = ?, observacion = ? WHERE id = ?";
+        $datos = array($fecha_devolucion, $observacion, $id);
+        $data = $this->save($sql, $datos);
+        if ($data == 1) {
+            $res = "ok";
+        } else {
+            $res = "error";
+        }
         return $res;
     }
 }

@@ -139,10 +139,26 @@ class Estudiantes extends Controller
     }
     public function verificar($id_estu)
     {
+        // modalidades
+        $modalidades = [
+            1 => 'Licenciatura',
+            2 => 'Doctorado',
+            3 => 'Maestría',
+            4 => 'Duales',
+            5 => 'Ejecutivas',
+            6 => 'Preparatoria',
+            7 => 'Docente',
+            8 => 'Administrativos'
+            
+        ];
+        
         if (is_numeric($id_estu)) {
             $data = $this->model->getEstudianteMatricula($id_estu);
+            if (array_key_exists($data['modalidad'], $modalidades)) {
+                $data['modalidad'] = $modalidades[$data['modalidad']];
+            } 
             if (!empty($data)) {
-                $msg = array('nombre' => $data['nombre'], 'carrera' => $data['carrera'], 'icono' => 'success');
+                $msg = array('nombre' => $data['nombre'], 'carrera' => $data['carrera'], 'modalidad' => $data['modalidad'],'icono' => 'success');
             }
         }else{
             $msg = array('msg' => 'Error Fatal', 'icono' => 'error');

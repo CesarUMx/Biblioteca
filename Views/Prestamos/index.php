@@ -33,7 +33,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="title">Prestar Libro</h5>
+                <h5 class="modal-title" id="title"></h5>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -41,6 +41,7 @@
             <div class="modal-body">
                 <form id="frmPrestar" onsubmit="registroPrestamos(event)">
                     <div class="row">
+                        <input type="hidden" id="id" name="id">
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="libro">Clave del libro</label><br>
@@ -69,10 +70,16 @@
                             <input id="estudianteN" class="form-control" type="text" value="" disabled>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <div class="form-group">
                                 <label>Carrera</label><br>
                                 <input id="estudianteC" class="form-control" type="text" value="" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Modalidad</label><br>
+                                <input id="estudianteM" class="form-control" type="text" value="" disabled>
                             </div>
                         </div>
                         <div class="col-md-6">
