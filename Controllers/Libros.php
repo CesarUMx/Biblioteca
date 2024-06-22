@@ -118,7 +118,7 @@ class Libros extends Controller
     public function verificar($id_libro)
     {
         if (is_numeric($id_libro)) {
-            $data = $this->model->editLibros($id_libro);
+            $data = $this->model->getLibroClave($id_libro);
             if (!empty($data)) {
                 $msg = array('titulo' => $data['titulo'], 'icono' => 'success');
             }
@@ -128,13 +128,10 @@ class Libros extends Controller
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
-    public function buscarLibro()
+    public function claves()
     {
-        if (isset($_GET['lb'])) {
-            $valor = $_GET['lb'];
-            $data = $this->model->buscarLibro($valor);
-            echo json_encode($data, JSON_UNESCAPED_UNICODE);
-            die();
-        }
+        $data = $this->model->getClaves();
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        die();
     }
 }

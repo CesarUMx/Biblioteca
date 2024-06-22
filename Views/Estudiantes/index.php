@@ -70,6 +70,13 @@
                                 <select id="modalidad" class="form-control" name="modalidad" required style="width: 100%;">
                                     <option value="">Selecciona una opción</option>
                                     <option value="1">Licenciatura</option>
+                                    <option value="2">Doctorado</option>
+                                    <option value="3">Maestría</option>
+                                    <option value="4">Duales</option>
+                                    <option value="5">Ejecutivas</option>
+                                    <option value="6">Preparatoria</option>
+                                    <option value="7">Docente</option>
+                                    <option value="8">Administrativos</option>
                                 </select>
                             </div>
                         </div>

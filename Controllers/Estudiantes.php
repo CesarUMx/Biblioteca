@@ -26,8 +26,14 @@ class Estudiantes extends Controller
             // modalidades
             $modalidades = [
                 1 => 'Licenciatura',
-                2 => 'Maestría',
-                3 => 'Doctorado'
+                2 => 'Doctorado',
+                3 => 'Maestría',
+                4 => 'Duales',
+                5 => 'Ejecutivas',
+                6 => 'Preparatoria',
+                7 => 'Docente',
+                8 => 'Administrativos'
+                
             ];
             if (array_key_exists($data[$i]['modalidad'], $modalidades)) {
                 $data[$i]['modalidad'] = $modalidades[$data[$i]['modalidad']];
@@ -56,15 +62,17 @@ class Estudiantes extends Controller
     public function registrar()
     {
         $matricula = strClean($_POST['matricula']);
+        $semestre = strClean($_POST['sem']);
         $nombre = strClean($_POST['nombre']);
+        $modalidad = strClean($_POST['modalidad']);
         $carrera = strClean($_POST['carrera']);
         $telefono = strClean($_POST['telefono']);
         $id = strClean($_POST['id']);
-        if (empty($matricula) || empty($nombre) || empty($carrera)) {
+        if (empty($matricula) || empty($semestre) ||  empty($nombre) ||  empty($modalidad) || empty($carrera)) {
             $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
         } else {
             if ($id == "") {
-                    $data = $this->model->insertarEstudiante($matricula, $nombre, $carrera, $telefono);
+                    $data = $this->model->insertarEstudiante($matricula, $nombre, $carrera, $telefono, $semestre, $modalidad);
                     if ($data == "ok") {
                         $msg = array('msg' => 'Estudiante registrado', 'icono' => 'success');
                     } else if ($data == "existe") {
@@ -112,15 +120,6 @@ class Estudiantes extends Controller
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
-    public function buscarEstudiante()
-    {
-        if (isset($_GET['est'])) {
-            $valor = $_GET['est'];
-            $data = $this->model->buscarEstudiante($valor);
-            echo json_encode($data, JSON_UNESCAPED_UNICODE);
-            die();
-        }
-    }
     public function buscarCarrera()
     {
 
@@ -141,7 +140,7 @@ class Estudiantes extends Controller
     public function verificar($id_estu)
     {
         if (is_numeric($id_estu)) {
-            $data = $this->model->editEstudiante($id_estu);
+            $data = $this->model->getEstudianteMatricula($id_estu);
             if (!empty($data)) {
                 $msg = array('nombre' => $data['nombre'], 'carrera' => $data['carrera'], 'icono' => 'success');
             }
@@ -149,6 +148,14 @@ class Estudiantes extends Controller
             $msg = array('msg' => 'Error Fatal', 'icono' => 'error');
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+    // crear un componente datalist con todas las matriculas de los estudiantes
+    public function matriculas()
+    {
+        $data = $this->model->getMatriculas();
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
 }

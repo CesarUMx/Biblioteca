@@ -235,46 +235,48 @@ document.addEventListener("DOMContentLoaded", function(){
             [0, "desc"]
         ]
     });
-    $('.estudiante').select2({
-        placeholder: 'Buscar Estudiante',
-        minimumInputLength: 2,
-        ajax: {
-            url: base_url + 'Estudiantes/buscarEstudiante',
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    est: params.term
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        }
-    });
-    $('.libro').select2({
-        placeholder: 'Buscar Libro',
-            minimumInputLength: 2,
-            ajax: {
-                url: base_url + 'Libros/buscarLibro',
-                dataType: 'json',
-                delay: 250,
-                data: function (params) {
-                    return {
-                        lb: params.term
-                    };
-                },
-                processResults: function (data) {
-                    return {
-                        results: data
-                    };
-                },
-                cache: true
+    // llenar datalist Matriculas con las matrigulas de los estudiantes que traigo por ajax a la base de datos
+    const matriculas = document.getElementById('Matriculas_list');
+    if (matriculas !== null) {
+        const urlMatriculas = base_url + 'Estudiantes/matriculas';
+        const http = new XMLHttpRequest();
+        http.open("GET", urlMatriculas);
+        http.send();
+        http.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const res = JSON.parse(this.responseText);
+                let html = '';
+                res.forEach(row => {
+                    html += `<option value="${row.matricula}">`;
+                });
+                matriculas.innerHTML = html;
             }
-    });
+        }
+        //escuchar el enter o cambio de valor en el input matricula y mandar a llamr verificarEstudiante
+        document.getElementById('estudiante').addEventListener('change', verificarEstudiante);
+    }
+
+    //llenar datalist con las claves de los libros
+    const claves = document.getElementById('Claves');
+    if (claves !== null) {
+        const urlClaves = base_url + 'Libros/claves';
+        const httpClaves = new XMLHttpRequest();
+        httpClaves.open("GET", urlClaves);
+        httpClaves.send();
+        httpClaves.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const res = JSON.parse(this.responseText);
+                let html = '';
+                res.forEach(row => {
+                    html += `<option value="${row.clave}">`;
+                });
+                claves.innerHTML = html;
+            }
+        }
+        //escuchar el enter o cambio de valor en el input clave y mandar a llamr verificarLibro
+        document.getElementById('libro').addEventListener('change', verificarLibro);
+    }
+    
     $('.materia').select2({
         placeholder: 'Buscar Materia',
         minimumInputLength: 2,
@@ -490,23 +492,22 @@ function registrarEstudiante(e) {
     || telefono.value == "" || carrera.value == "" || semestre.value == "") {
         alertas('Todo los campos son requeridos', 'warning');
     } else {
-        console.log(semestre.value);
-        console.log(carrera.value);
-        // const url = base_url + "Estudiantes/registrar";
-        // const frm = document.getElementById("frmEstudiante");
-        // console.log(frm);
-        // const http = new XMLHttpRequest();
-        // http.open("POST", url, true);
-        // http.send(new FormData(frm));
-        // http.onreadystatechange = function () {
-        //     if (this.readyState == 4 && this.status == 200) {
-        //         const res = JSON.parse(this.responseText);
-        //         $("#nuevoEstudiante").modal("hide");
-        //         frm.reset();
-        //         tblEst.ajax.reload();
-        //         alertas(res.msg, res.icono);
-        //     }
-        // }
+        
+        const url = base_url + "Estudiantes/registrar";
+        const frm = document.getElementById("frmEstudiante");
+        console.log(frm);
+        const http = new XMLHttpRequest();
+        http.open("POST", url, true);
+        http.send(new FormData(frm));
+        http.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const res = JSON.parse(this.responseText);
+                $("#nuevoEstudiante").modal("hide");
+                frm.reset();
+                tblEst.ajax.reload();
+                alertas(res.msg, res.icono);
+            }
+        }
     }
 }
 
@@ -534,7 +535,6 @@ async function btnEditarEst(id) {
         await cargarCarreras(res.modalidad);
 
         document.getElementById("carrera").value = res.id_carrera;
-        console.log(res.id_carrera);
 
         document.getElementById("telefono").value = res.telefono;
         $("#nuevoEstudiante").modal("show");
@@ -746,7 +746,6 @@ function registrarLibro(e) {
 function btnEditarLibro(id) {
     document.getElementById("title").textContent = "Actualizar Libro";
     document.getElementById("btnAccion").textContent = "Modificar";
-    console.log(id);
     const url = base_url + "Libros/editar/" + id;
     const http = new XMLHttpRequest();
     http.open("GET", url, true);
@@ -1032,7 +1031,7 @@ function alertas(msg, icono) {
         timer: 3000
     })
 }
-function verificarLibro(e) {
+function verificarLibro() {
     const libro = document.getElementById('libro').value;
     const http = new XMLHttpRequest();
     const url = base_url + 'Libros/verificar/' + libro;
@@ -1051,9 +1050,8 @@ function verificarLibro(e) {
     }      
 }
 
-function verificarEstudiante(e) {
+function verificarEstudiante() {
     const estudiante = document.getElementById('estudiante').value;
-    console.log(estudiante);
     const http = new XMLHttpRequest();
     const url = base_url + 'Estudiantes/verificar/' + estudiante;
     http.open("GET", url);

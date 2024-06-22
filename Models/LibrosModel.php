@@ -36,6 +36,12 @@ class LibrosModel extends Query
         $res = $this->select($sql);
         return $res;
     }
+    public function getLibroClave($clave)
+    {
+        $sql = "SELECT * FROM libro WHERE clave = $clave";
+        $res = $this->select($sql);
+        return $res;
+    }
     public function actualizarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $id)
     {
         $query = "UPDATE libro SET titulo = ?, autores = ?, editorial = ?, id_materia = ?, anio_edicion = ?, num_pagina = ?, descripcion = ?, clasificacion = ?, isbn = ? WHERE id = ?";
@@ -64,12 +70,6 @@ class LibrosModel extends Query
         $data = $this->save($query, $datos);
         return $data;
     }
-    public function buscarLibro($valor)
-    {
-        $sql = "SELECT id, clave AS text FROM libro WHERE clave LIKE '%" . $valor . "%' AND estado = 1 LIMIT 10";
-        $data = $this->selectAll($sql);
-        return $data;
-    }
     public function verificarPermisos($id_user, $permiso)
     {
         $tiene = false;
@@ -87,4 +87,12 @@ class LibrosModel extends Query
         $res = $this->select($sql);
         return $res;
     }
+
+    public function getClaves()
+    {
+        $sql = "SELECT clave FROM libro";
+        $res = $this->selectAll($sql);
+        return $res;
+    }
+    
 }

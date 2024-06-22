@@ -10,14 +10,14 @@ class EstudiantesModel extends Query{
         $res = $this->selectAll($sql);
         return $res;
     }
-    public function insertarEstudiante($matricula, $nombre, $carrera, $telefono)
+    public function insertarEstudiante($matricula, $nombre, $carrera, $telefono, $semestre, $modalidad)
     {
         
         $verificar = "SELECT * FROM estudiante WHERE matricula = '$matricula'";
         $existe = $this->select($verificar);
         if (empty($existe)) {
-            $query = "INSERT INTO estudiante(matricula,nombre,carrera,telefono) VALUES (?,?,?,?)";
-            $datos = array($matricula, $nombre, $carrera, $telefono);
+            $query = "INSERT INTO estudiante(matricula, nombre, id_carrera, telefono, semestre, modalidad) VALUES (?,?,?,?,?,?)";
+            $datos = array($matricula, $nombre, $carrera, $telefono, $semestre, $modalidad);
             $data = $this->save($query, $datos);
             if ($data == 1) {
                 $res = "ok";
@@ -32,6 +32,12 @@ class EstudiantesModel extends Query{
     public function editEstudiante($id)
     {
         $sql = "SELECT e.*, c.nombre as carrera FROM estudiante e INNER JOIN carreras c ON e.id_carrera = c.id WHERE e.id = $id";
+        $res = $this->select($sql);
+        return $res;
+    }
+    public function getEstudianteMatricula($matricula)
+    {
+        $sql = "SELECT e.*, c.nombre as carrera FROM estudiante e INNER JOIN carreras c ON e.id_carrera = c.id WHERE e.matricula = $matricula";
         $res = $this->select($sql);
         return $res;
     }
@@ -52,12 +58,6 @@ class EstudiantesModel extends Query{
         $query = "UPDATE estudiante SET estado = ? WHERE id = ?";
         $datos = array($estado, $id);
         $data = $this->save($query, $datos);
-        return $data;
-    }
-    public function buscarEstudiante($valor)
-    {
-        $sql = "SELECT id, matricula AS text FROM estudiante WHERE matricula LIKE '%" . $valor . "%' AND estado = 1 LIMIT 10";
-        $data = $this->selectAll($sql);
         return $data;
     }
     public function buscarCarrera($valor)
@@ -82,5 +82,12 @@ class EstudiantesModel extends Query{
         $sql = "SELECT * FROM carreras WHERE id_modalidad = $modalidad";
         $res = $this->selectAll($sql);
         return $res;    
+    }
+
+    public function getMatriculas()
+    {
+        $sql = "SELECT matricula FROM estudiante";
+        $res = $this->selectAll($sql);
+        return $res;
     }
 }

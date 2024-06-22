@@ -19,15 +19,24 @@ class Prestamos extends Controller
     {
         $this->views->getView($this, "index");
     }
+
+    //boton de tiket pendiente de momento
+    //<a class="btn btn-danger" target="_blank" href="'.base_url.'Prestamos/ticked/'. $data[$i]['id'].'"><i class="fa fa-file-pdf-o"></i></a>
     public function listar()
     {
         $data = $this->model->getPrestamos();
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['estado'] == 1) {
-                $data[$i]['estado'] = '<span class="badge badge-secondary">Prestado</span>';
+                //validar fecha de devolucion con fecha actual
+                $fecha_actual = date("Y-m-d");
+                if ($fecha_actual > $data[$i]['fecha_devolucion']) {
+                    $data[$i]['estado'] = '<span class="badge badge-danger">Atrasado</span>';
+                } else {
+                    $data[$i]['estado'] = '<span class="badge badge-warning">Prestado</span>';
+                }
                 $data[$i]['acciones'] = '<div>
-                <button class="btn btn-primary" type="button" onclick="btnEntregar(' . $data[$i]['id'] . ');"><i class="fa fa-hourglass-start"></i></button>
-                <a class="btn btn-danger" target="_blank" href="'.base_url.'Prestamos/ticked/'. $data[$i]['id'].'"><i class="fa fa-file-pdf-o"></i></a>
+                <button class="btn btn-success" type="button" onclick="btnEntregar(' . $data[$i]['id'] . ');"><i class="fa fa-check-square"></i></button>
+                <button class="btn btn-primary" type="button" onclick="btnRenovar(' . $data[$i]['id'] . ');"><i class="fa fa-refresh" aria-hidden="true"></i></button>
                 <div/>';
             } else {
                 $data[$i]['estado'] = '<span class="badge badge-success">Devuelto</span>';

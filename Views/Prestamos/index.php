@@ -44,9 +44,9 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="libro">Clave del libro</label><br>
-                                <select id="libro" class="form-control libro" name="libro" onchange="verificarLibro()" required style="width: 100%;">
-
-                                </select>
+                                <input id="libro" name="libro" class="form-control" list="Claves">
+                                <datalist id="Claves">
+                                </datalist>
                             </div>
                         </div>
                         <div class="col-md-8">
@@ -58,15 +58,15 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="estudiante">Matricula</label><br>
-                                <select name="estudiante" id="estudiante" class="form-control estudiante" onchange="verificarEstudiante()" required style="width: 100%;">
-
-                                </select>
+                                <input id="estudiante" name="estudiante" class="form-control" list="Matriculas_list">
+                                <datalist id="Matriculas_list">
+                                </datalist>
                             </div>
                         </div>
                         <div class="col-md-8">
-                            <div class="form-group">
-                                <label">Nombre</label><br>
-                                <input id="estudianteN" class="form-control" type="text" value="" disabled>
+                        <div class="form-group">
+                            <label>Nombre</label><br>
+                            <input id="estudianteN" class="form-control" type="text" value="" disabled>
                             </div>
                         </div>
                         <div class="col-md-12">
