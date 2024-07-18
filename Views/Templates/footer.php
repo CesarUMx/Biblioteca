@@ -1,3 +1,7 @@
+<?php
+$currentUrl = $_SERVER['REQUEST_URI'];
+?>
+
 </main>
 <div id="cambiarClave" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -40,13 +44,16 @@
 <script src="<?php echo base_url; ?>Assets/js/chart.min.js" crossorigin="anonymous"></script>
 <script>
     const base_url = "<?php echo base_url; ?>";
+    console.log(<?php echo json_encode($currentUrl); ?>);
 </script>
 <script src="<?php echo base_url; ?>Assets/js/sweetalert2.all.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url; ?>Assets/js/pdfmake.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url; ?>Assets/js/vfs_fonts.js"></script>
 <script type="text/javascript" src="<?php echo base_url; ?>Assets/js/datatables.min.js"></script>
 <script src="<?php echo base_url; ?>Assets/js/select2.min.js"></script>
+<script src="<?php echo base_url; ?>Assets/js/tablas.js"></script>
 <script src="<?php echo base_url; ?>Assets/js/funciones.js"></script>
+<script src="<?php echo base_url; ?>Assets/js/api<?php echo ($currentUrl); ?>.js"></script>
 
 <!-- Google analytics script-->
 <script type="text/javascript">

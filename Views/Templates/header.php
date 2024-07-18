@@ -34,7 +34,11 @@
         <!-- Navbar Right Menu-->
         <ul class="app-nav">
             <!--Notification Menu-->
-            <li class="dropdown"><a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications"><i class="fa fa-bell-o fa-lg"></i></a>
+            <li class="dropdown">
+                <a class="app-nav__item" href="#" data-toggle="dropdown" aria-label="Show notifications">
+                    <i class="fa fa-bell-o fa-lg"></i>
+                    <span class="badge" id="notification-count">0</span>
+                </a>
                 <ul class="app-notification dropdown-menu dropdown-menu-right">
                     <li class="app-notification__title">Libros no entregados.</li>
                     <div class="app-notification__content">
