@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function(){
-    console.log("Prestamos.js cargado");
      // llenar datalist Matriculas con las matrigulas de los estudiantes que traigo por ajax a la base de datos
      const matriculas = document.getElementById('Matriculas_list');
      if (matriculas !== null) {

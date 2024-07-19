@@ -219,6 +219,19 @@ document.addEventListener("DOMContentLoaded", function(){
                 'data': 'acciones'
             }
         ],
+        columnDefs: [
+            {
+                targets: 7, 
+                width: "13%", 
+                render: function(data, type, row) {
+                    return data ? data : '&nbsp;';
+                }
+            },
+            {
+                targets: 9,
+                width: "8%"
+            } // Aquí especificas el ancho para la columna de observaciones
+        ],
         language,
         dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
             "<'row'<'col-sm-12'tr>>" +

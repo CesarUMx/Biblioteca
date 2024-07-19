@@ -95,10 +95,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="observacion">Observación</label>
-                        <textarea id="observacion" class="form-control" placeholder="Observación" name="observacion" rows="3"></textarea>
-                    </div>
                     <button class="btn btn-primary" type="submit" id="btnAccion">Prestar</button>
                     <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
                 </form>

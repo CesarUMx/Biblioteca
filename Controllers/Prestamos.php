@@ -25,19 +25,29 @@ class Prestamos extends Controller
     public function listar()
     {
         $data = $this->model->getPrestamos();
+        $renovation = true;
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['estado'] == 1) {
                 //validar fecha de devolucion con fecha actual
                 $fecha_actual = date("Y-m-d");
                 if ($fecha_actual > $data[$i]['fecha_devolucion']) {
                     $data[$i]['estado'] = '<span class="badge badge-danger">Atrasado</span>';
+                    $renovation = false;
                 } else {
-                    $data[$i]['estado'] = '<span class="badge badge-warning">Prestado</span>';
+                    if ($data[$i]['renovacion'] == 0) {
+                        $data[$i]['estado'] = '<span class="badge badge-info">Prestado</span>';
+                    } else {
+                        $data[$i]['estado'] = '<span class="badge badge-warning">Renovado</span>';
+                    }
                 }
                 $data[$i]['acciones'] = '<div>
-                <button class="btn btn-success" type="button" onclick="btnEntregar(' . $data[$i]['id'] . ');"><i class="fa fa-check-square"></i></button>
-                <button class="btn btn-primary" type="button" onclick="btnRenovar(' . $data[$i]['id'] . ');"><i class="fa fa-refresh" aria-hidden="true"></i></button>
-                <div/>';
+                    <button class="btn btn-success" type="button" onclick="btnEntregar(' . $data[$i]['id'] . ');"><i class="fa fa-check-square"></i></button>';
+
+                if ($renovation && $data[$i]['renovacion'] < 3) {
+                    $data[$i]['acciones'] .= '<button class="btn btn-primary" type="button" onclick="btnRenovar(' . $data[$i]['id'] . ');"><i class="fa fa-refresh" aria-hidden="true"></i></button>';
+                }
+
+                $data[$i]['acciones'] .= '</div>';
             } else {
                 $data[$i]['estado'] = '<span class="badge badge-success">Devuelto</span>';
                 $data[$i]['acciones'] = '';
@@ -53,7 +63,6 @@ class Prestamos extends Controller
         $cantidad = 1;
         $fecha_prestamo = strClean($_POST['fecha_prestamo']);
         $fecha_devolucion = strClean($_POST['fecha_devolucion']);
-        $observacion = strClean($_POST['observacion']);
         $id = strClean($_POST['id']);        
         if ($id == "") {
             if (empty($libro) || empty($estudiante) || empty($cantidad) || empty($fecha_prestamo) || empty($fecha_devolucion)) {
@@ -61,7 +70,7 @@ class Prestamos extends Controller
             } else {
                 $verificar_cant = $this->model->getCantLibro($libro);
                 if ($verificar_cant['cantidad'] >= $cantidad) {
-                    $data = $this->model->insertarPrestamo($estudiante,$libro, $cantidad, $fecha_prestamo, $fecha_devolucion, $observacion);
+                    $data = $this->model->insertarPrestamo($estudiante,$libro, $cantidad, $fecha_prestamo, $fecha_devolucion);
                     if ($data > 0) {
                         $msg = array('msg' => 'Libro Prestado', 'icono' => 'success', 'id' => $data);
                     } else if ($data == "existe") {
@@ -74,11 +83,29 @@ class Prestamos extends Controller
                 }
             }
         } else {
-            $data = $this->model->renovarPrestamo($id, $fecha_devolucion,  $observacion);
-            if ($data == "ok") {
-                $msg = array('msg' => 'Fecha renovada', 'icono' => 'success', 'id' => $id);
+            //validar numero de renovaciones
+            $renovacion = $this->model->getPrestamoLibro($id);
+            $n_renovaciones = $renovacion['renovacion'];
+            $observacion = $renovacion['observacion'];
+            if ($n_renovaciones < 3) {
+                $n_renovaciones++;
+                $fecha_actual = date("Y-m-d");
+                if ($fecha_actual > $renovacion['fecha_devolucion']) {
+                    $msg = array('msg' => 'No se puede renovar un libro atrasado', 'icono' => 'warning');
+                } else {
+                    // if ($n_renovaciones == 1) {
+                    //     $observacion = "Primera fecha de devolución ". $renovacion['fecha_devolucion'] ."<br>";
+                    // }
+                    $observacion .= "Renovación $n_renovaciones: $fecha_actual <br>";
+                    $data = $this->model->renovarPrestamo($id, $fecha_devolucion, $observacion, $n_renovaciones);
+                    if ($data == "ok") {
+                        $msg = array('msg' => 'Fecha renovada', 'icono' => 'success', 'id' => $id);
+                    } else {
+                        $msg = array('msg' => 'Error al renovar el prestamo', 'icono' => 'error');
+                    }
+                }
             } else {
-                $msg = array('msg' => 'Error al recibir el libro', 'icono' => 'error');
+                $msg = array('msg' => 'No se puede renovar mas de 3 veces', 'icono' => 'warning');
             }
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
