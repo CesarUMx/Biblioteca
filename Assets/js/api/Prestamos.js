@@ -97,12 +97,12 @@ function registroPrestamos(e){
                 tblPrestar.ajax.reload();
                 $("#prestar").modal("hide");
                 alertas(res.msg, res.icono);
-                if (res.icono == 'success') {
-                    setTimeout(() => {
-                        window.open(base_url + 'Prestamos/ticked/'+ res.id, '_blank');
-                    }, 3000);
-                }
-                
+                //se cansela lo de comprobante de prestamo
+                // if (res.icono == 'success') {
+                //     setTimeout(() => {
+                //         window.open(base_url + 'Prestamos/ticked/'+ res.id, '_blank');
+                //     }, 3000);
+                // }
             }
         }
     }
