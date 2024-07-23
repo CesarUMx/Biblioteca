@@ -31,6 +31,17 @@ async function cargarCarreras(modalidad) {
     } catch (error) {
         console.error('Fetch error:', error);
     }
+    if (modalidad > 5) {
+        //desactivar select carrera
+        document.getElementById('carrera').setAttribute('disabled', true);
+    } else {
+        //activar select carrera
+        document.getElementById('carrera').removeAttribute('disabled');
+    }
+    if (modalidad > 6) {
+        //cambiar valor de semestre a 0
+        document.getElementById('sem').value = 0;
+    }
 }
 
 function frmEstudiante() {

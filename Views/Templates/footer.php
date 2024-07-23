@@ -44,7 +44,6 @@ $currentUrl = $_SERVER['REQUEST_URI'];
 <script src="<?php echo base_url; ?>Assets/js/chart.min.js" crossorigin="anonymous"></script>
 <script>
     const base_url = "<?php echo base_url; ?>";
-    console.log(<?php echo json_encode($currentUrl); ?>);
 </script>
 <script src="<?php echo base_url; ?>Assets/js/sweetalert2.all.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url; ?>Assets/js/pdfmake.min.js"></script>

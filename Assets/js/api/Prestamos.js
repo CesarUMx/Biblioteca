@@ -144,11 +144,12 @@ function verificarLibro() {
     http.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             const res = JSON.parse(this.responseText);
-            if (res.icono == 'success') {
+            if (res != null) {
                 document.getElementById('libroT').value = res.titulo;
+                document.getElementById('libroT').style.color = '#495057';
             }else{
-                alertas(res.msg, res.icono);
-                return false;
+                document.getElementById('libroT').value = 'No encontrado';
+                document.getElementById('libroT').style.color = 'red';
             }
         }
     }      
@@ -163,13 +164,17 @@ function verificarEstudiante() {
     http.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             const res = JSON.parse(this.responseText);
-            if (res.icono == 'success') {
+            if (res != null) {
                 document.getElementById('estudianteN').value = res.nombre;
+                document.getElementById('estudianteN').style.color = '#495057';
                 document.getElementById('estudianteC').value = res.carrera;
                 document.getElementById('estudianteM').value = res.modalidad;
+                
             }else{
-                alertas(res.msg, res.icono);
-                return false;
+                document.getElementById('estudianteN').value = 'No encontrado';
+                document.getElementById('estudianteN').style.color = 'red';
+                document.getElementById('estudianteC').value = '';
+                document.getElementById('estudianteM').value = '';
             }
         }
     }

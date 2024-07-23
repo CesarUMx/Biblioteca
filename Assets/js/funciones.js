@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function(){
-    console.log("funciones.js cargado");
     document.querySelector("#modalPass").addEventListener("click", function () {
         document.querySelector('#frmCambiarPass').reset();
         $('#cambiarClave').modal('show');
@@ -14,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function(){
         http.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 const res = JSON.parse(this.responseText);
-                console.log(res);
                 let html = '';
                 res.forEach(row => {
                     html += `

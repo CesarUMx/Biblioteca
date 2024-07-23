@@ -19,23 +19,28 @@ class PrestamosModel extends Query
         $sql_lib = "SELECT id FROM libro WHERE clave = $libro";
         $res_sql_lib = $this->select($sql_lib);
         $id_libro = $res_sql_lib['id'];
-        $verificar = "SELECT * FROM prestamo WHERE id_libro = '$libro' AND estado = 1";
+        $verificar = "SELECT * FROM prestamo WHERE id_libro = '$id_libro' AND estado = 1";
         $existe = $this->select($verificar);
         if (empty($existe)) {
             $query = "INSERT INTO prestamo(id_estudiante, id_libro, fecha_prestamo, fecha_devolucion, cantidad) VALUES (?,?,?,?,?)";
             $datos = array($id_estudiante, $id_libro, $fecha_prestamo, $fecha_devolucion, $cantidad);
-            $data = $this->insert($query, $datos);
-            if ($data > 0) {
-                $lib = "SELECT * FROM libro WHERE id = $libro";
-                $resLibro = $this->select($lib);
-                $total = $resLibro['cantidad'] - $cantidad;
-                $libroUpdate = "UPDATE libro SET cantidad = ? WHERE id = ?";
-                $datosLibro = array($total, $libro);
-                $this->save($libroUpdate, $datosLibro);
-                $res = $data;
-            } else {
-                $res = 0;
+            try {
+                $data = $this->insert($query, $datos);
+                if ($data > 0) {
+                    $lib = "SELECT * FROM libro WHERE id = $libro";
+                    $resLibro = $this->select($lib);
+                    $total = $resLibro['cantidad'] - $cantidad;
+                    $libroUpdate = "UPDATE libro SET cantidad = ? WHERE id = ?";
+                    $datosLibro = array($total, $libro);
+                    $this->save($libroUpdate, $datosLibro);
+                    $res = $data;
+                } else {
+                    $res = 0;
+                }
+            } catch (Exception $e) {
+                echo "Error: " . $e->getMessage();
             }
+            
         } else {
             $res = "existe";
         }

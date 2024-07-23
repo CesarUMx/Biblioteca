@@ -25,7 +25,6 @@ class Prestamos extends Controller
     public function listar()
     {
         $data = $this->model->getPrestamos();
-        $renovation = true;
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['estado'] == 1) {
                 //validar fecha de devolucion con fecha actual
@@ -34,6 +33,7 @@ class Prestamos extends Controller
                     $data[$i]['estado'] = '<span class="badge badge-danger">Atrasado</span>';
                     $renovation = false;
                 } else {
+                    $renovation = true;
                     if ($data[$i]['renovacion'] == 0) {
                         $data[$i]['estado'] = '<span class="badge badge-info">Prestado</span>';
                     } else {
@@ -71,10 +71,10 @@ class Prestamos extends Controller
                 $verificar_cant = $this->model->getCantLibro($libro);
                 if ($verificar_cant['cantidad'] >= $cantidad) {
                     $data = $this->model->insertarPrestamo($estudiante,$libro, $cantidad, $fecha_prestamo, $fecha_devolucion);
-                    if ($data > 0) {
-                        $msg = array('msg' => 'Libro Prestado', 'icono' => 'success', 'id' => $data);
-                    } else if ($data == "existe") {
+                    if ($data === "existe") {
                         $msg = array('msg' => 'El libro ya esta prestado', 'icono' => 'warning');
+                    } else if ($data > 0) {
+                        $msg = array('msg' => 'Libro Prestado', 'icono' => 'success', 'id' => $data);
                     } else {
                         $msg = array('msg' => 'Error al prestar', 'icono' => 'error');
                     }
