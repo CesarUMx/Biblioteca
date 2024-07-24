@@ -13,7 +13,7 @@ class PrestamosModel extends Query
     }
     public function insertarPrestamo($estudiante,$libro, $cantidad, string $fecha_prestamo, string $fecha_devolucion)
     {
-        $sql_est = "SELECT id FROM estudiante WHERE matricula = $estudiante"; 
+        $sql_est = "SELECT id FROM estudiante WHERE matricula = '$estudiante'"; 
         $res_sql = $this->select($sql_est);
         $id_estudiante = $res_sql['id'];
         $sql_lib = "SELECT id FROM libro WHERE clave = $libro";

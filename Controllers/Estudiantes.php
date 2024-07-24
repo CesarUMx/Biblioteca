@@ -39,12 +39,18 @@ class Estudiantes extends Controller
                 $data[$i]['modalidad'] = $modalidades[$data[$i]['modalidad']];
             } 
 
-            if ($data[$i]['estado'] == 1) {
+            if ($data[$i]['estado'] == 1 && ($data[$i]['modalidad'] != 'Administrativos' && $data[$i]['modalidad'] != 'Docente')) {
                 if  ($data[$i]['n_ingreso'] == 1) {
                     $data[$i]['estado'] = '<span class="badge badge-success">Nuevo Ingreso</span>';
                 } else {
                     $data[$i]['estado'] = '<span class="badge badge-success">Reinscrito</span>';
                 }
+                $data[$i]['acciones'] = '<div>
+                <button class="btn btn-primary" type="button" onclick="btnEditarEst(' . $data[$i]['id'] . ');"><i class="fa fa-pencil-square-o"></i></button>
+                <button class="btn btn-danger" type="button" onclick="btnEliminarEst(' . $data[$i]['id'] . ');"><i class="fa fa-trash-o"></i></button>
+                <div/>';
+            } else if ($data[$i]['estado'] == 1 && ($data[$i]['modalidad'] == 'Administrativos' || $data[$i]['modalidad'] == 'Docente')) {
+                $data[$i]['estado'] = '<span class="badge badge-success">Activo</span>';
                 $data[$i]['acciones'] = '<div>
                 <button class="btn btn-primary" type="button" onclick="btnEditarEst(' . $data[$i]['id'] . ');"><i class="fa fa-pencil-square-o"></i></button>
                 <button class="btn btn-danger" type="button" onclick="btnEliminarEst(' . $data[$i]['id'] . ');"><i class="fa fa-trash-o"></i></button>
@@ -61,37 +67,56 @@ class Estudiantes extends Controller
     }
     public function registrar()
     {
-        $matricula = strClean($_POST['matricula']);
-        $semestre = strClean($_POST['sem']);
-        $nombre = strClean($_POST['nombre']);
-        $modalidad = strClean($_POST['modalidad']);
-        $carrera = strClean($_POST['carrera']);
-        $telefono = strClean($_POST['telefono']);
-        $id = strClean($_POST['id']);
-        if (empty($matricula) || empty($semestre) ||  empty($nombre) ||  empty($modalidad) || empty($carrera)) {
-            $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
-        } else {
+        try {
+            $matricula = strClean($_POST['matricula']);
+            $semestre = strClean($_POST['sem']);
+            $nombre = strClean($_POST['nombre']);
+            $modalidad = strClean($_POST['modalidad']);
+            $carrera = strClean($_POST['carrera']);
+            $telefono = strClean($_POST['telefono']);
+            $id = strClean($_POST['id']);
+
+            // Validación de campos
+            if (empty($matricula)) {
+                throw new Exception('El campo "matrícula" es requerido');
+            }
+            if (empty($nombre)) {
+                throw new Exception('El campo "nombre" es requerido');
+            }
+            if (empty($modalidad)) {
+                throw new Exception('El campo "modalidad" es requerido');
+            }
+            if (empty($carrera)) {
+                throw new Exception('El campo "carrera" es requerido');
+            }
+
             if ($id == "") {
-                    $data = $this->model->insertarEstudiante($matricula, $nombre, $carrera, $telefono, $semestre, $modalidad);
-                    if ($data == "ok") {
-                        $msg = array('msg' => 'Estudiante registrado', 'icono' => 'success');
-                    } else if ($data == "existe") {
-                        $msg = array('msg' => 'El estudiante ya existe', 'icono' => 'warning');
-                    } else {
-                        $msg = array('msg' => 'Error al registrar', 'icono' => 'error');
-                    }
+                // Inserción de nuevo estudiante
+                $data = $this->model->insertarEstudiante($matricula, $nombre, $carrera, $telefono, $semestre, $modalidad);
+                if ($data == "ok") {
+                    $msg = array('msg' => 'Estudiante registrado', 'icono' => 'success');
+                } elseif ($data == "existe") {
+                    throw new Exception('El estudiante ya existe');
+                } else {
+                    throw new Exception('Error al registrar el estudiante');
+                }
             } else {
+                // Actualización de estudiante existente
                 $data = $this->model->actualizarEstudiante($matricula, $nombre, $carrera, $telefono, $id);
                 if ($data == "modificado") {
                     $msg = array('msg' => 'Estudiante modificado', 'icono' => 'success');
                 } else {
-                    $msg = array('msg' => 'Error al modificar', 'icono' => 'error');
+                    throw new Exception('Error al modificar el estudiante');
                 }
             }
+        } catch (Exception $e) {
+            $msg = array('msg' => $e->getMessage(), 'icono' => 'error');
         }
+
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
+
     public function editar($id)
     {
         $data = $this->model->editEstudiante($id);
@@ -152,7 +177,7 @@ class Estudiantes extends Controller
             
         ];
         
-        if (is_numeric($id_estu)) {
+        if ($id_estu != "") {
             $data = $this->model->getEstudianteMatricula($id_estu);
             if (array_key_exists($data['modalidad'], $modalidades)) {
                 $data['modalidad'] = $modalidades[$data['modalidad']];

@@ -58,59 +58,73 @@ class Prestamos extends Controller
     }
     public function registrar()
     {
-        $libro = strClean($_POST['libro']);
-        $estudiante = strClean($_POST['estudiante']);
-        $cantidad = 1;
-        $fecha_prestamo = strClean($_POST['fecha_prestamo']);
-        $fecha_devolucion = strClean($_POST['fecha_devolucion']);
-        $id = strClean($_POST['id']);        
-        if ($id == "") {
-            if (empty($libro) || empty($estudiante) || empty($cantidad) || empty($fecha_prestamo) || empty($fecha_devolucion)) {
-                $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
-            } else {
+        try {
+            $libro = strClean($_POST['libro']);
+            $estudiante = strClean($_POST['estudiante']);
+            $cantidad = 1;
+            $fecha_prestamo = strClean($_POST['fecha_prestamo']);
+            $fecha_devolucion = strClean($_POST['fecha_devolucion']);
+            $id = strClean($_POST['id']);
+
+            // Validación de campos
+            if (empty($libro)) {
+                throw new Exception('El campo "libro" es requerido' . $_POST['libro']);
+            }
+            if (empty($estudiante)) {
+                throw new Exception('El campo "estudiante" es requerido');
+            }
+            if (empty($cantidad)) {
+                throw new Exception('El campo "cantidad" es requerido');
+            }
+            if (empty($fecha_prestamo)) {
+                throw new Exception('El campo "fecha de préstamo" es requerido');
+            }
+            if (empty($fecha_devolucion)) {
+                throw new Exception('El campo "fecha de devolución" es requerido');
+            }
+
+            if ($id == "") {
                 $verificar_cant = $this->model->getCantLibro($libro);
                 if ($verificar_cant['cantidad'] >= $cantidad) {
-                    $data = $this->model->insertarPrestamo($estudiante,$libro, $cantidad, $fecha_prestamo, $fecha_devolucion);
+                    $data = $this->model->insertarPrestamo($estudiante, $libro, $cantidad, $fecha_prestamo, $fecha_devolucion);
                     if ($data === "existe") {
-                        $msg = array('msg' => 'El libro ya esta prestado', 'icono' => 'warning');
-                    } else if ($data > 0) {
+                        throw new Exception('El libro ya está prestado');
+                    } elseif ($data > 0) {
                         $msg = array('msg' => 'Libro Prestado', 'icono' => 'success', 'id' => $data);
                     } else {
-                        $msg = array('msg' => 'Error al prestar', 'icono' => 'error');
+                        throw new Exception('Error al prestar el libro');
                     }
-                }else{
-                    $msg = array('msg' => 'El libro ya esta prestado', 'icono' => 'warning');
-                }
-            }
-        } else {
-            //validar numero de renovaciones
-            $renovacion = $this->model->getPrestamoLibro($id);
-            $n_renovaciones = $renovacion['renovacion'];
-            $observacion = $renovacion['observacion'];
-            if ($n_renovaciones < 3) {
-                $n_renovaciones++;
-                $fecha_actual = date("Y-m-d");
-                if ($fecha_actual > $renovacion['fecha_devolucion']) {
-                    $msg = array('msg' => 'No se puede renovar un libro atrasado', 'icono' => 'warning');
                 } else {
-                    // if ($n_renovaciones == 1) {
-                    //     $observacion = "Primera fecha de devolución ". $renovacion['fecha_devolucion'] ."<br>";
-                    // }
-                    $observacion .= "Renovación $n_renovaciones: $fecha_actual <br>";
+                    throw new Exception('El libro ya está prestado');
+                }
+            } else {
+                $renovacion = $this->model->getPrestamoLibro($id);
+                if ($renovacion['renovacion'] < 3) {
+                    $n_renovaciones = $renovacion['renovacion'] + 1;
+                    $fecha_actual = date("Y-m-d");
+                    if ($fecha_actual > $renovacion['fecha_devolucion']) {
+                        throw new Exception('No se puede renovar un libro atrasado');
+                    }
+
+                    $observacion = $renovacion['observacion'] . "Renovación $n_renovaciones: $fecha_actual <br>";
                     $data = $this->model->renovarPrestamo($id, $fecha_devolucion, $observacion, $n_renovaciones);
                     if ($data == "ok") {
                         $msg = array('msg' => 'Fecha renovada', 'icono' => 'success', 'id' => $id);
                     } else {
-                        $msg = array('msg' => 'Error al renovar el prestamo', 'icono' => 'error');
+                        throw new Exception('Error al renovar el préstamo');
                     }
+                } else {
+                    throw new Exception('No se puede renovar más de 3 veces');
                 }
-            } else {
-                $msg = array('msg' => 'No se puede renovar mas de 3 veces', 'icono' => 'warning');
             }
+        } catch (Exception $e) {
+            $msg = array('msg' => $e->getMessage(), 'icono' => 'error');
         }
+
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
+
     public function entregar($id)
     {
         $datos = $this->model->actualizarPrestamo(0, $id);

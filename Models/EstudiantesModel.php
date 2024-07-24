@@ -37,7 +37,7 @@ class EstudiantesModel extends Query{
     }
     public function getEstudianteMatricula($matricula)
     {
-        $sql = "SELECT e.*, c.nombre as carrera FROM estudiante e INNER JOIN carreras c ON e.id_carrera = c.id WHERE e.matricula = $matricula";
+        $sql = "SELECT e.*, c.nombre as carrera FROM estudiante e INNER JOIN carreras c ON e.id_carrera = c.id WHERE e.matricula = '$matricula'";
         $res = $this->select($sql);
         return $res;
     }

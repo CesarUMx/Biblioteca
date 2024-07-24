@@ -91,7 +91,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="telefono">Teléfono</label>
-                                <input id="telefono" class="form-control" type="text" name="telefono" required placeholder="Teléfono">
+                                <input id="telefono" class="form-control" type="text" name="telefono" placeholder="Teléfono">
                             </div>
                         </div>
                         <div class="col-md-12">

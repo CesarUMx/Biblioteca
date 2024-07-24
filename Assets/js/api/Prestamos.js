@@ -77,35 +77,56 @@ function btnEntregar(id) {
         }
     })
 }
-function registroPrestamos(e){
+function registroPrestamos(e) {
     e.preventDefault();
-    const libro = document.getElementById("libro").value;
-    const estudiante = document.getElementById("estudiante").value;
-    const fecha_prestamo = document.getElementById("fecha_prestamo").value;
-    const fecha_devolucion = document.getElementById("fecha_devolucion").value;
-    if (libro == '' || estudiante == '' || fecha_prestamo == '' || fecha_devolucion == '') {
-        alertas('Todo los campos son requeridos', 'warning');
-    } else {
-        const frm = document.getElementById("frmPrestar");
-        const url = base_url + "Prestamos/registrar";
-        const http = new XMLHttpRequest();
-        http.open("POST", url, true);
-        http.send(new FormData(frm));
-        http.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                const res = JSON.parse(this.responseText);
-                tblPrestar.ajax.reload();
-                $("#prestar").modal("hide");
-                alertas(res.msg, res.icono);
-                //se cansela lo de comprobante de prestamo
-                // if (res.icono == 'success') {
-                //     setTimeout(() => {
-                //         window.open(base_url + 'Prestamos/ticked/'+ res.id, '_blank');
-                //     }, 3000);
-                // }
+    const libro = document.getElementById("libro").value.trim();
+    const estudiante = document.getElementById("estudiante").value.trim();
+    const fecha_prestamo = document.getElementById("fecha_prestamo").value.trim();
+    const fecha_devolucion = document.getElementById("fecha_devolucion").value.trim();
+    const id = document.getElementById("id").value.trim();
+
+    // Validación del lado del cliente
+    if (libro === '' || estudiante === '' || fecha_prestamo === '' || fecha_devolucion === '') {
+        alertas('Todos los campos son requeridos', 'warning');
+        return;
+    }
+
+    if (id !== '') {
+        //desactivar el disabled de los inputs
+    document.getElementById("libro").disabled = false;
+    document.getElementById("estudiante").disabled = false;
+    document.getElementById("fecha_prestamo").disabled = false;
+    }
+
+    const frm = document.getElementById("frmPrestar");
+    const url = base_url + "Prestamos/registrar";
+    const http = new XMLHttpRequest();
+
+    http.open("POST", url, true);
+    http.send(new FormData(frm));
+
+    http.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                try {
+                    const res = JSON.parse(this.responseText);
+                    if (res.icono === 'success') {
+                        tblPrestar.ajax.reload();
+                        $("#prestar").modal("hide");
+                        alertas(res.msg, res.icono);
+                    } else {
+                        alertas(res.msg, res.icono);
+                    }
+                } catch (error) {
+                    alertas('Error en la respuesta del servidor', 'error');
+                    console.error('Error al procesar la respuesta del servidor: ', error);
+                }
+            } else {
+                alertas('Error al conectar con el servidor', 'error');
+                console.error('Error HTTP: ', this.status);
             }
         }
-    }
+    };
 }
 
 function btnRenovar(id) {

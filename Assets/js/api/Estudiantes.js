@@ -31,13 +31,6 @@ async function cargarCarreras(modalidad) {
     } catch (error) {
         console.error('Fetch error:', error);
     }
-    if (modalidad > 5) {
-        //desactivar select carrera
-        document.getElementById('carrera').setAttribute('disabled', true);
-    } else {
-        //activar select carrera
-        document.getElementById('carrera').removeAttribute('disabled');
-    }
     if (modalidad > 6) {
         //cambiar valor de semestre a 0
         document.getElementById('sem').value = 0;
@@ -54,33 +47,59 @@ function frmEstudiante() {
 
 function registrarEstudiante(e) {
     e.preventDefault();
-    const matricula = document.getElementById("matricula");
-    const nombre = document.getElementById("nombre");
-    const carrera = document.getElementById("carrera");
-    const telefono = document.getElementById("telefono");
-    const semestre = document.getElementById("sem");
-    if (matricula.value == "" || nombre.value == ""
-    || telefono.value == "" || carrera.value == "" || semestre.value == "") {
-        alertas('Todo los campos son requeridos', 'warning');
-    } else {
-        
-        const url = base_url + "Estudiantes/registrar";
-        const frm = document.getElementById("frmEstudiante");
-        console.log(frm);
-        const http = new XMLHttpRequest();
-        http.open("POST", url, true);
-        http.send(new FormData(frm));
-        http.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                const res = JSON.parse(this.responseText);
-                $("#nuevoEstudiante").modal("hide");
-                frm.reset();
-                tblEst.ajax.reload();
-                alertas(res.msg, res.icono);
+
+    const matricula = document.getElementById("matricula").value.trim();
+    const nombre = document.getElementById("nombre").value.trim();
+    const carrera = document.getElementById("carrera").value.trim();
+    const telefono = document.getElementById("telefono").value.trim();
+    const semestre = document.getElementById("sem").value.trim();
+
+    // Validación del lado del cliente
+    if (matricula === "") {
+        alertas('El campo "matrícula" es requerido', 'warning');
+        return;
+    }
+    if (nombre === "") {
+        alertas('El campo "nombre" es requerido', 'warning');
+        return;
+    }
+    if (carrera === "") {
+        alertas('El campo "carrera" es requerido', 'warning');
+        return;
+    }
+    if (semestre === "") {
+        alertas('El campo "semestre" es requerido', 'warning');
+        return;
+    }
+
+    const url = base_url + "Estudiantes/registrar";
+    const frm = document.getElementById("frmEstudiante");
+    const http = new XMLHttpRequest();
+    
+    http.open("POST", url, true);
+    http.send(new FormData(frm));
+
+    http.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                try {
+                    const res = JSON.parse(this.responseText);
+                    $("#nuevoEstudiante").modal("hide");
+                    frm.reset();
+                    tblEst.ajax.reload();
+                    alertas(res.msg, res.icono);
+                } catch (error) {
+                    alertas('Error al procesar la respuesta del servidor', 'error');
+                    console.error('Error al analizar la respuesta del servidor: ', error);
+                }
+            } else {
+                alertas('Error en la conexión con el servidor', 'error');
+                console.error('Error HTTP: ', this.status);
             }
         }
-    }
+    };
 }
+
 
 async function btnEditarEst(id) {
     document.getElementById("title").textContent = "Actualizar estudiante";
