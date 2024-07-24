@@ -49,6 +49,7 @@ function frmPrestar() {
     document.getElementById("libro").disabled = false;
     document.getElementById("estudiante").disabled = false;
     document.getElementById("fecha_prestamo").disabled = false;
+    document.getElementById("id").value = "";
     $("#prestar").modal("show");
 }
 function btnEntregar(id) {
