@@ -182,6 +182,43 @@ document.addEventListener("DOMContentLoaded", function(){
             buttons
     });
     //fin Libros
+
+    tblEtiqueta = $('#tblEtiquetas').DataTable({
+        ajax: {
+            url: base_url + "Etiquetas/listar",
+            dataSrc: ''
+        },
+        columns: [{
+                'data': 'id',
+                'visible': false
+            },
+            {
+                'data': 'clave'
+            },
+            {
+                'data': 'clasificacion'
+            },
+            {
+                'data': 'isbn'
+            },
+            {
+                'data': 'titulo'
+            },          
+            {
+                'data': 'autores'
+            },            
+            {
+                'data': 'editorial'
+            },
+            {
+                'data': 'acciones'
+            }
+        ],
+        language
+            
+    });
+    //fin Etiquetas
+
     tblPrestar = $('#tblPrestar').DataTable({
         ajax: {
             url: base_url + "Prestamos/listar",

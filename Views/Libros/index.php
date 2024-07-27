@@ -1,7 +1,7 @@
 <?php include "Views/Templates/header.php"; ?>
 <div class="app-title">
     <div>
-        <h1><i class="fa fa-dashboard"></i> Libros</h1>
+        <h1><i class="fa fa-book"></i> Libros</h1>
     </div>
 </div>
 <button class="btn btn-primary mb-2" onclick="frmLibros()"><i class="fa fa-plus"></i> Libro </button>
