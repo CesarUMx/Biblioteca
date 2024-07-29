@@ -5,6 +5,7 @@
     </div>
 </div>
 <button class="btn btn-primary mb-2" onclick="frmEtiquetas()"><i class="fa fa-plus"></i> Agregar libro </button>
+<a class="btn btn-success mb-2 mx-2" target="_blank" href="<?php echo base_url; ?>Etiquetas/pdf"><i class="fa fa-print"></i> Imprimir etiquetas </a>
 <div class="row">
     <div class="col-lg-12">
         <div class="tile">

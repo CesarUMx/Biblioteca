@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 function frmEtiquetas() {
     document.getElementById("title").textContent = "Agregar Etiqueta";
-    document.getElementById("btnAccion").textContent = "Registrar";
+    document.getElementById("btnAccion").textContent = "Agregar";
     document.getElementById("frmEtiqueta").reset();
     $("#nuevaEtiqueta").modal("show");
 }

@@ -221,61 +221,61 @@ class Prestamos extends Controller
         $pdf->SetFont('Arial', 'B', 12);
     
          // Información del encabezado
-    $pdf->Cell(0, 10, utf8_decode($datos['nombre']), 0, 1, 'C');
+        $pdf->Cell(0, 10, utf8_decode($datos['nombre']), 0, 1, 'C');
 
-    // Información de contacto
-    $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(30, 10, utf8_decode("Teléfono: "), 0, 0, 'L');
-    $pdf->SetFont('Arial', '', 10);
-    $pdf->Cell(0, 10, utf8_decode($datos['telefono']), 0, 1, 'L');
+        // Información de contacto
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Cell(30, 10, utf8_decode("Teléfono: "), 0, 0, 'L');
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(0, 10, utf8_decode($datos['telefono']), 0, 1, 'L');
 
-    $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(30, 10, utf8_decode("Dirección: "), 0, 0, 'L');
-    $pdf->SetFont('Arial', '', 10);
-    $pdf->Cell(0, 10, utf8_decode($datos['direccion']), 0, 1, 'L');
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Cell(30, 10, utf8_decode("Dirección: "), 0, 0, 'L');
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(0, 10, utf8_decode($datos['direccion']), 0, 1, 'L');
 
-    $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(30, 10, "Correo: ", 0, 0, 'L');
-    $pdf->SetFont('Arial', '', 10);
-    $pdf->Cell(0, 10, utf8_decode($datos['correo']), 0, 1, 'L');
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->Cell(30, 10, "Correo: ", 0, 0, 'L');
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(0, 10, utf8_decode($datos['correo']), 0, 1, 'L');
 
-    $pdf->Ln(5);
+        $pdf->Ln(5);
 
-    // Detalle de Prestamos
-    $pdf->SetFont('Arial', 'B', 10);
-    $pdf->SetFillColor(0, 0, 0);
-    $pdf->SetTextColor(255, 255, 255);
-    $pdf->Cell(0, 10, "Detalle de Prestamos", 1, 1, 'C', 1);
-    $pdf->SetTextColor(0, 0, 0);
+        // Detalle de Prestamos
+        $pdf->SetFont('Arial', 'B', 10);
+        $pdf->SetFillColor(0, 0, 0);
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->Cell(0, 10, "Detalle de Prestamos", 1, 1, 'C', 1);
+        $pdf->SetTextColor(0, 0, 0);
 
-    $pdf->Cell(170, 10, 'Libros', 1, 0, 'L');
-    $pdf->Cell(26, 10, 'Cant.', 1, 1, 'L');
-    $pdf->SetFont('Arial', '', 10);
-    $pdf->Cell(170, 10, utf8_decode($prestamo['titulo']), 1, 0, 'L');
-    $pdf->Cell(26, 10, $prestamo['cantidad'], 1, 1, 'L');
-    $pdf->Ln(5);
+        $pdf->Cell(170, 10, 'Libros', 1, 0, 'L');
+        $pdf->Cell(26, 10, 'Cant.', 1, 1, 'L');
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(170, 10, utf8_decode($prestamo['titulo']), 1, 0, 'L');
+        $pdf->Cell(26, 10, $prestamo['cantidad'], 1, 1, 'L');
+        $pdf->Ln(5);
 
-    // Información del Estudiante
-    $pdf->SetFillColor(0, 0, 0);
-    $pdf->SetTextColor(255, 255, 255);
-    $pdf->Cell(0, 10, "Estudiante", 1, 1, 'C', 1);
-    $pdf->SetTextColor(0, 0, 0);
+        // Información del Estudiante
+        $pdf->SetFillColor(0, 0, 0);
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->Cell(0, 10, "Estudiante", 1, 1, 'C', 1);
+        $pdf->SetTextColor(0, 0, 0);
 
-    $pdf->Cell(90, 10, 'Nombre', 1, 0, 'L');
-    $pdf->Cell(106, 10, 'Carrera', 1, 1, 'L');
-    $pdf->SetFont('Arial', '', 10);
-    $pdf->Cell(90, 10, utf8_decode($prestamo['nombre']), 1, 0, 'L');
-    $pdf->Cell(106, 10, utf8_decode($prestamo['carrera']), 1, 1, 'L');
-    $pdf->Ln(5);
+        $pdf->Cell(90, 10, 'Nombre', 1, 0, 'L');
+        $pdf->Cell(106, 10, 'Carrera', 1, 1, 'L');
+        $pdf->SetFont('Arial', '', 10);
+        $pdf->Cell(90, 10, utf8_decode($prestamo['nombre']), 1, 0, 'L');
+        $pdf->Cell(106, 10, utf8_decode($prestamo['carrera']), 1, 1, 'L');
+        $pdf->Ln(5);
 
-    // Fecha de Prestamo
-    $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(0, 10, utf8_decode('Fecha Devolución'), 0, 1, 'C');
-    $pdf->SetFont('Arial', '', 12);
-    $pdf->Cell(0, 10, $prestamo['fecha_devolucion'], 0, 1, 'C');
+        // Fecha de Prestamo
+        $pdf->SetFont('Arial', 'B', 12);
+        $pdf->Cell(0, 10, utf8_decode('Fecha Devolución'), 0, 1, 'C');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, $prestamo['fecha_devolucion'], 0, 1, 'C');
 
-    // Salida del PDF
-    $pdf->Output("prestamos.pdf", "I");
+        // Salida del PDF
+        $pdf->Output("prestamos.pdf", "I");
     }
     
 }
