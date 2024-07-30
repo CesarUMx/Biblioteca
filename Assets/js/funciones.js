@@ -78,3 +78,13 @@ function alertas(msg, icono) {
         timer: 3000
     })
 }
+
+function alertas_L(msg, icono) {
+    Swal.fire({
+        position: 'top-end',
+        icon: icono,
+        title: msg,
+        showConfirmButton: false,
+        timer: 5000
+    })
+}

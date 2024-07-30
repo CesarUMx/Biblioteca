@@ -71,7 +71,12 @@ function btnEntregar(id) {
                 if (this.readyState == 4 && this.status == 200) {
                     const res = JSON.parse(this.responseText);
                     tblPrestar.ajax.reload();
-                    alertas(res.msg, res.icono);
+                    if (res.type) {
+                        console.log(res);
+                        alertas_L(res.msg, res.icono);
+                    }else{
+                        alertas(res.msg, res.icono);
+                    }
                 }
             }
 

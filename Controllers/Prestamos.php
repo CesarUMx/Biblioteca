@@ -127,15 +127,55 @@ class Prestamos extends Controller
 
     public function entregar($id)
     {
-        $datos = $this->model->actualizarPrestamo(0, $id);
-        if ($datos == "ok") {
-            $msg = array('msg' => 'Libro recibido', 'icono' => 'success');
-        }else{
-            $msg = array('msg' => 'Error al recibir el libro', 'icono' => 'error');
+        // Obtener la fecha actual
+        $fecha_actual = date("Y-m-d");
+
+        // Obtener los datos del préstamo del libro
+        $data = $this->model->getPrestamoLibro($id);
+        
+        // Verificar si se obtuvo la información del préstamo
+        if (!$data || !isset($data['fecha_devolucion'])) {
+            $msg = array('msg' => 'Error: Información del préstamo no encontrada', 'icono' => 'error');
+            echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+            die();
         }
+
+        // Obtener la fecha de devolución del préstamo
+        $fecha_devolucion = $data['fecha_devolucion'];
+
+        // Verificar si la fecha de devolución es anterior a la fecha actual
+        if ($fecha_actual > $fecha_devolucion) {
+            // Calcular los días de atraso
+            $dias = (strtotime($fecha_actual) - strtotime($fecha_devolucion)) / (60 * 60 * 24);
+            // Calcular la multa
+            $multa = $dias * 30;
+
+            // Intentar guardar la multa en la tabla de multas
+            $insertarMulta = $this->model->insertarMulta($id, $multa, $dias);
+            if ($insertarMulta === "ok") {
+                $datos = $this->model->actualizarPrestamo(0, $id);
+                if ($datos == "ok") {
+                    $msg = array('msg' => 'Libro entregado con multa de $' . $multa, 'icono' => 'warning', 'type' => "multa");
+                } else {
+                    $msg = array('msg' => 'Error al recibir el libro', 'icono' => 'error', 'error' => $insertarMulta);
+                }
+            } else {
+                $msg = array('msg' => 'Error al registrar la multa', 'icono' => 'error', 'error' => $insertarMulta);
+            }
+
+        } else {
+            // No hay multa, solo actualizar el estado del préstamo
+            $datos = $this->model->actualizarPrestamo(0, $id);
+            if ($datos == "ok") {
+                $msg = array('msg' => 'Libro recibido', 'icono' => 'success');
+            } else {
+                $msg = array('msg' => 'Error al recibir el libro', 'icono' => 'error');
+            }
+        }
+
+        // Enviar la respuesta como JSON
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
-
     }
 
     //GET PRESTAMO ID

@@ -115,4 +115,28 @@ class PrestamosModel extends Query
         }
         return $res;
     }
+
+    //insertar multa
+    public function insertarMulta(int $id_prestamo, int $monto, int $dias): string
+    {
+        // Validación de datos de entrada
+        if ($id_prestamo <= 0 || $monto < 0 || $dias <= 0) {
+            return "error";
+        }
+
+        $sql = "INSERT INTO multas (id_prestamo, dias, c_multa) VALUES (?, ?, ?)";
+        $datos = array($id_prestamo, $dias, $monto);
+
+        try {
+            $data = $this->insert($sql, $datos);
+            if ($data > 0) {
+                return "ok";
+            } else {
+                return $data;
+            }
+        } catch (Exception $e) {
+            // Manejo de errores, como errores de base de datos
+            echo "Error: " . $e->getMessage();
+        }
+    }
 }
