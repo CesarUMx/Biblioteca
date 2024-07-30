@@ -26,16 +26,23 @@ class Multas extends Controller
         for ($i = 0; $i < count($data); $i++) {
             $data[$i]['dias'] = $data[$i]['dias'] . " días";
             $data[$i]['c_multa'] = "$ " . $data[$i]['c_multa'] . ".00";
-            $data[$i]['acciones'] = '<div class="d-flex">
-            <button class="btn btn-success" type="button" onclick="btnPagado(' . $data[$i]['id'] . ');" ><i class="fa fa-money"></i></button>
-            <div/>';
+            if ($data[$i]['Estado'] == 1) {
+                $data[$i]['acciones'] = '<div class="d-flex">
+                <button class="btn btn-success" type="button" onclick="btnPagado(' . $data[$i]['id'] . ');" ><i class="fa fa-money"></i></button>
+                <div/>';
+            } else {
+                $data[$i]['acciones'] = '<span class="badge badge-success">Pagada</span>';
+            }
         }
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
     public function pagada($id)
     {
-        $data = $this->model->pagarMulta(0, $id);
+        $user = $_SESSION['usuario'];
+        $user = explode("@", $user);
+        $user = $user[0];
+        $data = $this->model->pagarMulta(0, $id, $user);
         if ($data == "1") {
             $msg = array('msg' => 'Multa pagada', 'icono' => 'success');
         } else {

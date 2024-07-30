@@ -11,7 +11,7 @@
             <table class="table table-bordered table-hover table-striped mt-4" id="tblPrestar">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Id</th>
+                        <th hidden>Id</th>
                         <th>Clave</th>
                         <th>Titulo</th>
                         <th>Matricula</th>
@@ -19,6 +19,9 @@
                         <th>Fecha Prestamo</th>
                         <th>Fecha Devolución</th>
                         <th>Observación</th>
+                        <th hidden>Prestador</th>
+                        <th hidden>Ultimo renovador</th>
+                        <th hidden>Recibe</th>
                         <th>Estado</th>
                         <th></th>
                     </tr>

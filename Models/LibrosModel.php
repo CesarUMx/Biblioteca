@@ -42,10 +42,10 @@ class LibrosModel extends Query
         $res = $this->select($sql);
         return $res;
     }
-    public function actualizarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $id)
+    public function actualizarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $id, $adquisicion)
     {
-        $query = "UPDATE libro SET titulo = ?, autores = ?, editorial = ?, id_materia = ?, anio_edicion = ?, num_pagina = ?, descripcion = ?, clasificacion = ?, isbn = ? WHERE id = ?";
-        $datos = array($titulo, $autor, $editorial, $materia, $anio_edicion, $num_pagina, $descripcion, $clasificacion, $isbn, $id);
+        $query = "UPDATE libro SET titulo = ?, autores = ?, editorial = ?, id_materia = ?, anio_edicion = ?, num_pagina = ?, descripcion = ?, clasificacion = ?, isbn = ?, adquisicion = ? WHERE id = ?";
+        $datos = array($titulo, $autor, $editorial, $materia, $anio_edicion, $num_pagina, $descripcion, $clasificacion, $isbn, $adquisicion, $id);
 
         // Intentar ejecutar la consulta
         try {

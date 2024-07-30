@@ -7,11 +7,11 @@ class PrestamosModel extends Query
     }
     public function getPrestamos()
     {
-        $sql = "SELECT e.matricula, e.nombre, l.clave, l.titulo, p.id, p.fecha_prestamo, p.fecha_devolucion, p.observacion, p.estado, p.renovacion FROM estudiante e INNER JOIN libro l INNER JOIN prestamo p ON p.id_estudiante = e.id WHERE p.id_libro = l.id";
+        $sql = "SELECT e.matricula, e.nombre, l.clave, l.titulo, p.id, p.fecha_prestamo, p.fecha_devolucion, p.observacion, p.estado, p.renovacion, p.prestador, p.renovador, p.recibe FROM estudiante e INNER JOIN libro l INNER JOIN prestamo p ON p.id_estudiante = e.id WHERE p.id_libro = l.id";
         $res = $this->selectAll($sql);
         return $res;
     }
-    public function insertarPrestamo($estudiante,$libro, $cantidad, string $fecha_prestamo, string $fecha_devolucion)
+    public function insertarPrestamo($estudiante,$libro, $cantidad, string $fecha_prestamo, string $fecha_devolucion, $user)
     {
         $sql_est = "SELECT id FROM estudiante WHERE matricula = '$estudiante'"; 
         $res_sql = $this->select($sql_est);
@@ -22,16 +22,14 @@ class PrestamosModel extends Query
         $verificar = "SELECT * FROM prestamo WHERE id_libro = '$id_libro' AND estado = 1";
         $existe = $this->select($verificar);
         if (empty($existe)) {
-            $query = "INSERT INTO prestamo(id_estudiante, id_libro, fecha_prestamo, fecha_devolucion, cantidad) VALUES (?,?,?,?,?)";
-            $datos = array($id_estudiante, $id_libro, $fecha_prestamo, $fecha_devolucion, $cantidad);
+            $query = "INSERT INTO prestamo(id_estudiante, id_libro, fecha_prestamo, fecha_devolucion, cantidad, prestador) VALUES (?,?,?,?,?,?)";
+            $datos = array($id_estudiante, $id_libro, $fecha_prestamo, $fecha_devolucion, $cantidad, $user);
             try {
                 $data = $this->insert($query, $datos);
                 if ($data > 0) {
-                    $lib = "SELECT * FROM libro WHERE id = $libro";
-                    $resLibro = $this->select($lib);
-                    $total = $resLibro['cantidad'] - $cantidad;
-                    $libroUpdate = "UPDATE libro SET cantidad = ? WHERE id = ?";
-                    $datosLibro = array($total, $libro);
+                    $cantidad = 0;
+                    $libroUpdate = "UPDATE libro SET cantidad = ? WHERE clave = ?";
+                    $datosLibro = array($cantidad, $libro);
                     $this->save($libroUpdate, $datosLibro);
                     $res = $data;
                 } else {
@@ -46,20 +44,18 @@ class PrestamosModel extends Query
         }
         return $res;
     }
-    public function actualizarPrestamo($estado, $id)
+    public function actualizarPrestamo($estado, $id, $user)
     {
-        $sql = "UPDATE prestamo SET estado = ? WHERE id = ?";
-        $datos = array($estado, $id);
+        $sql = "UPDATE prestamo SET estado = ?, recibe = ? WHERE id = ?";
+        $datos = array($estado, $user, $id);
         $data = $this->save($sql, $datos);
         if ($data == 1) {
             $lib = "SELECT * FROM prestamo WHERE id = $id";
             $resLibro = $this->select($lib);
             $id_libro = $resLibro['id_libro'];
-            $lib = "SELECT * FROM libro WHERE id = $id_libro";
-            $residLibro = $this->select($lib);
-            $total = $residLibro['cantidad'] + $resLibro['cantidad'];
+            $cantidad = 1;
             $libroUpdate = "UPDATE libro SET cantidad = ? WHERE id = ?";
-            $datosLibro = array($total, $id_libro);
+            $datosLibro = array($cantidad, $id_libro);
             $this->save($libroUpdate, $datosLibro);
             $res = "ok";
         } else {
@@ -103,10 +99,10 @@ class PrestamosModel extends Query
     }
 
     //renovar fecha de devolucion y observacion
-    public function renovarPrestamo($id, string $fecha_devolucion, string $observacion, $renovacion)
+    public function renovarPrestamo($id, string $fecha_devolucion, string $observacion, $renovacion, $user)
     {
-        $sql = "UPDATE prestamo SET fecha_devolucion = ?, observacion = ?, renovacion = ? WHERE id = ?";
-        $datos = array($fecha_devolucion, $observacion, $renovacion, $id);
+        $sql = "UPDATE prestamo SET fecha_devolucion = ?, observacion = ?, renovacion = ?, renovador = ? WHERE id = ?";
+        $datos = array($fecha_devolucion, $observacion, $renovacion, $user, $id);
         $data = $this->save($sql, $datos);
         if ($data == 1) {
             $res = "ok";
@@ -124,7 +120,8 @@ class PrestamosModel extends Query
             return "error";
         }
 
-        $sql = "INSERT INTO multas (id_prestamo, dias, c_multa) VALUES (?, ?, ?)";
+        //recordar que el servidoe esta adelantado por 6 horas
+        $sql = "INSERT INTO multas (id_prestamo, dias, c_multa, fecha_create) VALUES (?, ?, ?, NOW())";
         $datos = array($id_prestamo, $dias, $monto);
 
         try {

@@ -77,7 +77,7 @@ class Libros extends Controller
                     }
                 }
             } else {
-                $data = $this->model->actualizarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $id);
+                $data = $this->model->actualizarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $id, $adquisicion);
                 if ($data == "modificado") {
                     $msg = array('msg' => 'Libro modificado', 'icono' => 'success');
                 } else {

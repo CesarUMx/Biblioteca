@@ -7,8 +7,8 @@ class MultasModel extends Query
     }
     public function getMultas()
     {
-        $sql = "SELECT m.id AS id, e.matricula, e.nombre, l.clave, l.titulo, m.dias, m.c_multa FROM multas m INNER JOIN prestamo p ON m.id_prestamo = p.id INNER JOIN 
-        estudiante e ON p.id_estudiante = e.id INNER JOIN libro l ON p.id_libro = l.id WHERE m.Estado = 1";
+        $sql = "SELECT m.id AS id, e.matricula, e.nombre, l.clave, l.titulo, m.dias, m.c_multa, m.Estado, m.recibe FROM multas m INNER JOIN prestamo p ON m.id_prestamo = p.id INNER JOIN 
+        estudiante e ON p.id_estudiante = e.id INNER JOIN libro l ON p.id_libro = l.id";
         try {
             $res = $this->selectAll($sql);
             return $res;
@@ -29,10 +29,10 @@ class MultasModel extends Query
         return $tiene;
     }
 
-    public function pagarMulta($estado, $id)
+    public function pagarMulta($estado, $id, $user)
     {
-        $query = "UPDATE multas SET Estado = ? WHERE id = ?";
-        $datos = array($estado, $id);
+        $query = "UPDATE multas SET Estado = ? , recibe = ? WHERE id = ?";
+        $datos = array($estado, $user, $id);
         $data = $this->save($query, $datos);
         return $data;
     }

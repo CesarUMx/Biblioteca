@@ -86,7 +86,10 @@ class Prestamos extends Controller
             if ($id == "") {
                 $verificar_cant = $this->model->getCantLibro($libro);
                 if ($verificar_cant['cantidad'] >= $cantidad) {
-                    $data = $this->model->insertarPrestamo($estudiante, $libro, $cantidad, $fecha_prestamo, $fecha_devolucion);
+                    $user = $_SESSION['usuario'];
+                    $user = explode("@", $user);
+                    $user = $user[0];
+                    $data = $this->model->insertarPrestamo($estudiante, $libro, $cantidad, $fecha_prestamo, $fecha_devolucion, $user);
                     if ($data === "existe") {
                         throw new Exception('El libro ya está prestado');
                     } elseif ($data > 0) {
@@ -107,7 +110,10 @@ class Prestamos extends Controller
                     }
 
                     $observacion = $renovacion['observacion'] . "Renovación $n_renovaciones: $fecha_actual <br>";
-                    $data = $this->model->renovarPrestamo($id, $fecha_devolucion, $observacion, $n_renovaciones);
+                    $user = $_SESSION['usuario'];
+                    $user = explode("@", $user);
+                    $user = $user[0];
+                    $data = $this->model->renovarPrestamo($id, $fecha_devolucion, $observacion, $n_renovaciones, $user);
                     if ($data == "ok") {
                         $msg = array('msg' => 'Fecha renovada', 'icono' => 'success', 'id' => $id);
                     } else {
@@ -142,6 +148,9 @@ class Prestamos extends Controller
 
         // Obtener la fecha de devolución del préstamo
         $fecha_devolucion = $data['fecha_devolucion'];
+        $user = $_SESSION['usuario'];
+        $user = explode("@", $user);
+        $user = $user[0];
 
         // Verificar si la fecha de devolución es anterior a la fecha actual
         if ($fecha_actual > $fecha_devolucion) {
@@ -153,7 +162,8 @@ class Prestamos extends Controller
             // Intentar guardar la multa en la tabla de multas
             $insertarMulta = $this->model->insertarMulta($id, $multa, $dias);
             if ($insertarMulta === "ok") {
-                $datos = $this->model->actualizarPrestamo(0, $id);
+                
+                $datos = $this->model->actualizarPrestamo(0, $id, $user);
                 if ($datos == "ok") {
                     $msg = array('msg' => 'Libro entregado con multa de $' . $multa, 'icono' => 'warning', 'type' => "multa");
                 } else {
@@ -165,7 +175,7 @@ class Prestamos extends Controller
 
         } else {
             // No hay multa, solo actualizar el estado del préstamo
-            $datos = $this->model->actualizarPrestamo(0, $id);
+            $datos = $this->model->actualizarPrestamo(0, $id, $user);
             if ($datos == "ok") {
                 $msg = array('msg' => 'Libro recibido', 'icono' => 'success');
             } else {
