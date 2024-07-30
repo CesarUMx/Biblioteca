@@ -51,8 +51,9 @@ class Libros extends Controller
         $num_pagina = strClean($_POST['num_pagina']);
         $anio_edicion = strClean($_POST['anio_edicion']);
         $descripcion = strClean($_POST['descripcion']);
+        $adquisicion = strClean($_POST['adquisicion']);
         $id = strClean($_POST['id']);
-        if (empty($titulo) || empty($autor) || empty($editorial) || empty($materia) || empty($clasificacion) || empty($isbn)) {
+        if (empty($titulo) || empty($autor) || empty($editorial) || empty($materia) || empty($clasificacion) || empty($isbn) || empty($adquisicion)) {
             $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
         } else {
             if ($id == "") {
@@ -64,7 +65,7 @@ class Libros extends Controller
 
 
                 for ($i = 0; $i < $cantidad; $i++) {
-                    $data = $this->model->insertarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave);
+                    $data = $this->model->insertarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave, $adquisicion);
                     
                     if ($data == "ok") {
                         $clave++;

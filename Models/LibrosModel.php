@@ -11,13 +11,13 @@ class LibrosModel extends Query
         $res = $this->selectAll($sql);
         return $res;
     }
-    public function insertarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave)
+    public function insertarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave, $adquisicion)
     {
         $verificar = "SELECT * FROM libro WHERE clave = '$clave'";
         $existe = $this->select($verificar);
         if (empty($existe)) {
-             $query = "INSERT INTO libro(titulo, autores, editorial, id_materia, anio_edicion, num_pagina, descripcion, clasificacion, clave, isbn) VALUES (?,?,?,?,?,?,?,?,?,?)";
-             $datos = array($titulo, $autor, $editorial, $materia, $anio_edicion, $num_pagina, $descripcion, $clasificacion, $clave, $isbn);
+             $query = "INSERT INTO libro(titulo, autores, editorial, id_materia, anio_edicion, num_pagina, descripcion, clasificacion, clave, isbn, adquisicion) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+             $datos = array($titulo, $autor, $editorial, $materia, $anio_edicion, $num_pagina, $descripcion, $clasificacion, $clave, $isbn, $adquisicion);
              $data = $this->save($query, $datos);
              if ($data == 1) {
                 $res = "ok";

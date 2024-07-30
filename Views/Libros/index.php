@@ -77,7 +77,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="autor">Autor / Autores *</label><br>
-                            <input id="autor" class="form-control" type="text" name="autor" placeholder="Autor / er del libro" required>
+                            <input id="autor" class="form-control" type="text" name="autor" placeholder="Autor / es del libro" required>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -87,11 +87,20 @@
                         </div>
                     </div>
                     
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="materia">Materia *</label><br>
                             <select id="materia" class="form-control materia" name="materia" required style="width: 100%;">
                                 
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="adquisicion">Adquisición *</label><br>
+                            <select id="adquisicion" class="form-control" name="adquisicion" required style="width: 100%;">
+                                <option value="Compra">Compra</option>
+                                <option value="Donación">Donación</option>                                
                             </select>
                         </div>
                     </div>
