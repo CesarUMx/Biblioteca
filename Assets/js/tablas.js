@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
       dataSrc: "",
     },
     columns: [
-      { data: "id", },
+      { data: "id", visible: false },
       { data: "matricula", },
       { data: "nombre", },
       { data: "clave", },

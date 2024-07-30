@@ -41,10 +41,10 @@ class EstudiantesModel extends Query{
         $res = $this->select($sql);
         return $res;
     }
-    public function actualizarEstudiante($matricula, $nombre, $carrera, $telefono, $id)
+    public function actualizarEstudiante($matricula, $nombre, $carrera, $telefono, $semestre, $modalidad, $id)
     {
-        $query = "UPDATE estudiante SET matricula = ?, nombre = ?, carrera = ?, telefono = ?  WHERE id = ?";
-        $datos = array($matricula, $nombre, $carrera, $telefono, $id);
+        $query = "UPDATE estudiante SET matricula = ?, nombre = ?, id_carrera = ?, telefono = ?, semestre = ?, modalidad = ?  WHERE id = ?";
+        $datos = array($matricula, $nombre, $carrera, $telefono, $semestre, $modalidad, $id);
         $data = $this->save($query, $datos);
         if ($data == 1) {
             $res = "modificado";

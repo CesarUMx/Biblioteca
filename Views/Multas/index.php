@@ -11,7 +11,7 @@
             <table class="table table-bordered table-hover table-striped mt-4" id="tblMultas">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Id</th>
+                        <th hidden>Id</th>
                         <th>Matricula</th>
                         <th>Estudiante</th>
                         <th>Clave</th>

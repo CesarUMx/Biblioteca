@@ -102,7 +102,7 @@ class Estudiantes extends Controller
                 }
             } else {
                 // Actualización de estudiante existente
-                $data = $this->model->actualizarEstudiante($matricula, $nombre, $carrera, $telefono, $id);
+                $data = $this->model->actualizarEstudiante($matricula, $nombre, $carrera, $telefono, $semestre, $modalidad, $id);
                 if ($data == "modificado") {
                     $msg = array('msg' => 'Estudiante modificado', 'icono' => 'success');
                 } else {
