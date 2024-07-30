@@ -69,7 +69,7 @@
         </div>
         <ul class="app-menu">
             <li><a class="app-menu__item" href="<?php echo base_url; ?>Prestamos"><i class="app-menu__icon fa fa-hourglass-start"></i><span class="app-menu__label">Prestamos</span></a></li>
-            <li><a class="app-menu__item" href="<?php echo base_url; ?>Multas"><i class="app-menu__icon fa fa-hourglass-start"></i><span class="app-menu__label">Multas</span></a></li>
+            <li><a class="app-menu__item" href="<?php echo base_url; ?>Multas"><i class="app-menu__icon fa fa-exclamation-triangle"></i><span class="app-menu__label">Multas</span></a></li>
             <li><a class="app-menu__item" href="<?php echo base_url; ?>Estudiantes"><i class="app-menu__icon fa fa-graduation-cap"></i><span class="app-menu__label">Estudiantes</span></a></li>
             <li><a class="app-menu__item" href="<?php echo base_url; ?>Materia"><i class="app-menu__icon fa fa-list-alt"></i><span class="app-menu__label">Materias</span></a></li>
 

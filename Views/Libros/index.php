@@ -16,12 +16,13 @@
                                 <th hidden>Id</th>
                                 <th>Clave</th>
                                 <th>Clasificación</th>
-                                <th>ISBN</th>
+                                <th hidden>ISBN</th>
                                 <th>Titulo</th>
                                 <th>Autor/es</th>
                                 <th>Editorial</th>
-                                <th>Año</th>
-                                <th>Paginas</th>
+                                <th hidden>Año</th>
+                                <th hidden>Paginas</th>
+                                <th>Adquisición</th>
                                 <th>Materia</th>
                                 <th>Descripción</th>
                                 <th>Estado</th>

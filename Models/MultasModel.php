@@ -7,9 +7,15 @@ class MultasModel extends Query
     }
     public function getMultas()
     {
-        $sql = "SELECT m.*, p.* FROM multas m INNER JOIN prestamo p ON m.id_prestamo = p.id WHERE m.Estado = 1";
-        $res = $this->selectAll($sql);
-        return $res;
+        $sql = "SELECT m.id AS id, e.matricula, e.nombre, l.clave, l.titulo, m.dias, m.c_multa FROM multas m INNER JOIN prestamo p ON m.id_prestamo = p.id INNER JOIN 
+        estudiante e ON p.id_estudiante = e.id INNER JOIN libro l ON p.id_libro = l.id WHERE m.Estado = 1";
+        try {
+            $res = $this->selectAll($sql);
+            return $res;
+        } catch (Exception $e) {
+            // Manejo de errores
+            echo "Error: " . $e->getMessage(); 
+        }
     }
  
     public function verificarPermisos($id_user, $permiso)
@@ -22,25 +28,13 @@ class MultasModel extends Query
         }
         return $tiene;
     }
-    public function getPrestamoLibro($id_prestamo)
-    {
-        $sql = "SELECT e.id, e.matricula, e.nombre, c.nombre as carrera, l.clave, l.titulo, p.id, p.id_estudiante, p.id_libro, p.fecha_prestamo, p.fecha_devolucion, p.cantidad, p.observacion, p.renovacion, p.estado FROM estudiante e INNER JOIN libro l INNER JOIN carreras c INNER JOIN prestamo p ON p.id_estudiante = e.id WHERE p.id_libro = l.id AND e.id_carrera = c.id AND p.id = $id_prestamo";
-        $res = $this->select($sql);
-        return $res;
-    }
 
-    //renovar fecha de devolucion y observacion
-    public function renovarPrestamo($id, string $fecha_devolucion, string $observacion, $renovacion)
+    public function pagarMulta($estado, $id)
     {
-        $sql = "UPDATE prestamo SET fecha_devolucion = ?, observacion = ?, renovacion = ? WHERE id = ?";
-        $datos = array($fecha_devolucion, $observacion, $renovacion, $id);
-        $data = $this->save($sql, $datos);
-        if ($data == 1) {
-            $res = "ok";
-        } else {
-            $res = "error";
-        }
-        return $res;
+        $query = "UPDATE multas SET Estado = ? WHERE id = ?";
+        $datos = array($estado, $id);
+        $data = $this->save($query, $datos);
+        return $data;
     }
 
     

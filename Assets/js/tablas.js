@@ -144,7 +144,8 @@ document.addEventListener("DOMContentLoaded", function(){
                 'data': 'clasificacion'
             },
             {
-                'data': 'isbn'
+                'data': 'isbn',
+                'visible': false
             },
             {
                 'data': 'titulo'
@@ -156,11 +157,16 @@ document.addEventListener("DOMContentLoaded", function(){
                 'data': 'editorial'
             },
             {
-                'data' : 'anio_edicion'
+                'data' : 'anio_edicion',
+                'visible': false
             },
             {
                 
-                'data': 'num_pagina' 
+                'data': 'num_pagina',
+                'visible': false
+            },
+            {
+                'data': 'adquisicion'
             },
 	        {
                 'data': 'materia'
@@ -170,6 +176,44 @@ document.addEventListener("DOMContentLoaded", function(){
             },
             {
                 'data': 'estado'
+            },
+            {
+                'data': 'acciones'
+            }
+        ],
+        language,
+        dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            buttons
+    });
+    //fin Libros
+
+    tblMultas = $('#tblMultas').DataTable({
+        ajax: {
+            url: base_url + "Multas/listar",
+            dataSrc: ''
+        },
+        columns: [{
+                'data': 'id'
+            },
+            {
+                'data': 'matricula'
+            },
+            {
+                'data': 'nombre'
+            },
+            {
+                'data': 'clave'
+            },
+            {
+                'data': 'titulo'
+            },          
+            {
+                'data': 'dias'
+            },            
+            {
+                'data': 'c_multa'
             },
             {
                 'data': 'acciones'

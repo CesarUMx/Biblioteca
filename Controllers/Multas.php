@@ -9,7 +9,7 @@ class Multas extends Controller
         }
         parent::__construct();
         $id_user = $_SESSION['id_usuario'];
-        $perm = $this->model->verificarPermisos($id_user, "Prestamos");
+        $perm = $this->model->verificarPermisos($id_user, "Multas");
         if (!$perm && $id_user != 1) {
             $this->views->getView($this, "permisos");
             exit;
@@ -24,29 +24,22 @@ class Multas extends Controller
     {
         $data = $this->model->getMultas();
         for ($i = 0; $i < count($data); $i++) {
+            $data[$i]['dias'] = $data[$i]['dias'] . " días";
+            $data[$i]['c_multa'] = "$ " . $data[$i]['c_multa'] . ".00";
             $data[$i]['acciones'] = '<div class="d-flex">
-            <button class="btn btn-danger" type="button" onclick="btnEliminarEtiqueta(' . $data[$i]['id'] . ');"><i class="fa fa-trash-o"></i></button>
+            <button class="btn btn-success" type="button" onclick="btnPagado(' . $data[$i]['id'] . ');" ><i class="fa fa-money"></i></button>
             <div/>';
         }
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
-    public function registrar()
+    public function pagada($id)
     {
-        $libro = strClean($_POST['libro']);
-     
-        if (empty($libro)) {
-            $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
+        $data = $this->model->pagarMulta(0, $id);
+        if ($data == "1") {
+            $msg = array('msg' => 'Multa pagada', 'icono' => 'success');
         } else {
-           
-            $data = $this->model->insertarEtiquetas(1, $libro);
-                    
-            if ($data == "ok") {
-                $clave++;
-                $msg = array('msg' => 'Libro agregado', 'icono' => 'success');
-            } else {
-                $msg = array('msg' => 'Error al registrar', 'icono' => 'error', 'clave' => $clave);
-            }
+            $msg = array('msg' => 'Error al registrar el pago', 'icono' => 'error');
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
