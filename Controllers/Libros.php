@@ -24,7 +24,11 @@ class Libros extends Controller
         $data = $this->model->getLibros();
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['estado'] == 1) {
-                $data[$i]['estado'] = '<span class="badge badge-success">Activo</span>';
+                if ($data[$i]['cantidad'] == 1) {
+                    $data[$i]['estado'] = '<span class="badge badge-success">Activo</span>';
+                } else {
+                    $data[$i]['estado'] = '<span class="badge badge-warning">No disponible</span>';
+                }
                 $data[$i]['acciones'] = '<div class="d-flex">
                 <button class="btn btn-primary" type="button" onclick="btnEditarLibro(' . $data[$i]['id'] . ');"><i class="fa fa-pencil-square-o"></i></button>
                 <button class="btn btn-danger" type="button" onclick="btnEliminarLibro(' . $data[$i]['id'] . ');"><i class="fa fa-trash-o"></i></button>

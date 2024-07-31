@@ -119,10 +119,12 @@ class PrestamosModel extends Query
         if ($id_prestamo <= 0 || $monto < 0 || $dias <= 0) {
             return "error";
         }
+        //fecha de creacion de la multa, fecha actual
+        $fecha_actual = date("Y-m-d H:i:s");
 
         //recordar que el servidoe esta adelantado por 6 horas
-        $sql = "INSERT INTO multas (id_prestamo, dias, c_multa, fecha_create) VALUES (?, ?, ?, NOW())";
-        $datos = array($id_prestamo, $dias, $monto);
+        $sql = "INSERT INTO multas (id_prestamo, dias, c_multa, fecha_create) VALUES (?, ?, ?, ?)";
+        $datos = array($id_prestamo, $dias, $monto, $fecha_actual);
 
         try {
             $data = $this->insert($sql, $datos);
