@@ -4,7 +4,9 @@
         <h1><i class="fa fa-graduation-cap"></i> Estudiantes</h1>
     </div>
 </div>
-<button class="btn btn-primary mb-2" type="button" onclick="frmEstudiante()"><i class="fa fa-plus"></i> Estudiante </button>
+<?php if ($data['create'] || $_SESSION['id_usuario'] == 1) : ?>
+    <button class="btn btn-primary mb-2" type="button" onclick="frmEstudiante()"><i class="fa fa-plus"></i> Estudiante </button>
+<?php endif; ?>
 <div class="row">
     <div class="col-lg-12">
         <div class="tile">

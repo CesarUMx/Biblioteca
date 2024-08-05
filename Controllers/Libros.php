@@ -17,11 +17,18 @@ class Libros extends Controller
     }
     public function index()
     {
-        $this->views->getView($this, "index");
+        $id_user = $_SESSION['id_usuario'];
+        $create = $this->model->verificarPermisos($id_user, "crearLibro");
+        $data = ['create' => $create];
+        $this->views->getView($this, "index", $data);
     }
     public function listar()
     {
         $data = $this->model->getLibros();
+        $id_user = $_SESSION['id_usuario'];
+        $edit = $this->model->verificarPermisos($id_user, "editarLibro");
+        $delete = $this->model->verificarPermisos($id_user, "eliminarLibro");
+
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['estado'] == 1) {
                 if ($data[$i]['cantidad'] == 1) {
@@ -29,10 +36,14 @@ class Libros extends Controller
                 } else {
                     $data[$i]['estado'] = '<span class="badge badge-warning">No disponible</span>';
                 }
-                $data[$i]['acciones'] = '<div class="d-flex">
-                <button class="btn btn-primary" type="button" onclick="btnEditarLibro(' . $data[$i]['id'] . ');"><i class="fa fa-pencil-square-o"></i></button>
-                <button class="btn btn-danger" type="button" onclick="btnEliminarLibro(' . $data[$i]['id'] . ');"><i class="fa fa-trash-o"></i></button>
-                <div/>';
+                $data[$i]['acciones'] = '<div class="d-flex">';
+                if ($edit || $id_user == 1) {
+                    $data[$i]['acciones'] .= '<button class="btn btn-primary" type="button" onclick="btnEditarLibro(' . $data[$i]['id'] . ');"><i class="fa fa-pencil-square-o"></i></button>';
+                }
+                if ($delete || $id_user == 1) {
+                    $data[$i]['acciones'] .= '<button class="btn btn-danger" type="button" onclick="btnEliminarLibro(' . $data[$i]['id'] . ');"><i class="fa fa-trash-o"></i></button>';
+                }
+                $data[$i]['acciones'] .= '</div>';
             } else {
                 $data[$i]['estado'] = '<span class="badge badge-danger">Inactivo</span>';
                 $data[$i]['acciones'] = '<div>

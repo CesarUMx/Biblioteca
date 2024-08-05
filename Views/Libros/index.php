@@ -4,7 +4,9 @@
         <h1><i class="fa fa-book"></i> Libros</h1>
     </div>
 </div>
-<button class="btn btn-primary mb-2" onclick="frmLibros()"><i class="fa fa-plus"></i> Libro </button>
+<?php if ($data['create'] || $_SESSION['id_usuario'] == 1) : ?>
+    <button class="btn btn-primary mb-2" onclick="frmLibros()"><i class="fa fa-plus"></i> Libro </button>
+<?php endif; ?>
 <div class="row">
     <div class="col-lg-12">
         <div class="tile">

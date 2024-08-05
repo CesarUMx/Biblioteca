@@ -17,54 +17,66 @@ class Estudiantes extends Controller
     }
     public function index()
     {
-        $this->views->getView($this, "index");
+        $id_user = $_SESSION['id_usuario'];
+        $create = $this->model->verificarPermisos($id_user, "crearEstudiante");
+        $data = ['create' => $create];
+        $this->views->getView($this, "index", $data);
     }
     public function listar()
-    {
-        $data = $this->model->getEstudiantes();
-        for ($i = 0; $i < count($data); $i++) {
-            // modalidades
-            $modalidades = [
-                1 => 'Licenciatura',
-                2 => 'Doctorado',
-                3 => 'Maestría',
-                4 => 'Duales',
-                5 => 'Ejecutivas',
-                6 => 'Preparatoria',
-                7 => 'Docente',
-                8 => 'Administrativos'
-                
-            ];
-            if (array_key_exists($data[$i]['modalidad'], $modalidades)) {
-                $data[$i]['modalidad'] = $modalidades[$data[$i]['modalidad']];
-            } 
+{
+    $data = $this->model->getEstudiantes();
+    $modalidades = [
+        1 => 'Licenciatura',
+        2 => 'Doctorado',
+        3 => 'Maestría',
+        4 => 'Duales',
+        5 => 'Ejecutivas',
+        6 => 'Preparatoria',
+        7 => 'Docente',
+        8 => 'Administrativos'
+    ];
 
-            if ($data[$i]['estado'] == 1 && ($data[$i]['modalidad'] != 'Administrativos' && $data[$i]['modalidad'] != 'Docente')) {
-                if  ($data[$i]['n_ingreso'] == 1) {
-                    $data[$i]['estado'] = '<span class="badge badge-success">Nuevo Ingreso</span>';
-                } else {
-                    $data[$i]['estado'] = '<span class="badge badge-success">Reinscrito</span>';
-                }
-                $data[$i]['acciones'] = '<div>
-                <button class="btn btn-primary" type="button" onclick="btnEditarEst(' . $data[$i]['id'] . ');"><i class="fa fa-pencil-square-o"></i></button>
-                <button class="btn btn-danger" type="button" onclick="btnEliminarEst(' . $data[$i]['id'] . ');"><i class="fa fa-trash-o"></i></button>
-                <div/>';
-            } else if ($data[$i]['estado'] == 1 && ($data[$i]['modalidad'] == 'Administrativos' || $data[$i]['modalidad'] == 'Docente')) {
-                $data[$i]['estado'] = '<span class="badge badge-success">Activo</span>';
-                $data[$i]['acciones'] = '<div>
-                <button class="btn btn-primary" type="button" onclick="btnEditarEst(' . $data[$i]['id'] . ');"><i class="fa fa-pencil-square-o"></i></button>
-                <button class="btn btn-danger" type="button" onclick="btnEliminarEst(' . $data[$i]['id'] . ');"><i class="fa fa-trash-o"></i></button>
-                <div/>';
-            } else {
-                $data[$i]['estado'] = '<span class="badge badge-danger">Baja</span>';
-                $data[$i]['acciones'] = '<div>
-                <button class="btn btn-success" type="button" onclick="btnReingresarEst(' . $data[$i]['id'] . ');"><i class="fa fa-reply-all"></i></button>
-                <div/>';
-            }
+    for ($i = 0; $i < count($data); $i++) {
+        // Asignar modalidad si existe en el array de modalidades
+        if (array_key_exists($data[$i]['modalidad'], $modalidades)) {
+            $data[$i]['modalidad'] = $modalidades[$data[$i]['modalidad']];
         }
-        echo json_encode($data, JSON_UNESCAPED_UNICODE);
-        die();
+
+        $estado = $data[$i]['estado'];
+        $modalidad = $data[$i]['modalidad'];
+        $n_ingreso = $data[$i]['n_ingreso'];
+        $id = $data[$i]['id'];
+        $id_user = $_SESSION['id_usuario'];
+        $edit = $this->model->verificarPermisos($id_user, "editarEstudiante");
+        $delete = $this->model->verificarPermisos($id_user, "eliminarEstudiante");
+
+        if ($estado == 1) {
+            if ($modalidad != 'Administrativos' && $modalidad != 'Docente') {
+                $data[$i]['estado'] = $n_ingreso == 1 ? '<span class="badge badge-success">Nuevo Ingreso</span>' : '<span class="badge badge-success">Reinscrito</span>';
+            } else {
+                $data[$i]['estado'] = '<span class="badge badge-success">Activo</span>';
+            }
+
+            $data[$i]['acciones'] = '<div>';
+            if ($edit || $id_user == 1) {
+                $data[$i]['acciones'] .= '<button class="btn btn-primary" type="button" onclick="btnEditarEst(' . $id . ');"><i class="fa fa-pencil-square-o"></i></button>';
+            }
+            if ($delete || $id_user == 1) {
+                $data[$i]['acciones'] .= '<button class="btn btn-danger" type="button" onclick="btnEliminarEst(' . $id . ');"><i class="fa fa-trash-o"></i></button>';
+            }
+            $data[$i]['acciones'] .= '<div/>';
+        } else {
+            $data[$i]['estado'] = '<span class="badge badge-danger">Baja</span>';
+            $data[$i]['acciones'] = '<div>
+            <button class="btn btn-success" type="button" onclick="btnReingresarEst(' . $id . ');"><i class="fa fa-reply-all"></i></button>
+            <div/>';
+        }
     }
+
+    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+    die();
+}
+
     public function registrar()
     {
         try {
