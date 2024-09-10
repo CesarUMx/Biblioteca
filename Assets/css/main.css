@@ -10663,7 +10663,9 @@ div.dataTables_wrapper div.dataTables_filter label {
 div.dataTables_wrapper div.dataTables_filter input {
   margin-left: 0.5em;
   display: inline-block;
-  width: auto;
+  width: 400px !important;
+  height: 50px !important;
+  font-size: 1.25rem;
 }
 
 div.dataTables_wrapper div.dataTables_info {

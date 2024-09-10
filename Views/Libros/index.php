@@ -22,9 +22,9 @@
                                 <th>Titulo</th>
                                 <th>Autor/es</th>
                                 <th>Editorial</th>
-                                <th hidden>Año</th>
+                                <th>Año</th>
                                 <th hidden>Paginas</th>
-                                <th>Adquisición</th>
+                                <th hidden>Adquisición</th>
                                 <th>Materia</th>
                                 <th>Descripción</th>
                                 <th>Estado</th>
