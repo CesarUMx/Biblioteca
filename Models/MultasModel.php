@@ -7,7 +7,7 @@ class MultasModel extends Query
     }
     public function getMultas()
     {
-        $sql = "SELECT m.id AS id, e.matricula, e.nombre, l.clave, l.titulo, m.dias, m.c_multa, m.Estado, m.recibe FROM multas m INNER JOIN prestamo p ON m.id_prestamo = p.id INNER JOIN 
+        $sql = "SELECT m.id AS id, e.matricula, e.nombre, l.clave, l.titulo, m.dias, m.c_multa, m.Estado, m.fecha_create, m.recibe FROM multas m INNER JOIN prestamo p ON m.id_prestamo = p.id INNER JOIN 
         estudiante e ON p.id_estudiante = e.id INNER JOIN libro l ON p.id_libro = l.id";
         try {
             $res = $this->selectAll($sql);

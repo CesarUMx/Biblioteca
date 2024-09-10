@@ -166,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
       { data: "titulo", },
       { data: "dias", },
       { data: "c_multa", },
+      { data: "fecha_create"},
       { data: "recibe", visible: false },
       { data: "acciones", },
     ],
