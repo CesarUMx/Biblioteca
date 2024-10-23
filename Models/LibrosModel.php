@@ -13,6 +13,9 @@ class LibrosModel extends Query
     }
     public function insertarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $clave, $adquisicion)
     {
+        $sql_materia = "SELECT id FROM materia WHERE materia = '$materia'";
+        $res_sql = $this->select($sql_materia);
+        $materia = $res_sql['id'];
         $verificar = "SELECT * FROM libro WHERE clave = '$clave'";
         $existe = $this->select($verificar);
         if (empty($existe)) {

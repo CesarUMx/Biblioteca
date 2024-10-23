@@ -10661,11 +10661,9 @@ div.dataTables_wrapper div.dataTables_filter label {
 }
 
 div.dataTables_wrapper div.dataTables_filter input {
-  margin-left: 0.5em;
+  margin-right: 1em !important;
   display: inline-block;
-  width: 400px !important;
-  height: 50px !important;
-  font-size: 1.25rem;
+  width: 22vw !important;
 }
 
 div.dataTables_wrapper div.dataTables_info {

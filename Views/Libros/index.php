@@ -92,9 +92,9 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="materia">Materia *</label><br>
-                            <select id="materia" class="form-control materia" name="materia" required style="width: 100%;">
-                                
-                            </select>
+                            <input id="materia" name="materia" class="form-control" list="MateriaList">
+                            <datalist id="MateriaList">
+                            </datalist>
                         </div>
                     </div>
                     <div class="col-md-3">

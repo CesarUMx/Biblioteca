@@ -97,11 +97,8 @@ class Materia extends Controller
     }
     public function buscarMateria()
     {
-        if (isset($_GET['q'])) {
-            $valor = $_GET['q'];
-            $data = $this->model->buscarMateria($valor);
-            echo json_encode($data, JSON_UNESCAPED_UNICODE);
-            die();
-        }
+        $data = $this->model->buscarMateria();
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        die();
     }
 }

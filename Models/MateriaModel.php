@@ -64,10 +64,10 @@ class MateriaModel extends Query
         }
         return $tiene;
     }
-    public function buscarMateria($valor)
+    public function buscarMateria()
     {
-        $sql = "SELECT id, materia AS text FROM materia WHERE materia LIKE '%" . $valor . "%'  AND estado = 1 LIMIT 10";
-        $data = $this->selectAll($sql);
-        return $data;
+        $sql = "SELECT id, materia FROM materia WHERE estado = 1";
+        $res = $this->selectAll($sql);
+        return $res;
     }
 }

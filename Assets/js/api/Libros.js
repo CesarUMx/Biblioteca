@@ -1,24 +1,22 @@
 document.addEventListener("DOMContentLoaded", function(){
-    $('.materia').select2({
-        placeholder: 'Buscar Materia',
-        minimumInputLength: 2,
-        ajax: {
-            url: base_url + 'Materia/buscarMateria',
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                return {
-                    q: params.term
-                };
-            },
-            processResults: function (data) {
-                return {
-                    results: data
-                };
-            },
-            cache: true
-        }
-    });
+    const materia = document.getElementById('MateriaList');
+     if (materia !== null) {
+         const urlMateria = base_url + 'Materia/buscarMateria';
+         const httpMateria = new XMLHttpRequest();
+         httpMateria.open("GET", urlMateria);
+         httpMateria.send();
+         httpMateria.onreadystatechange = function () {
+             if (this.readyState == 4 && this.status == 200) {
+                 const res = JSON.parse(this.responseText);
+                 let html = '';
+                 res.forEach(row => {
+                    console.log(row.id);
+                     html += `<option value="${row.materia}">`;
+                 });
+                 materia.innerHTML = html;
+             }
+         }
+     }
 });
 
 function frmLibros() {
