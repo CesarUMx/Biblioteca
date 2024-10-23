@@ -35,7 +35,10 @@ class LibrosModel extends Query
     }
     public function editLibros($id)
     {
-        $sql = "SELECT * FROM libro WHERE id = $id";
+        $sql = "SELECT libro.*, materia.materia 
+            FROM libro 
+            INNER JOIN materia ON libro.id_materia = materia.id 
+            WHERE libro.id = $id";
         $res = $this->select($sql);
         return $res;
     }
@@ -45,8 +48,12 @@ class LibrosModel extends Query
         $res = $this->select($sql);
         return $res;
     }
+
     public function actualizarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $id, $adquisicion)
     {
+        $sql_materia = "SELECT id FROM materia WHERE materia = '$materia'";
+        $res_sql = $this->select($sql_materia);
+        $materia = $res_sql['id'];
         $query = "UPDATE libro SET titulo = ?, autores = ?, editorial = ?, id_materia = ?, anio_edicion = ?, num_pagina = ?, descripcion = ?, clasificacion = ?, isbn = ?, adquisicion = ? WHERE id = ?";
         $datos = array($titulo, $autor, $editorial, $materia, $anio_edicion, $num_pagina, $descripcion, $clasificacion, $isbn, $adquisicion, $id);
 

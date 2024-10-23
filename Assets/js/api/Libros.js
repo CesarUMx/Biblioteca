@@ -76,7 +76,7 @@ function btnEditarLibro(id) {
               document.getElementById("titulo").value = res.titulo;
               document.getElementById("autor").value = res.autores;
               document.getElementById("editorial").value = res.editorial;
-              document.getElementById("materia").value = res.id_materia;
+              document.getElementById("materia").value = res.materia;
               document.getElementById("num_pagina").value = res.num_pagina;
               document.getElementById("anio_edicion").value = res.anio_edicion;
               document.getElementById("descripcion").value = res.descripcion;
