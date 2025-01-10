@@ -18,6 +18,7 @@
                         <th>Libro</th>
                         <th>Dias de atraso</th>
                         <th>Multa</th>
+                        <th hidden>Fecha devolucion</th>
                         <th>Fecha creacion</th>
                         <th hidden>Recibe</th>
                         <th></th>

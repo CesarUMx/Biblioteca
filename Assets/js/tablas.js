@@ -38,6 +38,13 @@ document.addEventListener("DOMContentLoaded", function () {
       title: "Archivo PDF",
       filename: "reporte",
       text: '<button class="btn btn-danger"><i class="fa fa-file-pdf-o"></i></button>',
+      orientation: "landscape", // Cambiar a orientación horizontal
+      pageSize: "LETTER", // Configurar tamaño de página
+      customize: function (doc) {
+        doc.defaultStyle.fontSize = 10; // Ajusta el tamaño de fuente
+        doc.styles.tableHeader.fontSize = 12; // Tamaño de fuente para encabezados
+        doc.content[1].table.widths = Array(doc.content[1].table.body[0].length).fill('auto'); // Ajustar ancho automático de columnas
+      },
     },
     //Botón para print
     {
@@ -166,6 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
       { data: "titulo", },
       { data: "dias", },
       { data: "c_multa", },
+      { data: "fecha_devolucion", visible: false },
       { data: "fecha_create"},
       { data: "recibe", visible: false },
       { data: "acciones", },

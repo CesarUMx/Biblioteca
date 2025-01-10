@@ -154,12 +154,30 @@ class Prestamos extends Controller
 
         // Verificar si la fecha de devolución es anterior a la fecha actual
         if ($fecha_actual > $fecha_devolucion) {
-            // Calcular los días de atraso
-            $dias = (strtotime($fecha_actual) - strtotime($fecha_devolucion)) / (60 * 60 * 24);
-            // Calcular la multa
-            $multa = $dias * 30;
+            // Calcular los días de atraso sin contar domingos
 
-            // Intentar guardar la multa en la tabla de multas
+            // Convertir las fechas en objetos DateTime
+            $inicio = new DateTime($fecha_devolucion);
+            $fin = new DateTime($fecha_actual);
+
+            // Crear un rango de fechas
+            $intervalo = new DateInterval('P1D'); // Intervalo de 1 día
+            $rango_fechas = new DatePeriod($inicio, $intervalo, $fin);
+
+            $dias_total = 0;
+
+            // Iterar sobre el rango de fechas
+            foreach ($rango_fechas as $fecha) {
+                // Verificar si el día no es domingo (0)
+                if ($fecha->format('w') != 0) {
+                    $dias_total++;
+                }
+            }
+            
+            // Calcular la multa
+            $multa = $dias_total * 30;
+
+            //Intentar guardar la multa en la tabla de multas
             $insertarMulta = $this->model->insertarMulta($id, $multa, $dias);
             if ($insertarMulta === "ok") {
                 
