@@ -177,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
       { data: "fecha_create"},
       { data: "recibe", visible: false },
       { data: "acciones", },
+      { data: "obs", visible: false },
     ],
     language,
     dom:

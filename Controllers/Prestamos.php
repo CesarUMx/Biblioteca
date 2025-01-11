@@ -178,7 +178,8 @@ class Prestamos extends Controller
             $multa = $dias_total * 30;
 
             //Intentar guardar la multa en la tabla de multas
-            $insertarMulta = $this->model->insertarMulta($id, $multa, $dias);
+             $insertarMulta = $this->model->insertarMulta($id, $multa, $dias_total);
+            
             if ($insertarMulta === "ok") {
                 
                 $datos = $this->model->actualizarPrestamo(0, $id, $user);

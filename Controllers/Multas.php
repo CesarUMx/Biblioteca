@@ -29,24 +29,67 @@ class Multas extends Controller
             if ($data[$i]['Estado'] == 1) {
                 $data[$i]['acciones'] = '<div class="d-flex">
                 <button class="btn btn-success" type="button" onclick="btnPagado(' . $data[$i]['id'] . ');" ><i class="fa fa-money"></i></button>
+                <button class="btn btn-danger" type="button" onclick="btnCancelado(' . $data[$i]['id'] . ');" ><i class="fa fa-trash-o"></i></button>
                 <div/>';
-            } else {
+            } else if ($data[$i]['Estado'] == 0) {
                 $data[$i]['acciones'] = '<span class="badge badge-success">Pagada</span>';
+            } else if ($data[$i]['Estado'] == 3) {
+                $data[$i]['acciones'] = '<span class="badge badge-danger">Cancelada</span>';
+            } else if ($data[$i]['Estado'] == 2) {
+                $data[$i]['acciones'] = '<span class="badge badge-info">Donación</span>';
             }
         }
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
-    public function pagada($id)
+    public function cancelar()
     {
+        $id = strClean($_POST['idMulta']);
+        $motivo = strClean($_POST['motivo']);
         $user = $_SESSION['usuario'];
         $user = explode("@", $user);
         $user = $user[0];
-        $data = $this->model->pagarMulta(0, $id, $user);
-        if ($data == "1") {
-            $msg = array('msg' => 'Multa pagada', 'icono' => 'success');
+        if (empty($id) || empty($motivo)) {
+            $msg = array('msg' => 'Todos los campos son requeridos', 'icono' => 'warning');
         } else {
-            $msg = array('msg' => 'Error al registrar el pago', 'icono' => 'error');
+            $data = $this->model->cancelarMulta($id, $motivo, $user);
+            if ($data == "1") {
+                $msg = array('msg' => 'Multa cancelada', 'icono' => 'success');
+            } else {
+                $msg = array('msg' => 'Error al cancelar la multa', 'icono' => 'error');
+            }
+        }
+        echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+    public function pagar()
+    {
+        $id = strClean($_POST['idPago']);
+        $formaPago = strClean($_POST['formaPago']);
+        $donativo = strClean($_POST['donativo']);
+        $user = $_SESSION['usuario'];
+        $user = explode("@", $user);
+        $user = $user[0];
+
+        if (empty($id) || empty($formaPago)) {
+            $msg = array('msg' => 'Todos los campos son requeridos', 'icono' => 'warning');
+        } else {
+            if ($formaPago === "Efectivo") {
+                $data = $this->model->pagarMulta(0, $id, $user);
+                if ($data === 1) {
+                    $msg = array('msg' => 'Pago efectivo realizado', 'icono' => 'success');
+                } else {
+                    $msg = array('msg' => 'Error al pagar el multa', 'icono' => 'error');
+                }
+            } else if ($formaPago === "Condonacion") {
+                $data = $this->model->donarMulta(2, $id, $user, $donativo);
+                if ($data === 1) {
+                    $msg = array('msg' => 'Pago condonado realizado', 'icono' => 'success');
+                } else {
+                    $msg = array('msg' => 'Error al pagar el multa', 'icono' => 'error', 'data' => $data);
+                }
+            }
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
