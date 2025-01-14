@@ -168,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
     columns: [
       { data: "id", visible: false },
       { data: "matricula", },
+      { data: "nomenclatura", visible: false },
       { data: "nombre", },
       { data: "clave", },
       { data: "titulo", },
@@ -217,6 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
       { data: "clave" },
       { data: "titulo" },
       { data: "matricula" },
+      { data: "nomenclatura", visible: false },
       { data: "nombre" },
       { data: "fecha_prestamo" },
       { data: "fecha_devolucion" },

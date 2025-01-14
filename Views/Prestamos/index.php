@@ -15,6 +15,7 @@
                         <th>Clave</th>
                         <th>Titulo</th>
                         <th>Matricula</th>
+                        <th hidden>Carrera</th>
                         <th>Estudiante</th>
                         <th>Fecha Prestamo</th>
                         <th>Fecha Devolución</th>

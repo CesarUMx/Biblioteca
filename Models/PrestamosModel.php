@@ -7,7 +7,7 @@ class PrestamosModel extends Query
     }
     public function getPrestamos()
     {
-        $sql = "SELECT e.matricula, e.nombre, l.clave, l.titulo, p.id, p.fecha_prestamo, p.fecha_devolucion, p.observacion, p.estado, p.renovacion, p.prestador, p.renovador, p.recibe FROM estudiante e INNER JOIN libro l INNER JOIN prestamo p ON p.id_estudiante = e.id WHERE p.id_libro = l.id";
+        $sql = "SELECT e.matricula, e.nombre, l.clave, l.titulo, p.id, p.fecha_prestamo, p.fecha_devolucion, p.observacion, p.estado, p.renovacion, p.prestador, p.renovador, p.recibe, c.nomenclatura FROM estudiante e INNER JOIN libro l INNER JOIN prestamo p ON p.id_estudiante = e.id INNER JOIN carreras c ON e.id_carrera = c.id WHERE p.id_libro = l.id";
         $res = $this->selectAll($sql);
         return $res;
     }

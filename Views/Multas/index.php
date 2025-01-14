@@ -13,6 +13,7 @@
                     <tr>
                         <th hidden>Id</th>
                         <th>Matricula</th>
+                        <th hidden>Carrera</th>
                         <th>Estudiante</th>
                         <th>Clave</th>
                         <th>Libro</th>
