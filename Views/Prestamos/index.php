@@ -75,13 +75,17 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="fecha_prestamo">Fecha de Prestamo</label>
-                                <input id="fecha_prestamo" class="form-control" type="date" name="fecha_prestamo" value="<?php echo date("Y-m-d"); ?>" required>
+                                <?php if ($data['fecha'] || $_SESSION['id_usuario'] == 1) : ?>
+                                    <input id="fecha_prestamo" class="form-control" type="date" name="fecha_prestamo" value="<?php echo date("Y-m-d"); ?>" required>
+                                <?php else : ?>
+                                    <input id="fecha_prestamo" class="form-control" type="date" name="fecha_prestamo" value="<?php echo date("Y-m-d"); ?>" readonly>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="fecha_devolucion">Fecha de Devolución</label>
-                                <input id="fecha_devolucion" class="form-control" type="date" name="fecha_devolucion" value="<?php echo date("Y-m-d"); ?>" required>
+                                <input id="fecha_devolucion" class="form-control" type="date" name="fecha_devolucion" value="<?php echo date("Y-m-d", strtotime("+1 day")); ?>" min="<?php echo date("Y-m-d", strtotime("+1 day")); ?>" required>
                             </div>
                         </div>
                     </div>

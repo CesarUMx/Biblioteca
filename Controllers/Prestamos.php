@@ -17,7 +17,10 @@ class Prestamos extends Controller
     }
     public function index()
     {
-        $this->views->getView($this, "index");
+        $id_user = $_SESSION['id_usuario'];
+        $create = $this->model->verificarPermisos($id_user, "fechaPrestamo");
+        $data = ['fecha' => $create];
+        $this->views->getView($this, "index", $data);
     }
 
     //boton de tiket pendiente de momento
