@@ -33,7 +33,8 @@ class Estudiantes extends Controller
         5 => 'Ejecutivas',
         6 => 'Preparatoria',
         7 => 'Docente',
-        8 => 'Administrativos'
+        8 => 'Administrativos',
+        9 => 'TSU'
     ];
 
     for ($i = 0; $i < count($data); $i++) {
@@ -185,8 +186,8 @@ class Estudiantes extends Controller
             5 => 'Ejecutivas',
             6 => 'Preparatoria',
             7 => 'Docente',
-            8 => 'Administrativos'
-            
+            8 => 'Administrativos',
+            9 => 'TSU'
         ];
         
         if ($id_estu != "") {

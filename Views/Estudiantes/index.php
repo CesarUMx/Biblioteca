@@ -79,6 +79,7 @@
                                     <option value="6">Preparatoria</option>
                                     <option value="7">Docente</option>
                                     <option value="8">Administrativos</option>
+                                    <option value="9">TSU</option>
                                 </select>
                             </div>
                         </div>
