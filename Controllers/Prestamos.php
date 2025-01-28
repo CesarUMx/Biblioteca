@@ -59,22 +59,17 @@ class Prestamos extends Controller
     public function registrar()
     {
         try {
-            $libro = strClean($_POST['libro']);
+            // Obtener datos comunes
+            $libros = $_POST['libros']; // Array de claves de libros
             $estudiante = strClean($_POST['estudiante']);
-            $cantidad = 1;
+            $cantidad = 1; // Siempre prestamos 1 libro a la vez
             $fecha_prestamo = strClean($_POST['fecha_prestamo']);
             $fecha_devolucion = strClean($_POST['fecha_devolucion']);
-            $id = strClean($_POST['id']);
+            $id = isset($_POST['id']) ? strClean($_POST['id']) : null;
 
-            // Validación de campos
-            if (empty($libro)) {
-                throw new Exception('El campo "libro" es requerido' . $_POST['libro']);
-            }
+            // Validaciones iniciales
             if (empty($estudiante)) {
                 throw new Exception('El campo "estudiante" es requerido');
-            }
-            if (empty($cantidad)) {
-                throw new Exception('El campo "cantidad" es requerido');
             }
             if (empty($fecha_prestamo)) {
                 throw new Exception('El campo "fecha de préstamo" es requerido');
@@ -83,38 +78,63 @@ class Prestamos extends Controller
                 throw new Exception('El campo "fecha de devolución" es requerido');
             }
 
-            if ($id == "") {
-                $verificar_cant = $this->model->getCantLibro($libro);
-                if ($verificar_cant['cantidad'] >= $cantidad) {
-                    $user = $_SESSION['usuario'];
-                    $user = explode("@", $user);
-                    $user = $user[0];
+            // Lógica de registro
+            if ($id === null) { // Registro de nuevos préstamos
+                if (empty($libros) || !is_array($libros)) {
+                    throw new Exception('Debes seleccionar al menos un libro');
+                }
+
+                $user = $_SESSION['usuario'];
+                $user = explode("@", $user)[0];
+
+                $registrosExitosos = 0;
+                $errores = [];
+
+                foreach ($libros as $libro) {
+                    $libro = strClean($libro);
+
+                    // Validar existencia del libro
+                    $verificar_cant = $this->model->getCantLibro($libro);
+                    if ($verificar_cant['cantidad'] < $cantidad) {
+                        $errores[] = "El libro con clave '$libro' no tiene suficiente disponibilidad.";
+                        continue;
+                    }
+
+                    // Intentar registrar el préstamo
                     $data = $this->model->insertarPrestamo($estudiante, $libro, $cantidad, $fecha_prestamo, $fecha_devolucion, $user);
                     if ($data === "existe") {
-                        throw new Exception('El libro ya está prestado');
+                        $errores[] = "El libro con clave '$libro' ya está prestado.";
                     } elseif ($data > 0) {
-                        $msg = array('msg' => 'Libro Prestado', 'icono' => 'success', 'id' => $data);
+                        $registrosExitosos++;
                     } else {
-                        throw new Exception('Error al prestar el libro');
+                        $errores[] = "Error al prestar el libro con clave '$libro'.";
+                    }
+                }
+
+                if ($registrosExitosos > 0) {
+                    $msg = array('msg' => "$registrosExitosos préstamo(s) registrado(s) con éxito.", 'icono' => 'success');
+                    if (!empty($errores)) {
+                        $msg['errores'] = $errores;
                     }
                 } else {
-                    throw new Exception('El libro ya está prestado');
+                    throw new Exception('No se pudo registrar ningún préstamo: ' . implode(", ", $errores));
                 }
-            } else {
+            } else { // Renovación de préstamo existente
                 $renovacion = $this->model->getPrestamoLibro($id);
                 if ($renovacion['renovacion'] < 3) {
                     $n_renovaciones = $renovacion['renovacion'] + 1;
                     $fecha_actual = date("Y-m-d");
+
                     if ($fecha_actual > $renovacion['fecha_devolucion']) {
                         throw new Exception('No se puede renovar un libro atrasado');
                     }
 
                     $observacion = $renovacion['observacion'] . "Renovación $n_renovaciones: $fecha_actual <br>";
                     $user = $_SESSION['usuario'];
-                    $user = explode("@", $user);
-                    $user = $user[0];
+                    $user = explode("@", $user)[0];
+
                     $data = $this->model->renovarPrestamo($id, $fecha_devolucion, $observacion, $n_renovaciones, $user);
-                    if ($data == "ok") {
+                    if ($data === "ok") {
                         $msg = array('msg' => 'Fecha renovada', 'icono' => 'success', 'id' => $id);
                     } else {
                         throw new Exception('Error al renovar el préstamo');
@@ -130,6 +150,7 @@ class Prestamos extends Controller
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
+
 
     public function entregar($id)
     {

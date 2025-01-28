@@ -253,11 +253,11 @@ document.addEventListener("DOMContentLoaded", function () {
     iDisplayLength: 10,
     order: [[0, "desc"]],
     //pendiente por aprobar
-    rowCallback: function (row, data, index) {
-      if (data.estado === '<span class="badge badge-success">Devuelto</span>') {
-        $(row).hide();
-      }
-    },
+    // rowCallback: function (row, data, index) {
+    //   if (data.estado === '<span class="badge badge-success">Devuelto</span>') {
+    //     $(row).hide();
+    //   }
+    // },
   });
   //Fin de la tabla Prestamos
 });
