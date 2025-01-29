@@ -141,7 +141,7 @@ class Usuarios extends Controller{
     public function permisos($id)
     {
         $id_user = $_SESSION['id_usuario'];
-        $perm = $this->model->verificarPermisos($id_user, "roles");
+        $perm = $this->model->verificarPermisos($id_user, "permisos");
         if (!$perm && $id_user != 1) {
             echo '<div class="card">
                     <div class="card-body text-center">
