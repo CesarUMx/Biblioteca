@@ -21,7 +21,6 @@
     <!-- Main CSS-->
     <link href="<?php echo base_url; ?>Assets/css/main.css" rel="stylesheet" />
     <link href="<?php echo base_url; ?>Assets/css/datatables.min.css" rel="stylesheet" crossorigin="anonymous" />
-    <link href="<?php echo base_url; ?>Assets/css/select2.min.css" rel="stylesheet" />
 	<link href="<?php echo base_url; ?>Assets/css/estilos.css" rel="stylesheet" />
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url; ?>Assets/css/font-awesome.min.css">

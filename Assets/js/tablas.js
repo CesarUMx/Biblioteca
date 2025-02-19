@@ -1,4 +1,4 @@
-let tblUsuarios, tblEst, tblMateria, tblLibros, tblPrestar;
+let tblUsuarios, tblEst, tblMateria, tblLibros, tblPrestar, tblMultas, tblBusqueda, tblAutor, tblAutorBusqueda;
 document.addEventListener("DOMContentLoaded", function () {
   const language = {
     decimal: "",
@@ -54,6 +54,11 @@ document.addEventListener("DOMContentLoaded", function () {
       filename: "Export_File_print",
       text: '<button class="btn btn-info"><i class="fa fa-print"></i></button>',
     },
+  ];
+
+  const buttons2 = [
+    {
+    }
   ];
 
   tblUsuarios = $("#tblUsuarios").DataTable({
@@ -260,4 +265,60 @@ document.addEventListener("DOMContentLoaded", function () {
     // },
   });
   //Fin de la tabla Prestamos
+
+  tblBusqueda = $("#tblBusqueda").DataTable({
+    ajax: {
+      url: base_url + "Buscar/listar",
+      dataSrc: "",
+    },
+    columns: [
+      { data: "id", visible: false, },
+      { data: "clave", },
+      { data: "titulo",
+        render: function (data, type, row) {
+          return capitalizeText(data);
+          }
+      },
+      { data: "autores",
+        render: function (data, type, row) {
+          return capitalizeText(data);
+          }
+      },
+      { data: "editorial",
+        render: function (data, type, row) {
+          return capitalizeText(data);
+          }
+       },
+      { data: "anio_edicion", },
+      { data: "materia", 
+        render: function (data, type, row) {
+          return capitalizeText(data);
+          }
+      },
+      { data: "cantidad", },
+    ],
+    language,
+    autoWidth: false, // 🔥 Evita que DataTables limite el ancho automático
+    responsive: true,
+    dom:
+      "<'row'<'col-sm-8'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+  });
 });
+
+function capitalizeText(text) {
+  if (!text) return "";
+
+  return text
+    .toLowerCase()
+    .split(/(\.|\s+)/) // Divide en palabras y conserva los espacios y puntos
+    .map((word, index, arr) => {
+      if (word === "." || word.trim() === "") return word; // Mantiene los puntos y espacios intactos
+      if (index === 0 || arr[index - 1] === ".") {
+        return word.charAt(0).toUpperCase() + word.slice(1); // Capitaliza después de un punto
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(); // Capitaliza palabras normales
+    })
+    .join("");
+}

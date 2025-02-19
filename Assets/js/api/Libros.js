@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function(){
                  const res = JSON.parse(this.responseText);
                  let html = '';
                  res.forEach(row => {
-                    console.log(row.id);
                      html += `<option value="${row.materia}">`;
                  });
                  materia.innerHTML = html;
