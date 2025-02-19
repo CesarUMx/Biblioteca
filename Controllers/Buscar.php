@@ -17,6 +17,11 @@ class Buscar extends Controller
                 } else {
                     $data[$i]['cantidad'] = '<span class="badge badge-warning">No disponible</span>';
                 }
+                if ($data[$i]['tipo'] == 1) {
+                    $data[$i]['tipo'] = '<span class="badge badge-dark">Fisico</span>';
+                } else {
+                    $data[$i]['tipo'] = '<span class="badge badge-info">E-Book</span>';
+                }
             }
             // Verifica si $data es un array o un resultado válido
             if (!is_array($data)) {

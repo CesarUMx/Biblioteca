@@ -296,6 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
       },
       { data: "cantidad", },
+      { data: "tipo", },
     ],
     language,
     autoWidth: false, // 🔥 Evita que DataTables limite el ancho automático

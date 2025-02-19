@@ -31,8 +31,8 @@
         </div>
         <div class="login-box1 row">
             <div class="col-md-11">
-                <h4 class="text-center" >Coloca en el buscador el Titulo, el Autor, la Editorial o la Materia que desee...</h4>
-                <p class="text-center">Ejemplo: derecho julio MC GRAW 1996</p>
+                <h4 class="text-center" >Coloca en el buscador el Titulo, el Autor, la Editorial, año o la Categoría que desee...</h4>
+                <p class="text-center">Ejemplo: Derecho julio MC GRAW 1996 Derecho</p>
                 <div class="tile">
                     <div class="tile-body">
                         <div class="table-responsive">
@@ -45,8 +45,9 @@
                                         <th>Autor/es</th>
                                         <th>Editorial</th>
                                         <th>Año</th>
-                                        <th>Materia</th>
+                                        <th>Categoría</th>
                                         <th>Disponibilidad</th>
+                                        <th>Tipo</th>
                                     </tr>
                                 </thead>
                                 <tbody>
