@@ -273,7 +273,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
     columns: [
       { data: "id", visible: false, },
-      { data: "clave", },
+      { data: "clasificacion"},
       { data: "titulo",
         render: function (data, type, row) {
           return capitalizeText(data);

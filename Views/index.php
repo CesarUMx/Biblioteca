@@ -31,8 +31,8 @@
         </div>
         <div class="login-box1 row">
             <div class="col-md-11">
-                <h4 class="text-center" >Coloca en el buscador el Titulo, el Autor, la Editorial, año o la Categoría que desee...</h4>
-                <p class="text-center">Ejemplo: Derecho julio MC GRAW 1996 Derecho</p>
+                <h4 class="text-center" >Buscador de libros: Coloca el título y/o autor</h4>
+                <p class="text-center">Ejemplo: Derecho Informático Julio Téllez</p>
                 <div class="tile">
                     <div class="tile-body">
                         <div class="table-responsive">
@@ -40,7 +40,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th hidden>Id</th>
-                                        <th>Clave</th>
+                                        <th>Clasificación</th>
                                         <th>Titulo</th>
                                         <th>Autor/es</th>
                                         <th>Editorial</th>

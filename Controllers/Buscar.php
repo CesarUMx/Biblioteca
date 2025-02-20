@@ -13,14 +13,14 @@ class Buscar extends Controller
             $data = $this->model->getLibros();
             for ($i = 0; $i < count($data); $i++) {
                 if ($data[$i]['cantidad'] == 1) {
-                    $data[$i]['cantidad'] = '<span class="badge badge-success">Disponible</span>';
+                    $data[$i]['cantidad'] = '<span class="badge badge-success" style="font-size: 12px;">Disponible</span>';
                 } else {
-                    $data[$i]['cantidad'] = '<span class="badge badge-warning">No disponible</span>';
+                    $data[$i]['cantidad'] = '<span class="badge badge-warning" style="font-size: 12px;">No disponible</span>';
                 }
                 if ($data[$i]['tipo'] == 1) {
-                    $data[$i]['tipo'] = '<span class="badge badge-dark">Fisico</span>';
+                    $data[$i]['tipo'] = '<span class="badge badge-dark" style="font-size: 12px;">Fisico</span>';
                 } else {
-                    $data[$i]['tipo'] = '<span class="badge badge-info">E-Book</span>';
+                    $data[$i]['tipo'] = '<span class="badge badge-info" style="font-size: 12px;">E-Book</span>';
                 }
             }
             // Verifica si $data es un array o un resultado válido
