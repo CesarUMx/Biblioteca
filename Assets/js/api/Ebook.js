@@ -105,3 +105,30 @@ function btnEliminarEbook(id) {
         }
     })
 }
+
+function btnReingresarEbook(id) {
+    Swal.fire({
+        title: 'Esta seguro de reingresar?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si!',
+        cancelButtonText: 'No'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const url = base_url + "Ebook/reingresar/" + id;
+            const http = new XMLHttpRequest();
+            http.open("GET", url, true);
+            http.send();
+            http.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    const res = JSON.parse(this.responseText);
+                    tblEbooks.ajax.reload();
+                    alertas(res.msg, res.icono);
+                }
+            }
+
+        }
+    })
+}

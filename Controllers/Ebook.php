@@ -185,6 +185,19 @@ class Ebook extends Controller
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
+
+    public function reingresar($id)
+    {
+        $id_limpio = strClean($id);
+        $data = $this->model->estadoEbooks(1, $id_limpio);
+        if ($data == 1) {
+            $msg = array('msg' => 'Ebook restaurado', 'icono' => 'success');
+        } else {
+            $msg = array('msg' => 'Error al restaurar', 'icono' => 'error');
+        }
+        echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+        die();
+    }
     
 }
 

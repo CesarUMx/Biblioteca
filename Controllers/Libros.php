@@ -111,7 +111,8 @@ class Libros extends Controller
     }
     public function eliminar($id)
     {
-        $data = $this->model->estadoLibros(0, $id);
+        $id_limpio = strClean($id);
+        $data = $this->model->estadoLibros(0, $id_limpio);
         if ($data == 1) {
             $msg = array('msg' => 'Libro dado de baja', 'icono' => 'success');
         } else {
@@ -122,7 +123,8 @@ class Libros extends Controller
     }
     public function reingresar($id)
     {
-        $data = $this->model->estadoLibros(1, $id);
+        $id_limpio = strClean($id);
+        $data = $this->model->estadoLibros(1, $id_limpio);
         if ($data == 1) {
             $msg = array('msg' => 'Libro restaurado', 'icono' => 'success');
         } else {

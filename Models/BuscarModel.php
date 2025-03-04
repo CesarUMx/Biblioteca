@@ -9,7 +9,7 @@ class BuscarModel extends Query
     public function getLibros()
     {
         try {
-            $sql = "SELECT l.*, m.materia FROM libro l INNER JOIN materia m ON l.id_materia = m.id";
+            $sql = "SELECT l.*, m.materia FROM libro l INNER JOIN materia m ON l.id_materia = m.id where l.estado = 1";
             $res = $this->selectAll($sql);
             
             if (!$res) {
