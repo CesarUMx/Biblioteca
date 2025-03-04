@@ -13,6 +13,18 @@ class Query extends Conexion{
         $data = $resul->fetch(PDO::FETCH_ASSOC);
         return $data;
     }
+    public function selectBind(string $sql, array $params = []) {
+        $this->sql = $sql;
+        $resul = $this->con->prepare($this->sql);
+        // Vincular parámetros si existen
+        foreach ($params as $key => &$val) {
+            $resul->bindParam($key, $val);
+        }
+        $resul->execute();
+        $data = $resul->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    }
+    
     public function selectAll(string $sql)
     {
         $this->sql = $sql;
@@ -34,6 +46,22 @@ class Query extends Conexion{
         }
         return $res;
     }
+    public function saveBind(string $sql, array $datos) {
+        $this->sql = $sql;
+        $this->datos = $datos;
+        
+        $insert = $this->con->prepare($this->sql);
+    
+        // Vincular parámetros con bindParam
+        foreach ($this->datos as $key => &$val) {
+            $insert->bindParam($key, $val);
+        }
+    
+        $data = $insert->execute();
+    
+        return ($data) ? 1 : 0;
+    }
+    
     public function insert(string $sql, array $datos)
     {
         $this->sql = $sql;

@@ -4,6 +4,7 @@ function strClean($cadena)
     $string = preg_replace(['/\s+/','/^\s|\s$/'],[' ',''], $cadena);
     $string = trim($string);
     $string = stripslashes($string);
+    $string = htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
     $string = str_ireplace('<script>', '', $string);
     $string = str_ireplace('</script>', '', $string);
     $string = str_ireplace('<script type=>', '', $string);

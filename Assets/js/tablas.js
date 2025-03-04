@@ -1,4 +1,4 @@
-let tblUsuarios, tblEst, tblMateria, tblLibros, tblPrestar, tblMultas, tblBusqueda, tblAutor, tblAutorBusqueda;
+let tblUsuarios, tblEst, tblMateria, tblLibros, tblPrestar, tblMultas, tblBusqueda, tblAutor, tblAutorBusqueda, tblEbooks;
 document.addEventListener("DOMContentLoaded", function () {
   const language = {
     decimal: "",
@@ -164,6 +164,33 @@ document.addEventListener("DOMContentLoaded", function () {
     buttons,
   });
   //fin Libros
+
+  tblEbooks = $("#tblEbooks").DataTable({
+    ajax: {
+      url: base_url + "Ebook/listar",
+      dataSrc: "",
+    },
+    columns: [
+      { data: "id", visible: false, },
+      { data: "clave", },
+      { data: "clasificacion", },
+      { data: "titulo", },
+      { data: "autores", },
+      { data: "editorial", },
+      { data: "anio_edicion", },
+      { data: "materia", },
+      { data: "pdf", },
+      { data: "estado", },
+      { data: "acciones", },
+    ],
+    language,
+    dom:
+      "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+    buttons,
+  });
+  //fin Ebooks
 
   tblMultas = $("#tblMultas").DataTable({
     ajax: {
