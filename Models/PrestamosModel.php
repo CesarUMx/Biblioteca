@@ -7,7 +7,7 @@ class PrestamosModel extends Query
     }
     public function getPrestamos()
     {
-        $sql = "SELECT e.matricula, e.nombre, l.clave, l.titulo, p.id, p.fecha_prestamo, p.fecha_devolucion, p.observacion, p.estado, p.renovacion, p.prestador, p.renovador, p.recibe, c.nomenclatura FROM estudiante e INNER JOIN libro l INNER JOIN prestamo p ON p.id_estudiante = e.id INNER JOIN carreras c ON e.id_carrera = c.id WHERE p.id_libro = l.id";
+        $sql = "SELECT e.matricula, e.nombre, l.clave, l.titulo, p.id, p.fecha_prestamo, p.fecha_devolucion, p.observacion, p.estado, p.renovacion, p.prestador, p.renovador, p.recibe, c.nomenclatura, l.tipo FROM estudiante e INNER JOIN libro l INNER JOIN prestamo p ON p.id_estudiante = e.id INNER JOIN carreras c ON e.id_carrera = c.id WHERE p.id_libro = l.id";
         $res = $this->selectAll($sql);
         return $res;
     }
@@ -137,5 +137,53 @@ class PrestamosModel extends Query
             // Manejo de errores, como errores de base de datos
             echo "Error: " . $e->getMessage();
         }
+    }
+
+    public function insertarPrestamoEbook($estudiante, $ebook, $fecha_prestamo, $fecha_devolucion, $user)
+    {
+        $sql_est = "SELECT id FROM estudiante WHERE matricula = :estudiante";
+        $res_sql = $this->selectBind($sql_est, [':estudiante' => $estudiante]);
+        if (!$res_sql || !isset($res_sql['id'])) {
+            echo "Error: No se encontró el estudiante.";
+            return 0;
+        }
+        $id_estudiante = $res_sql['id'];
+        $sql_lib = "SELECT id FROM libro WHERE clave = :ebook";
+        $res_sql_lib = $this->selectBind($sql_lib, [':ebook' => $ebook]);
+        if (!$res_sql_lib || !isset($res_sql_lib['id'])) {
+            echo "Error: No se encontró el ebook.";
+            return 0;
+        }
+        $id_Ebook = $res_sql_lib['id'];
+        $cantidad = 0;
+        //no hay verificar porque es un ebook
+        $res = $id_Ebook;
+
+        //insertar prestamo
+        $query = "INSERT INTO prestamo(id_estudiante, id_libro, fecha_prestamo, fecha_devolucion, cantidad, prestador) VALUES (?,?,?,?,?,?)";
+        $datos = array($id_estudiante, $id_Ebook, $fecha_prestamo, $fecha_devolucion, $cantidad, $user);
+
+        try {
+            $data = $this->insert($query, $datos);
+            if ($data > 0) {
+                //crear link de lectura
+                $link = base_url .'Lectura/index/' . $data;
+                $observacion_sql = "SELECT observacion FROM prestamo WHERE id = $data";
+                $observacion = $this->select($observacion_sql);
+                $observacion = $observacion['observacion'];
+                $observacion = $observacion . "<br><a href='$link'>Ver Ebook</a>";
+                $observacion_sql = "UPDATE prestamo SET observacion = ? WHERE id = ?";
+                $datos_sql = array($observacion, $data);
+                $this->save($observacion_sql, $datos_sql);
+                $res = $data;
+            } else {
+                $res = 0;
+            }
+
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+        return $res;
+        
     }
 }

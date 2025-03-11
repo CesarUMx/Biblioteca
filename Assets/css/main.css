@@ -14452,6 +14452,12 @@ be a descendant of the grid when it is being dragged.
   -o-transition: margin-left 0.3s ease;
   transition: margin-left 0.3s ease;
 }
+.app-content1 {
+  min-height: calc(100vh - 50px);
+  margin-top: 50px;
+  padding: 30px;
+  background-color: #E5E5E5;
+}
 
 @media (min-width: 768px) {
   .app-content {
@@ -14546,6 +14552,15 @@ be a descendant of the grid when it is being dragged.
 
 .app-header__logo:focus, .app-header__logo:hover {
   text-decoration: none;
+  color: #fff;
+}
+
+.app-header__title {
+  margin-left: 1em;
+  display: block;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 50px;
   color: #fff;
 }
 
@@ -16358,4 +16373,25 @@ be a descendant of the grid when it is being dragged.
 
 .login-button-container .btn:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-button {
+  color: blue;
+  border: none;
+  font-size: 24px;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.nav-button:hover {
+  color: var(--blue);
+}
+
+.left {
+  left: 10px;
+}
+
+.right {
+  right: 10px;
 }

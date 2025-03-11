@@ -198,6 +198,28 @@ class Ebook extends Controller
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
+
+    public function claves()
+    {
+        $data = $this->model->getClaves();
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+    public function verificar($id_ebook)
+    {
+        $id_limpio = strClean($id_ebook);
+
+        $data = $this->model->getEbookClave($id_limpio);
+        if (!empty($data)) {
+            $msg = array('titulo' => $data['titulo'], 'icono' => 'success');
+        }
+        
+        echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+
     
 }
 

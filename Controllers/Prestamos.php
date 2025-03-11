@@ -19,7 +19,8 @@ class Prestamos extends Controller
     {
         $id_user = $_SESSION['id_usuario'];
         $create = $this->model->verificarPermisos($id_user, "fechaPrestamo");
-        $data = ['fecha' => $create];
+        $presatar = $this->model->verificarPermisos($id_user, "PrestarEbook");
+        $data = ['fecha' => $create , 'presatar' => $presatar];
         $this->views->getView($this, "index", $data);
     }
 
@@ -29,31 +30,36 @@ class Prestamos extends Controller
     {
         $data = $this->model->getPrestamos();
         for ($i = 0; $i < count($data); $i++) {
-            if ($data[$i]['estado'] == 1) {
-                //validar fecha de devolucion con fecha actual
-                $fecha_actual = date("Y-m-d");
-                if ($fecha_actual > $data[$i]['fecha_devolucion']) {
-                    $data[$i]['estado'] = '<span class="badge badge-danger">Atrasado</span>';
-                    $renovation = false;
-                } else {
-                    $renovation = true;
-                    if ($data[$i]['renovacion'] == 0) {
-                        $data[$i]['estado'] = '<span class="badge badge-info">Prestado</span>';
+            if ($data[$i]['tipo'] == 1) {
+                if ($data[$i]['estado'] == 1) {
+                    //validar fecha de devolucion con fecha actual
+                    $fecha_actual = date("Y-m-d");
+                    if ($fecha_actual > $data[$i]['fecha_devolucion']) {
+                        $data[$i]['estado'] = '<span class="badge badge-danger">Atrasado</span>';
+                        $renovation = false;
                     } else {
-                        $data[$i]['estado'] = '<span class="badge badge-warning">Renovado</span>';
+                        $renovation = true;
+                        if ($data[$i]['renovacion'] == 0) {
+                            $data[$i]['estado'] = '<span class="badge badge-info">Prestado</span>';
+                        } else {
+                            $data[$i]['estado'] = '<span class="badge badge-warning">Renovado</span>';
+                        }
                     }
-                }
-                $data[$i]['acciones'] = '<div>
-                    <button class="btn btn-success" type="button" onclick="btnEntregar(' . $data[$i]['id'] . ');"><i class="fa fa-check-square"></i></button>';
+                    $data[$i]['acciones'] = '<div>
+                        <button class="btn btn-success" type="button" onclick="btnEntregar(' . $data[$i]['id'] . ');"><i class="fa fa-check-square"></i></button>';
 
-                if ($renovation && $data[$i]['renovacion'] < 3) {
-                    $data[$i]['acciones'] .= '<button class="btn btn-primary" type="button" onclick="btnRenovar(' . $data[$i]['id'] . ');"><i class="fa fa-refresh" aria-hidden="true"></i></button>';
-                }
+                    if ($renovation && $data[$i]['renovacion'] < 3) {
+                        $data[$i]['acciones'] .= '<button class="btn btn-primary" type="button" onclick="btnRenovar(' . $data[$i]['id'] . ');"><i class="fa fa-refresh" aria-hidden="true"></i></button>';
+                    }
 
-                $data[$i]['acciones'] .= '</div>';
+                    $data[$i]['acciones'] .= '</div>';
+                } else {
+                    $data[$i]['estado'] = '<span class="badge badge-success">Devuelto</span>';
+                    $data[$i]['acciones'] = '';
+                }
             } else {
-                $data[$i]['estado'] = '<span class="badge badge-success">Devuelto</span>';
                 $data[$i]['acciones'] = '';
+                $data[$i]['estado'] = '<span class="badge badge-info">Ebook</span>';
             }
         }
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
@@ -148,6 +154,52 @@ class Prestamos extends Controller
             }
         } catch (Exception $e) {
             $msg = array('msg' => $e->getMessage(), 'icono' => 'error');
+        }
+
+        echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+    public function registrarEbook()
+    {
+        try {
+            // Obtener datos comunes
+            $ebook = strClean($_POST['EBook']);
+            $estudiante = strClean($_POST['estudiante']);
+            $fecha_prestamo = strClean($_POST['fecha_prestamo']);
+            $fecha_devolucion = strClean($_POST['fecha_devolucion']);
+            $id = isset($_POST['id']) ? strClean($_POST['id']) : null;
+
+            // Validaciones iniciales
+            if (empty($estudiante)) {
+                throw new Exception('El campo "estudiante" es requerido');
+            }
+            if (empty($fecha_prestamo)) {
+                throw new Exception('El campo "fecha de préstamo" es requerido');
+            }
+            if (empty($fecha_devolucion)) {
+                throw new Exception('El campo "fecha de devolución" es requerido');
+            }
+            if (empty($ebook)) {
+                throw new Exception('El campo "libro" es requerido');
+            }
+
+            // Lógica de registro
+            if ($id === null) { // Registro de nuevos préstamos
+
+                $user = $_SESSION['usuario'];
+                $user = explode("@", $user)[0];
+
+                    // Intentar registrar el préstamo
+                    $data = $this->model->insertarPrestamoEbook($estudiante, $ebook, $fecha_prestamo, $fecha_devolucion, $user);
+                    if ($data > 0) {
+                        $msg = array('msg' => 'Ebook prestado', 'icono' => 'success', 'id' => $data);
+                    } else {
+                        $msg = array('msg' => 'Error al prestar el Ebook con clave '.$ebook, 'icono' => 'error');
+                    }
+            }
+        } catch (Exception $e) {
+            $msg = array('msg' => $e->getMessage(), 'icono' => 'error', 'controller' => $data);
         }
 
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);

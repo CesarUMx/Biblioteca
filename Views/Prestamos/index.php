@@ -4,7 +4,12 @@
         <h1><i class="fa fa-dashboard"></i> Prestamos</h1>
     </div>
 </div>
-<button class="btn btn-primary mb-2" onclick="frmPrestar()"><i class="fa fa-plus"></i> Prestamo </button>
+
+<button class="btn btn-primary mb-2" onclick="frmPrestar()"><i class="fa fa-plus"></i> Prestamo Libro </button>
+
+<?php if ($data['presatar'] || $_SESSION['id_usuario'] == 1) : ?>
+    <button class="btn btn-primary mb-2" onclick="frmPrestarEbook()"><i class="fa fa-plus"></i> Prestamo Ebook </button>
+<?php endif; ?>
 <div class="tile">
     <div class="tile-body">
         <div class="table-responsive">
@@ -113,4 +118,85 @@
         </div>
     </div>
 </div>
+
+<div id="prestarEbook" class="modal fade" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="titleE"></h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmPrestarEbook" onsubmit="registroPrestamosEbook(event)">
+                    <div class="row">
+                        <input type="hidden" id="idE" name="id">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="estudiante">Matricula</label><br>
+                                <input id="estudianteE" name="estudiante" class="form-control" list="Matriculas_listEbook">
+                                <datalist id="Matriculas_listEbook">
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Nombre</label><br>
+                                <input id="estudianteNE" class="form-control" type="text" value="" disabled>
+                                </div>
+                            </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Carrera</label><br>
+                                <input id="estudianteCE" class="form-control" type="text" value="" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Modalidad</label><br>
+                                <input id="estudianteME" class="form-control" type="text" value="" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fecha_prestamo">Fecha de Prestamo</label>
+                                <?php if ($data['fecha'] || $_SESSION['id_usuario'] == 1) : ?>
+                                    <input id="fecha_prestamoE" class="form-control" type="date" name="fecha_prestamo" value="<?php echo date("Y-m-d"); ?>" required>
+                                <?php else : ?>
+                                    <input id="fecha_prestamoE" class="form-control" type="date" name="fecha_prestamo" value="<?php echo date("Y-m-d"); ?>" readonly>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="fecha_devolucion">Fecha de Devolución</label>
+                                <input id="fecha_devolucionE" class="form-control" type="date" name="fecha_devolucion" value="<?php echo date("Y-m-d", strtotime("+1 day")); ?>" min="<?php echo date("Y-m-d", strtotime("+1 day")); ?>" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="Ebook">Clave del Ebook</label><br>
+                                <input id="EBook" name="EBook" class="form-control libro-clave" list="clavesEbook">
+                                <datalist id="clavesEbook">
+                                </datalist>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Titulo</label><br>
+                                <input id="EBookT" class="form-control libro-titulo" type="text" value="" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- <button type="button" id="addBookBtn" class="btn btn-primary">Agregar otro libro</button> -->
+                    <button class="btn btn-primary" type="submit" id="btnAccionE">Prestar</button>
+                    <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?php include "Views/Templates/footer.php"; ?>

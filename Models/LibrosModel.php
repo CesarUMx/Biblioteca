@@ -113,7 +113,7 @@ class LibrosModel extends Query
 
     public function getClaves()
     {
-        $sql = "SELECT clave FROM libro";
+        $sql = "SELECT clave FROM libro WHERE tipo = 1";
         $res = $this->selectAll($sql);
         return $res;
     }

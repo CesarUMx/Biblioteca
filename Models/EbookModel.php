@@ -108,5 +108,19 @@ class EbookModel extends Query
         $data = $this->save($query, $datos);
         return $data;
     }
+
+    public function getClaves()
+    {
+        $sql = "SELECT clave FROM libro WHERE tipo = 2 AND estado = 1";
+        $res = $this->selectAll($sql);
+        return $res;
+    }
+
+    public function getEbookClave($clave)
+    {
+        $sql = "SELECT * FROM libro WHERE clave = :clave";
+        $res = $this->selectBind($sql, [":clave" => $clave]);
+        return $res;
+    }
     
 }
