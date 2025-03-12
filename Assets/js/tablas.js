@@ -263,16 +263,16 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
     columnDefs: [
       {
-        targets: 7,
-        width: "13%",
+        targets: 8,
+        width: "12%",
         render: function (data, type, row) {
           return data ? data : "&nbsp;";
         },
       },
       {
-        targets: 9,
-        width: "8%",
-      }, // Aquí especificas el ancho para la columna de observaciones
+        targets: 13,
+        width: "6%",
+      },
     ],
     language,
     dom:

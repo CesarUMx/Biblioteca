@@ -168,12 +168,8 @@ class PrestamosModel extends Query
             if ($data > 0) {
                 //crear link de lectura
                 $link = base_url .'Lectura/index/' . $data;
-                $observacion_sql = "SELECT observacion FROM prestamo WHERE id = $data";
-                $observacion = $this->select($observacion_sql);
-                $observacion = $observacion['observacion'];
-                $observacion = $observacion . "<br><a href='$link'>Ver Ebook</a>";
                 $observacion_sql = "UPDATE prestamo SET observacion = ? WHERE id = ?";
-                $datos_sql = array($observacion, $data);
+                $datos_sql = array($link, $data);
                 $this->save($observacion_sql, $datos_sql);
                 $res = $data;
             } else {

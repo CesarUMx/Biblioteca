@@ -58,8 +58,23 @@ class Prestamos extends Controller
                     $data[$i]['acciones'] = '';
                 }
             } else {
-                $data[$i]['acciones'] = '';
-                $data[$i]['estado'] = '<span class="badge badge-info">Ebook</span>';
+                $fecha_actual = date("Y-m-d");
+                if ($fecha_actual < $data[$i]['fecha_devolucion']) {
+                    $data[$i]['estado'] = '<span class="badge badge-info">Ebook</span>';
+                    $data[$i]['acciones'] = '<button class="btn btn-primary" onclick="copiarTexto(\'' . $data[$i]['observacion'] . '\')">
+                            <i class="fa fa-copy"></i>
+                         </button>';
+                         // boton para ver el pdf
+                    $data[$i]['acciones'] .= '<button class="btn btn-success" onclick="redirigir(\'' . $data[$i]['observacion'] . '\')">
+                            <i class="fa fa-eye"></i>
+                         </button>';
+                    $data[$i]['observacion'] = '';
+
+                } else {
+                    $data[$i]['estado'] = '<span class="badge badge-danger">Caducado</span>';
+                    $data[$i]['acciones'] =' - ';
+                }
+
             }
         }
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
