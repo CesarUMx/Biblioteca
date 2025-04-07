@@ -62,6 +62,7 @@ class Configuracion extends Controller
     public function admin()
     {
         $data['libros'] = $this->model->selectDatos('libro');
+        $data['ebooks'] = $this->model->selectDatos('ebook');
         $data['materias'] = $this->model->selectDatos('materia');
         $data['estudiantes'] = $this->model->selectDatos('estudiante');
         $data['prestamos'] = $this->model->selectDatos('prestamo');

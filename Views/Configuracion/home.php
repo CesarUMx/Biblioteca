@@ -22,6 +22,14 @@
         </div>
     </div>
     <div class="col-md-6 col-lg-4">
+        <div class="widget-small info coloured-icon"><i class="icon fa fa-book fa-3x"></i>
+            <a class="info" href="<?php echo base_url; ?>Ebook">
+                <h4>Ebooks</h4>
+                <p><b><?php echo $data['ebooks']['total'] ?></b></p>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-4">
         <div class="widget-small warning coloured-icon"><i class="icon fa fa-graduation-cap fa-3x"></i>
             <a class="info" href="<?php echo base_url; ?>Estudiantes">
                 <h4>Estudiantes</h4>

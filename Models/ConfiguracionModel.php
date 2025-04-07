@@ -31,9 +31,19 @@ class ConfiguracionModel extends Query{
     }
     public function selectDatos($nombre)
     {
-        $sql = "SELECT COUNT(*) AS total FROM $nombre WHERE estado = 1";
-        $res = $this->select($sql);
-        return $res;
+        if ($nombre == "libro") {
+            $sql = "SELECT COUNT(*) AS total FROM $nombre WHERE estado = 1 AND tipo = 1";
+            $res = $this->select($sql);
+            return $res;
+        } elseif ($nombre == "ebook") {
+            $sql = "SELECT COUNT(*) AS total FROM libro WHERE estado = 1 AND tipo = 2";
+            $res = $this->select($sql);
+            return $res;
+        } else {
+            $sql = "SELECT COUNT(*) AS total FROM $nombre WHERE estado = 1";
+            $res = $this->select($sql);
+            return $res;
+        }
     }
     public function getReportes()
     {
