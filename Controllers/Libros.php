@@ -152,4 +152,51 @@ class Libros extends Controller
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
+
+    public function pdf()
+    {
+        $data = $this->model->getAll();
+        
+        require_once('Libraries/PDF.php');
+        
+        $pdf = new PDF('L', 'mm', 'letter');
+        $pdf->AddPage();
+        $pdf->SetMargins(10, 10, 10);
+        $pdf->SetTitle("Libros");
+        $pdf->SetFont('Arial', 'B', 8);
+        
+        // Configurar anchos de columnas
+        $pdf->SetWidths(array(25, 50, 40, 35, 15, 35, 25, 20));
+        $pdf->SetAligns(array('C', 'L', 'L', 'L', 'C', 'C', 'C', 'C'));
+        
+        // Encabezados
+        $pdf->SetFillColor(233, 229, 235);
+        $pdf->Cell(25, 8, 'Clasificacion', 1, 0, 'C', true);
+        $pdf->Cell(50, 8, 'Titulo', 1, 0, 'C', true);
+        $pdf->Cell(40, 8, 'Autor/es', 1, 0, 'C', true);
+        $pdf->Cell(35, 8, 'Editorial', 1, 0, 'C', true);
+        $pdf->Cell(15, 8, utf8_decode('Año'), 1, 0, 'C', true);
+        $pdf->Cell(35, 8, 'Categoria', 1, 0, 'C', true);
+        $pdf->Cell(25, 8, 'Disponibilidad', 1, 0, 'C', true);
+        $pdf->Cell(20, 8, 'Tipo', 1, 1, 'C', true);
+        
+        $pdf->SetFont('Arial', '', 7);
+        foreach ($data as $row) {
+            $disponibilidad = ($row['estado'] == 1) ? 'Disponible' : 'Prestado';
+            $tipo = ($row['tipo'] == 1) ? 'Libro' : 'Ebook';
+            
+            $pdf->Row(array(
+                $row['clasificacion'],
+                utf8_decode($row['titulo']),
+                utf8_decode($row['autores']),
+                utf8_decode($row['editorial']),
+                $row['anio_edicion'],
+                utf8_decode($row['materia']),
+                $disponibilidad,
+                $tipo
+            ));
+        }
+        
+        $pdf->Output('Libros.pdf', 'I');
+    }
 }

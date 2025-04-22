@@ -64,10 +64,30 @@
 <div class="row">
     <div class="col-md-12">
         <div class="tile">
-            <h3 class="tile-title">Libros Disponibles</h3>
-            <div class="embed-responsive embed-responsive-16by9">
-                <canvas class="embed-responsive-item" id="reportePrestamo"></canvas>
-            </div>
+            <h3 class="tile-title">Libros y Ebook</h3>
+            <div class="tile-body">
+                        <div class="table-responsive">
+                            <table class="table table-light table-striped mt-4 w-100" id="tblReportes">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th hidden>Id</th>
+                                        <th>Clave</th>
+                                        <th>Clasificación</th>
+                                        <th>Titulo</th>
+                                        <th>Autor/es</th>
+                                        <th>Editorial</th>
+                                        <th>Año</th>
+                                        <th>Categoría</th>
+                                        <th>Disponibilidad</th>
+                                        <th>Tipo</th>
+                                        <th>Adquisición</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
         </div>
     </div>
 </div>

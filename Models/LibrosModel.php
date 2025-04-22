@@ -117,5 +117,12 @@ class LibrosModel extends Query
         $res = $this->selectAll($sql);
         return $res;
     }
+
+    public function getAll()
+    {
+        $sql = "SELECT l.*, m.materia FROM libro l INNER JOIN materia m ON l.id_materia = m.id ";
+        $res = $this->selectAll($sql);
+        return $res;
+    }
     
 }

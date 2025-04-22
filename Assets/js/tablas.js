@@ -1,4 +1,4 @@
-let tblUsuarios, tblEst, tblMateria, tblLibros, tblPrestar, tblMultas, tblBusqueda, tblAutor, tblAutorBusqueda, tblEbooks;
+let tblUsuarios, tblEst, tblMateria, tblLibros, tblPrestar, tblMultas, tblBusqueda, tblAutor, tblAutorBusqueda, tblEbooks, tblReportes;
 document.addEventListener("DOMContentLoaded", function () {
   const language = {
     decimal: "",
@@ -332,6 +332,50 @@ document.addEventListener("DOMContentLoaded", function () {
       "<'row'<'col-sm-8'f>>" +
       "<'row'<'col-sm-12'tr>>" +
       "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+  });
+
+  tblReportes = $("#tblReportes").DataTable({
+    ajax: {
+      url: base_url + "Buscar/listar",
+      dataSrc: "",
+    },
+    columns: [
+      { data: "id", visible: false, },
+      { data: "clave"},
+      { data: "clasificacion"},
+      { data: "titulo",
+        render: function (data, type, row) {
+          return capitalizeText(data);
+          }
+      },
+      { data: "autores",
+        render: function (data, type, row) {
+          return capitalizeText(data);
+          }
+      },
+      { data: "editorial",
+        render: function (data, type, row) {
+          return capitalizeText(data);
+          }
+       },
+      { data: "anio_edicion", },
+      { data: "materia", 
+        render: function (data, type, row) {
+          return capitalizeText(data);
+          }
+      },
+      { data: "cantidad", },
+      { data: "tipo", },
+      { data: "adquisicion", },
+    ],
+    language,
+    autoWidth: false, // 🔥 Evita que DataTables limite el ancho automático
+    responsive: true,
+    dom:
+      "<'row'<'col-sm-3'l><'col-sm-4 text-center'B><'col-sm-5'f>>" +
+      "<'row'<'col-sm-12'tr>>" +
+      "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+    buttons,
   });
 });
 
