@@ -9,7 +9,7 @@ class Multas extends Controller
         }
         parent::__construct();
         $id_user = $_SESSION['id_usuario'];
-        $perm = $this->model->verificarPermisos($id_user, "Multas");
+        $perm = $this->model->verificarPermisos($id_user, "VerMultas");
         if (!$perm && $id_user != 1) {
             $this->views->getView($this, "permisos");
             exit;
@@ -23,14 +23,22 @@ class Multas extends Controller
     public function listar()
     {
         $data = $this->model->getMultas();
+        $id_user = $_SESSION['id_usuario'];
+        $edit = $this->model->verificarPermisos($id_user, "EditarMultas");
+        $delete = $this->model->verificarPermisos($id_user, "EliminarMultas");
+
         for ($i = 0; $i < count($data); $i++) {
             $data[$i]['dias'] = $data[$i]['dias'] . " días";
             $data[$i]['c_multa'] = "$ " . $data[$i]['c_multa'] . ".00";
             if ($data[$i]['Estado'] == 1) {
-                $data[$i]['acciones'] = '<div class="d-flex">
-                <button class="btn btn-success" type="button" onclick="btnPagado(' . $data[$i]['id'] . ');" ><i class="fa fa-money"></i></button>
-                <button class="btn btn-danger" type="button" onclick="btnCancelado(' . $data[$i]['id'] . ');" ><i class="fa fa-trash-o"></i></button>
-                <div/>';
+                $data[$i]['acciones'] = '<div class="d-flex">';
+                if ($edit || $id_user == 1) {
+                    $data[$i]['acciones'] .= '<button class="btn btn-success" type="button" onclick="btnPagado(' . $data[$i]['id'] . ');" ><i class="fa fa-money"></i></button>';
+                }
+                if ($delete || $id_user == 1) {
+                    $data[$i]['acciones'] .= '<button class="btn btn-danger" type="button" onclick="btnCancelado(' . $data[$i]['id'] . ');" ><i class="fa fa-trash-o"></i></button>';
+                }
+                $data[$i]['acciones'] .= '</div>';
             } else if ($data[$i]['Estado'] == 0) {
                 $data[$i]['acciones'] = '<span class="badge badge-success">Pagada</span>';
             } else if ($data[$i]['Estado'] == 3) {
