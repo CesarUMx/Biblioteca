@@ -67,6 +67,7 @@ class Libros extends Controller
         $anio_edicion = strClean($_POST['anio_edicion']);
         $descripcion = strClean($_POST['descripcion']);
         $adquisicion = strClean($_POST['adquisicion']);
+        $clave = strClean($_POST['clave']);
         $id = strClean($_POST['id']);
         if (empty($titulo) || empty($autor) || empty($editorial) || empty($materia) || empty($clasificacion) || empty($isbn) || empty($adquisicion)) {
             $msg = array('msg' => 'Todo los campos son requeridos', 'icono' => 'warning');
@@ -92,11 +93,15 @@ class Libros extends Controller
                     }
                 }
             } else {
-                $data = $this->model->actualizarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $id, $adquisicion);
-                if ($data == "modificado") {
-                    $msg = array('msg' => 'Libro modificado', 'icono' => 'success');
-                } else {
-                    $msg = array('msg' => 'Error al modificar', 'icono' => 'error');
+                if (empty($clave)) {
+                    $msg = array('msg' => 'La clave es requerida', 'icono' => 'warning');
+                }else{
+                    $data = $this->model->actualizarLibros($clave, $clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $id, $adquisicion);
+                    if ($data == "modificado") {
+                        $msg = array('msg' => 'Libro modificado', 'icono' => 'success');
+                    } else {
+                        $msg = array('msg' => 'Error al modificar', 'icono' => 'error');
+                    }
                 }
             }
         }

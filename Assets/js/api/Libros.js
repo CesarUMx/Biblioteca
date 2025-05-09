@@ -24,6 +24,7 @@ function frmLibros() {
     document.getElementById("frmLibro").reset();
     document.getElementById("id").value = "";
     document.getElementById("cantidad").classList.remove("d-none");
+    document.getElementById("clave").readOnly = true;
     $("#nuevoLibro").modal("show");
 }
 
@@ -35,8 +36,6 @@ function registrarLibro(e) {
     const autor = document.getElementById("autor");
     const editorial = document.getElementById("editorial");
     const materia = document.getElementById("materia");
-    //quitar clase d-none al campo cantidad
-
 
     if (titulo.value == '' || clasificacion.value == '' || isbn.value == ''
          || autor.value == '' || editorial.value == '' || materia.value == '') {
@@ -79,10 +78,16 @@ function btnEditarLibro(id) {
               document.getElementById("num_pagina").value = res.num_pagina;
               document.getElementById("anio_edicion").value = res.anio_edicion;
               document.getElementById("descripcion").value = res.descripcion;
-            document.getElementById("cantidad").classList.add("d-none");
+              document.getElementById("cantidad").classList.add("d-none");
+              document.getElementById("cantidad").value = res.cantidad;
+              document.getElementById("clave").value = res.clave;
+
+              if (id_user == 1 || id_user == 6) {
+                document.getElementById("clave").readOnly = false;
+             }
+            
             $("#nuevoLibro").modal("show");
-            // ocultar campo de cantidad
-        }
+        }   
     }
 }
 

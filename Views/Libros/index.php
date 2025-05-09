@@ -51,14 +51,20 @@
             </div>
             <div class="modal-body">
                 <form id="frmLibro" class="row" onsubmit="registrarLibro(event)">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="clave">Clave</label>
+                            <input id="clave" class="form-control" type="text" name="clave" placeholder="Clave del libro">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="clasificacion">Clasificación *</label>
                             <input type="hidden" id="id" name="id">
                             <input id="clasificacion" class="form-control" type="text" name="clasificacion" placeholder="Clasificación del libro" required>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="isbn">ISBN *</label>
                             <input id="isbn" class="form-control" type="text" name="isbn" placeholder="ISBN" required>
@@ -138,4 +144,7 @@
         </div>
     </div>
 </div>
+<script>
+    const id_user = "<?php echo $_SESSION['id_usuario']; ?>";
+</script>
 <?php include "Views/Templates/footer.php"; ?>

@@ -62,13 +62,13 @@ class LibrosModel extends Query
         return $res;
     }
 
-    public function actualizarLibros($clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $id, $adquisicion)
+    public function actualizarLibros($clave, $clasificacion, $isbn, $titulo, $autor, $editorial, $materia, $num_pagina, $anio_edicion, $descripcion, $id, $adquisicion)
     {
         $sql_materia = "SELECT id FROM materia WHERE materia = '$materia'";
         $res_sql = $this->select($sql_materia);
         $materia = $res_sql['id'];
-        $query = "UPDATE libro SET titulo = ?, autores = ?, editorial = ?, id_materia = ?, anio_edicion = ?, num_pagina = ?, descripcion = ?, clasificacion = ?, isbn = ?, adquisicion = ? WHERE id = ?";
-        $datos = array($titulo, $autor, $editorial, $materia, $anio_edicion, $num_pagina, $descripcion, $clasificacion, $isbn, $adquisicion, $id);
+        $query = "UPDATE libro SET clave = ?, titulo = ?, autores = ?, editorial = ?, id_materia = ?, anio_edicion = ?, num_pagina = ?, descripcion = ?, clasificacion = ?, isbn = ?, adquisicion = ? WHERE id = ?";
+        $datos = array($clave, $titulo, $autor, $editorial, $materia, $anio_edicion, $num_pagina, $descripcion, $clasificacion, $isbn, $adquisicion, $id);
 
         // Intentar ejecutar la consulta
         try {
